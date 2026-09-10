@@ -1,0 +1,143 @@
+2026-02-26 11:07:11,898 INFO    ThreadPoolExecutor-0_3:23308 [wandb_setup.py:_flush():81] Current SDK version is 0.25.0
+2026-02-26 11:07:11,898 INFO    ThreadPoolExecutor-0_3:23308 [wandb_setup.py:_flush():81] Configure stats pid to 23308
+2026-02-26 11:07:11,898 INFO    ThreadPoolExecutor-0_3:23308 [wandb_setup.py:_flush():81] Loading settings from environment variables
+2026-02-26 11:07:11,898 INFO    ThreadPoolExecutor-0_3:23308 [wandb_init.py:setup_run_log_directory():717] Logging user logs to c:\NCKH\SHAP\wandb\run-20260226_110711-swvmxhse\logs\debug.log
+2026-02-26 11:07:11,900 INFO    ThreadPoolExecutor-0_3:23308 [wandb_init.py:setup_run_log_directory():718] Logging internal logs to c:\NCKH\SHAP\wandb\run-20260226_110711-swvmxhse\logs\debug-internal.log
+2026-02-26 11:07:11,901 INFO    ThreadPoolExecutor-0_3:23308 [wandb_init.py:monkeypatch_ipython():636] configuring jupyter hooks <wandb.sdk.wandb_init._WandbInit object at 0x0000022F1DA677D0>
+2026-02-26 11:07:11,901 INFO    ThreadPoolExecutor-0_3:23308 [wandb_init.py:init():844] calling init triggers
+2026-02-26 11:07:11,901 INFO    ThreadPoolExecutor-0_3:23308 [wandb_init.py:init():849] wandb.init called with sweep_config: {}
+config: {'algorithm': 'A2C_mod', 'seed': 1024, 'train_episodes': 600, 'num_products': 220, 'num_actions': 14, 'hidden_size': 32, 'actor_lr': 0.001, 'critic_lr': 0.001, 'gamma': 0.99, 'entropy_coef': 0.001, 'dropout_prob': 0.1, 'batch_size': 32, 'waste_rate': 0.025, '_wandb': {}}
+2026-02-26 11:07:11,901 INFO    ThreadPoolExecutor-0_3:23308 [wandb_init.py:init():892] starting backend
+2026-02-26 11:07:14,461 INFO    ThreadPoolExecutor-0_3:23308 [wandb_init.py:init():895] sending inform_init request
+2026-02-26 11:07:14,532 INFO    ThreadPoolExecutor-0_3:23308 [wandb_init.py:init():903] backend started and connected
+2026-02-26 11:07:14,703 INFO    ThreadPoolExecutor-0_3:23308 [wandb_run.py:_label_probe_notebook():1333] probe notebook
+2026-02-26 11:07:14,734 INFO    ThreadPoolExecutor-0_3:23308 [wandb_init.py:init():973] updated telemetry
+2026-02-26 11:07:15,083 INFO    ThreadPoolExecutor-0_3:23308 [wandb_init.py:init():997] communicating run to backend with 90.0 second timeout
+2026-02-26 11:07:15,100 ERROR   ThreadPoolExecutor-0_9:23308 [wandb_init.py:init():1593] [no run ID] error in wandb.init()
+Traceback (most recent call last):
+  File "c:\Anaconda\envs\pyspark-env\Lib\site-packages\wandb\sdk\wandb_init.py", line 1578, in init
+    run = wi.init(run_settings, run_config, run_printer)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Anaconda\envs\pyspark-env\Lib\site-packages\wandb\sdk\wandb_init.py", line 1004, in init
+    with progress.progress_printer(
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Anaconda\envs\pyspark-env\Lib\contextlib.py", line 137, in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+  File "c:\Anaconda\envs\pyspark-env\Lib\site-packages\wandb\sdk\lib\progress.py", line 81, in progress_printer
+    with printer.dynamic_text() as text_area:
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Anaconda\envs\pyspark-env\Lib\contextlib.py", line 137, in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+  File "c:\Anaconda\envs\pyspark-env\Lib\site-packages\wandb\sdk\lib\printer.py", line 454, in dynamic_text
+    handle = self._ipython_display.display(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Anaconda\envs\pyspark-env\Lib\site-packages\IPython\core\display_functions.py", line 305, in display
+    publish_display_data(data=format_dict, metadata=md_dict, **kwargs)
+  File "c:\Anaconda\envs\pyspark-env\Lib\site-packages\IPython\core\display_functions.py", line 93, in publish_display_data
+    display_pub.publish(
+  File "c:\Anaconda\envs\pyspark-env\Lib\site-packages\wandb\sdk\wandb_init.py", line 647, in publish
+    ipython.display_pub._orig_publish(data, metadata=metadata, **kwargs)
+  File "c:\Anaconda\envs\pyspark-env\Lib\site-packages\wandb\sdk\wandb_init.py", line 647, in publish
+    ipython.display_pub._orig_publish(data, metadata=metadata, **kwargs)
+  File "c:\Anaconda\envs\pyspark-env\Lib\site-packages\wandb\sdk\wandb_init.py", line 647, in publish
+    ipython.display_pub._orig_publish(data, metadata=metadata, **kwargs)
+  [Previous line repeated 2981 more times]
+RecursionError: maximum recursion depth exceeded
+2026-02-26 11:07:15,151 ERROR   ThreadPoolExecutor-0_8:23308 [wandb_init.py:init():1593] [no run ID] error in wandb.init()
+Traceback (most recent call last):
+  File "c:\Anaconda\envs\pyspark-env\Lib\site-packages\wandb\sdk\wandb_init.py", line 1578, in init
+    run = wi.init(run_settings, run_config, run_printer)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Anaconda\envs\pyspark-env\Lib\site-packages\wandb\sdk\wandb_init.py", line 1004, in init
+    with progress.progress_printer(
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Anaconda\envs\pyspark-env\Lib\contextlib.py", line 137, in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+  File "c:\Anaconda\envs\pyspark-env\Lib\site-packages\wandb\sdk\lib\progress.py", line 81, in progress_printer
+    with printer.dynamic_text() as text_area:
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Anaconda\envs\pyspark-env\Lib\contextlib.py", line 137, in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+  File "c:\Anaconda\envs\pyspark-env\Lib\site-packages\wandb\sdk\lib\printer.py", line 454, in dynamic_text
+    handle = self._ipython_display.display(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Anaconda\envs\pyspark-env\Lib\site-packages\IPython\core\display_functions.py", line 305, in display
+    publish_display_data(data=format_dict, metadata=md_dict, **kwargs)
+  File "c:\Anaconda\envs\pyspark-env\Lib\site-packages\IPython\core\display_functions.py", line 93, in publish_display_data
+    display_pub.publish(
+  File "c:\Anaconda\envs\pyspark-env\Lib\site-packages\wandb\sdk\wandb_init.py", line 647, in publish
+    ipython.display_pub._orig_publish(data, metadata=metadata, **kwargs)
+  File "c:\Anaconda\envs\pyspark-env\Lib\site-packages\wandb\sdk\wandb_init.py", line 647, in publish
+    ipython.display_pub._orig_publish(data, metadata=metadata, **kwargs)
+  File "c:\Anaconda\envs\pyspark-env\Lib\site-packages\wandb\sdk\wandb_init.py", line 647, in publish
+    ipython.display_pub._orig_publish(data, metadata=metadata, **kwargs)
+  [Previous line repeated 2981 more times]
+RecursionError: maximum recursion depth exceeded
+2026-02-26 11:07:15,153 ERROR   ThreadPoolExecutor-0_2:23308 [wandb_init.py:init():1593] [no run ID] error in wandb.init()
+Traceback (most recent call last):
+  File "c:\Anaconda\envs\pyspark-env\Lib\site-packages\wandb\sdk\wandb_init.py", line 1578, in init
+    run = wi.init(run_settings, run_config, run_printer)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Anaconda\envs\pyspark-env\Lib\site-packages\wandb\sdk\wandb_init.py", line 1004, in init
+    with progress.progress_printer(
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Anaconda\envs\pyspark-env\Lib\contextlib.py", line 137, in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+  File "c:\Anaconda\envs\pyspark-env\Lib\site-packages\wandb\sdk\lib\progress.py", line 81, in progress_printer
+    with printer.dynamic_text() as text_area:
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Anaconda\envs\pyspark-env\Lib\contextlib.py", line 137, in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+  File "c:\Anaconda\envs\pyspark-env\Lib\site-packages\wandb\sdk\lib\printer.py", line 454, in dynamic_text
+    handle = self._ipython_display.display(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Anaconda\envs\pyspark-env\Lib\site-packages\IPython\core\display_functions.py", line 305, in display
+    publish_display_data(data=format_dict, metadata=md_dict, **kwargs)
+  File "c:\Anaconda\envs\pyspark-env\Lib\site-packages\IPython\core\display_functions.py", line 93, in publish_display_data
+    display_pub.publish(
+  File "c:\Anaconda\envs\pyspark-env\Lib\site-packages\wandb\sdk\wandb_init.py", line 647, in publish
+    ipython.display_pub._orig_publish(data, metadata=metadata, **kwargs)
+  File "c:\Anaconda\envs\pyspark-env\Lib\site-packages\wandb\sdk\wandb_init.py", line 647, in publish
+    ipython.display_pub._orig_publish(data, metadata=metadata, **kwargs)
+  File "c:\Anaconda\envs\pyspark-env\Lib\site-packages\wandb\sdk\wandb_init.py", line 647, in publish
+    ipython.display_pub._orig_publish(data, metadata=metadata, **kwargs)
+  [Previous line repeated 2981 more times]
+RecursionError: maximum recursion depth exceeded
+2026-02-26 11:07:15,158 ERROR   ThreadPoolExecutor-0_0:23308 [wandb_init.py:init():1593] [no run ID] error in wandb.init()
+Traceback (most recent call last):
+  File "c:\Anaconda\envs\pyspark-env\Lib\site-packages\wandb\sdk\wandb_init.py", line 1578, in init
+    run = wi.init(run_settings, run_config, run_printer)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Anaconda\envs\pyspark-env\Lib\site-packages\wandb\sdk\wandb_init.py", line 1004, in init
+    with progress.progress_printer(
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Anaconda\envs\pyspark-env\Lib\contextlib.py", line 137, in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+  File "c:\Anaconda\envs\pyspark-env\Lib\site-packages\wandb\sdk\lib\progress.py", line 81, in progress_printer
+    with printer.dynamic_text() as text_area:
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Anaconda\envs\pyspark-env\Lib\contextlib.py", line 137, in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+  File "c:\Anaconda\envs\pyspark-env\Lib\site-packages\wandb\sdk\lib\printer.py", line 454, in dynamic_text
+    handle = self._ipython_display.display(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Anaconda\envs\pyspark-env\Lib\site-packages\IPython\core\display_functions.py", line 305, in display
+    publish_display_data(data=format_dict, metadata=md_dict, **kwargs)
+  File "c:\Anaconda\envs\pyspark-env\Lib\site-packages\IPython\core\display_functions.py", line 93, in publish_display_data
+    display_pub.publish(
+  File "c:\Anaconda\envs\pyspark-env\Lib\site-packages\wandb\sdk\wandb_init.py", line 647, in publish
+    ipython.display_pub._orig_publish(data, metadata=metadata, **kwargs)
+  File "c:\Anaconda\envs\pyspark-env\Lib\site-packages\wandb\sdk\wandb_init.py", line 647, in publish
+    ipython.display_pub._orig_publish(data, metadata=metadata, **kwargs)
+  File "c:\Anaconda\envs\pyspark-env\Lib\site-packages\wandb\sdk\wandb_init.py", line 647, in publish
+    ipython.display_pub._orig_publish(data, metadata=metadata, **kwargs)
+  [Previous line repeated 2981 more times]
+RecursionError: maximum recursion depth exceeded
