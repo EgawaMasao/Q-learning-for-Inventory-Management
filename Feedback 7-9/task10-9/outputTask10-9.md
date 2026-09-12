@@ -13,9 +13,9 @@
 ### 10.2 Bảng phân cấp hệ thống giải thích (Scope Matrix) - Đề xuất chèn vào đầu Section 4.5
 
 | SHAP Level | Input Features | Mục đích | Phạm vi diễn giải | Vị trí trong bài sau Task 10 |
-|---|---|---|---|---|
-| **Aggregated SHAP** | 3 features trung bình: Inventory (avg 220 SKU), Demand/Sales (avg), Waste (avg) | Khung định hướng chiến lược cho nhà quản trị | System-level drivers | Section 4.5.1 - rút ngắn 50%, giữ Fig.9 |
-| **Top-k Micro SHAP** | 660 features gốc: inventory_SKU0-219, sales_SKU0-219, waste_feat_SKU0-219 | Xác định SKU và biến hệ thống cụ thể dẫn dắt quyết định | SKU-level + system-level drivers | Section 4.5.2 - **kết quả chính**, Fig.11 Top-20 |
+| :--- | :--- | :--- | :--- | :--- |
+| Aggregated SHAP | 3 features trung bình: Inventory (avg 220 SKU), Demand/Sales (avg), Waste (avg) | Khung định hướng chiến lược cho nhà quản trị | System-level drivers | Section 4.5.1 - rút ngắn 50%, giữ Fig.9 |
+| Top-k Micro SHAP | 660 features gốc: inventory_SKU0-219, sales_SKU0-219, waste_feat_SKU0-219 | Xác định SKU và biến hệ thống cụ thể dẫn dắt quyết định | SKU-level + system-level drivers | Section 4.5.2 - kết quả chính, Fig.11 Top-20 |
 
 > **Đoạn văn đề xuất paste vào Section 4.5 mở đầu (tiếng Việt, sau dịch Anh):**
 > "Việc gộp 660 chiều trạng thái thành 3 đặc trưng vĩ mô đóng vai trò như khung định hướng chiến lược giúp nhận diện nhanh xu hướng hành vi tổng thể của agent, và duy trì tính tương thích với các phân tích FCS/ablation trước đó. Tuy nhiên, cách gộp này gây aggregation bias và che giấu heterogeneity cấp SKU. Để khắc phục, chúng tôi mở rộng phân tích xuống không gian đặc trưng thô gốc thông qua bộ lọc Top-k (660 chiều) và đưa kết quả này thành phân tích SHAP chính, trong khi kết quả aggregated chỉ dùng làm overview."
@@ -24,14 +24,14 @@
 
 Dữ liệu từ `topk_shap_full_results_660.csv` (50 states/scenario, background 100, PartitionExplainer). Mean|SHAP| trung bình của 220 features trong mỗi nhóm macro vs Top-5 micro:
 
-| Agent | Scenario | Macro Inventory | Macro Sales | Macro Waste | Macro Dominant | Micro Top-5 (Mean|SHAP|) |
-|---|---|---|---|---|---|---|
-| DQN | EASY | 0.000799 | 0.000862 | 0.000799 | sales | sales_SKU64 (0.002808) | sales_SKU163 (0.002779) | sales_SKU100 (0.002625) | sales_SKU46 (0.002581) | sales_SKU155 (0.002531) |
-| DQN | MEDIUM | 0.000764 | 0.000821 | 0.000764 | sales | sales_SKU64 (0.002744) | sales_SKU163 (0.002608) | sales_SKU46 (0.002441) | sales_SKU155 (0.002418) | sales_SKU118 (0.002336) |
-| DQN | HARD | 0.000731 | 0.000782 | 0.000731 | sales | sales_SKU64 (0.002530) | sales_SKU163 (0.002467) | sales_SKU46 (0.002314) | sales_SKU155 (0.002289) | sales_SKU118 (0.002256) |
-| A2C_mod | EASY | 0.000105 | 0.000112 | 0.000105 | sales | sales_SKU163 (0.000441) | sales_SKU155 (0.000432) | sales_SKU64 (0.000415) | sales_SKU46 (0.000396) | sales_SKU118 (0.000278) |
-| A2C_mod | MEDIUM | 0.000099 | 0.000106 | 0.000099 | sales | sales_SKU163 (0.000406) | sales_SKU155 (0.000404) | sales_SKU64 (0.000400) | sales_SKU46 (0.000395) | sales_SKU118 (0.000274) |
-| A2C_mod | HARD | 0.000093 | 0.000100 | 0.000093 | sales | sales_SKU64 (0.000392) | sales_SKU155 (0.000388) | sales_SKU163 (0.000385) | sales_SKU46 (0.000380) | sales_SKU118 (0.000270) |
+| Agent | Scenario | Macro Inventory | Macro Sales | Macro Waste | Macro Dominant | Micro Top-5 (Mean\|SHAP\|) |
+| :--- | :--- | :---: | :---: | :---: | :---: | :--- |
+| DQN | EASY | 0.000799 | 0.000862 | 0.000799 | sales | SKU64 (0.00281), SKU163 (0.00278), SKU100 (0.00263), SKU46 (0.00258), SKU155 (0.00253) |
+| DQN | MEDIUM | 0.000764 | 0.000821 | 0.000764 | sales | SKU64 (0.00274), SKU163 (0.00261), SKU46 (0.00244), SKU155 (0.00242), SKU118 (0.00234) |
+| DQN | HARD | 0.000731 | 0.000782 | 0.000731 | sales | SKU64 (0.00253), SKU163 (0.00247), SKU46 (0.00231), SKU155 (0.00229), SKU118 (0.00226) |
+| A2C_mod | EASY | 0.000105 | 0.000112 | 0.000105 | sales | SKU163 (0.00044), SKU155 (0.00043), SKU64 (0.00042), SKU46 (0.00040), SKU118 (0.00028) |
+| A2C_mod | MEDIUM | 0.000099 | 0.000106 | 0.000099 | sales | SKU163 (0.00041), SKU155 (0.00040), SKU64 (0.00040), SKU46 (0.00040), SKU118 (0.00027) |
+| A2C_mod | HARD | 0.000093 | 0.000100 | 0.000093 | sales | SKU64 (0.00039), SKU155 (0.00039), SKU163 (0.00039), SKU46 (0.00038), SKU118 (0.00027) |
 
 **Diễn giải:** Ở cả hai cấp, nhóm Sales/Demand là dominant, nhưng cấp micro cho thấy sự tập trung cực đoan vào 5-8 SKU cụ thể (SKU64,163,46,155,118,43,100,215) thay vì phân tán đều 220 SKU như macro gợi ý. Đây là bằng chứng aggregation bias.
 
