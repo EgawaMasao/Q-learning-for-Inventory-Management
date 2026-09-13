@@ -1144,9 +1144,21 @@ In contrast, A2C_mod shows a clearer context dependence:
 in the EASY scenario, the MSX structure varies with λ, whereas in the HARD scenario, the component frequencies remain nearly unchanged, reflecting high stability under weight adjustments. The MSX results complement the RDX analysis by demonstrating that explanation magnitude and explanation structure are two distinct aspects. While RDX measures the intensity of contribution changes, MSX reflects the stab ility of the core reasoning set, thereby clarifying behavioral differences between DQN and A2C_mod under different environmental conditions.
 
 4. 5. SHapley Additive exPlanations
+
+To address aggregation bias while maintaining strategic interpretability, this study adopts a two-level SHAP framework. Table 7a defines the interpretation scope.
+
+Table 7a. SHAP Interpretation Scope Matrix
+
+| SHAP Level | Input Features | Purpose | Interpretation Scope |
+| :--- | :--- | :--- | :--- |
+| Aggregated SHAP | 3 averaged features: Inventory (avg 220 SKUs), Demand/Sales (avg), Waste (avg) | Strategic overview for managers | System-level drivers |
+| Top-k Micro SHAP | 660 raw features: inventory_SKU0-219, sales_SKU0-219, waste_feat_SKU0-219 | Identify specific SKU and system drivers | SKU-level and system-level drivers |
+
+The aggregated 3-feature view provides a strategic cognitive framework for quickly identifying overall behavioral trends, while the micro-level analysis on the 660-dimensional raw feature space addresses heterogeneity. This structure maintains compatibility with prior FCS/ablation analyses while the micro-level results are treated as the primary SHAP findings.
+
 4. 5.1. Problem setup:
 
-The original state space consists of 664 SKU - level features. However, applying SHAP directly to such a high - dimensional space with strong correlations among variables may result in dispersed and difficult - to - interpret explanation values. Therefore, the study adopts a purposive dimensionality reduction stra tegy, aggregating the features
+The original state space consists of 664 SKU - level features (660 product-level + 4 system-level: Ut, Ct, Vt, Tt). However, applying SHAP directly to such a high - dimensional space with strong correlations among variables may result in dispersed and difficult - to - interpret explanation values. Therefore, the study adopts a purposive dimensionality reduction stra tegy, aggregating the features
 
 Fig 7. Frequency of occurrence of reward components in
 
@@ -1224,95 +1236,41 @@ approaches.
 
 under extreme conditions. Overall, the local SHAP analysis indicates that A2C _mod is more state stable, whereas DQN relies heavily on certain features, especially in high - risk scenarios.
 
-4. 5.3. Top - k Micro - Level SHAP Analysis
+4. 5.3. Top - k Micro - Level SHAP Analysis (Primary SHAP Result)
 
-To complement the aggregated SHAP analysis, this study further performs a top - k micro - level SHAP analysis on the 660 - dimensional product - level state space, consisting of 220 products and three feature groups:
+While Section 4.5.2 provides an aggregated overview, this section presents the primary SHAP analysis on the 660-dimensional product-level state space. Table 7b compares macro-averaged vs micro-level attributions (50 states/scenario, PartitionExplainer, background 100). At the macro level, Sales/Demand dominates for both agents, but micro-level reveals extreme concentration on 5-8 specific SKUs rather than uniform distribution across 220 SKUs, evidencing aggregation bias.
 
-Inventory, Sales/Demand, and Waste. While the a ggregated SHAP analysis provides a macro - level interpretation, the micro - level analysis identifies which
+Table 7b. Comparison of Macro-averaged vs Micro-level SHAP (Mean|SHAP|; values in Supplementary)
 
-Fig. 9. Global SHAP: A2C_mod vs DQN.
+| Agent | Scenario | Macro Dominant | Micro Top-5 (SKU ID) |
+| :--- | :--- | :--- | :--- |
+| DQN | EASY | sales | SKU64, 163, 100, 46, 155 |
+| DQN | MEDIUM | sales | SKU64, 163, 46, 155, 118 |
+| DQN | HARD | sales | SKU64, 163, 46, 155, 118 |
+| A2C_mod | EASY | sales | SKU163, 155, 64, 46, 118 |
+| A2C_mod | MEDIUM | sales | SKU163, 155, 64, 46, 118 |
+| A2C_mod | HARD | sales | SKU64, 155, 163, 46, 118 |
 
-specific product - level variables most strongly influence the
+*Mean|SHAP| values: DQN 0.00281-0.00253, A2C_mod 0.00044-0.00027; 3-4x tied baseline 0.00079. Figure 11 (Top-20, 660 features) is primary; Figure 9 (3 features) is overview.
 
-To analyze decision - making behavior at the local agents’ decisions. Because the raw state space is high - level, the study constructs five representative scenarios dimensional, the SHAP Partition Exp lainer is used to corresponding to key operational states of the inventory
+4. 5.4. Consistency of Top-k Features across EASY/MEDIUM/HARD
 
-improve computational efficiency by exploiting the
+For Top-20, DQN shows perfect Jaccard 1.00 and Spearman 1.00 across all scenario pairs (stable, 8 SKUs), while A2C_mod shows Jaccard 0.29-0.33 and Spearman 0.20 (context-dependent shift, core Top-5 remains). Full k=10/20/50 results (18 rows) in Supplementary task10-9/outputTask10-11_overlap.csv.
 
-system, as shown in Table 7.
+4. 5.5. Why Dominant Products Dominate Top-20 - Case Analysis
 
-hierarchical structure of the input features. The importance of each feature 𝑓 𝑗 is computed using the mean absolute SHAP value:
+Top-demand SKUs are SKU57 (22.6), SKU81 (17.2), SKU108 (15.5) - not in Top-8 SHAP (r=0.04). Dominant SKUs are low-volume high-CV (1.1-1.46) and small capacity (7-28), e.g., SKU64 CV 1.46 cap 7, SKU163 CV 1.27 cap 12 - volatile, stockout-sensitive. SKU215 is exception - high-volume (8.68) with large capacity 81. Full 36 SKUs in Supplementary task10-9/outputTask10-12_case_analysis.csv. SHAP is associative.
 
-𝑁 4.6.1 Design 𝐴
+Figure 9 (3 features) is overview; Figure 11 (660 features) is primary. I_Micro(f_j)=1/(N·A) Σ|φ_{j,a}^{(n)}|.
 
-1 (𝑛) To evaluate the role and contribution level of each
+4.6. Comparative Evaluation
+4.6.1 Design
 
-𝐼 Micro (𝑓 𝑗) = ∑ ∑ ∣ 𝜙 ∣
+To evaluate the role and contribution level of each explanation mechanism within the proposed XRL framework, the study conducts an ablation-oriented analysis by comparing three different explanation configurations. The objective is to determine whether each individual method is sufficient to provide comprehensive interpretability, or whether their combination is necessary to achieve holistic transparency. Specifically, the three configurations considered are: (i) Reward-only (RDX+MSX), (ii) Feature-based only (SHAP), and (iii) Hybrid framework.
 
-𝑗, 𝑎
+4.6.2 Metrics
 
-𝑁 ⋅ 𝐴 explanation mechanism within the proposed XRL
-
-𝑎 = 1
-
-framework, the study conducts an ablation - oriented
-
-𝑛 = 1
-
-analysis by comparing three different explanation configurations. The objective of this design is to determine
-
-(𝑛) whether each individual method is sufficient to provide
-
-where 𝜙 denotes the SHAP value of feature 𝑗 for
-
-𝑗, 𝑎
-
-comprehensive interpretability, or whether their
-
-action 𝑎 at state 𝑛, 𝑁 is the number of evaluated states, and
-
-combination is necessary to achieve holistic transparency.
-
-𝐴 is the action set. After ranking all features by their
-
-Spe cifically, the three configurations considered are:
-
-importance scores, the top - 20 most influential variables are extracted for analysis. As s hown in Figure 11,
-
-(i) Reward - only (RDX + MSX): Explanations are
-
-Sales/Demand features dominate the top - ranked positions
-
-constructed entirely based on reward decomposition. RDX
-
-in most scenarios, indicating that both agents are strongly
-
-quantifies the contribution of each business objective, while
-
-influenced by product - level demand fluctuations. In the
-
-MSX identifies the minimal set of compon ents sufficient to
-
-EASY scenario, the decisions of DQN and A2C_mod are
-
-justify the action.
-
-mainly driven by Sales/Demand features, while Waste - related variables have limited influence. In the MEDIUM
-
-(ii) Feature - based only (SHAP): Explanations
-
-and HARD scenarios, Waste - related features appear more
-
-rely on SHAP values to measure the influence of state
-
-frequently among the top - 20 variables, suggesting that the
-
-features on the Q - value or action policy, without
-
-agents begin to consider spoilage risk when the
-
-considering the reward objective structure.
-
-environment becomes more uncertain and costly. For DQN, Sales/Demand remains the dominant factor across (iii) Hybrid framework: Combines RDX/MSX scenarios, but Waste features become more visible in the and SHAP to simultaneously analyze explanations at both HARD scenario. For A2C_mod, a similar pattern is the business - objective level and the input - feature level observed; however, in the HARD scenario, Wast e - related variables receive higher importance, suggesting a more 4.6.2 Metrics risk - aware decision pattern. Overall, the top - k micro - level SHAP analysis complements the aggregated Inventory – To quantitatively evaluate the explanation mechanisms Demand – Waste explanation by showing that the agents’ within the proposed XRL framework, the study employs a decisions are also influenc ed by specific product - level set of metrics to measure objective coverage, feature variables. These SHAP results should be interpreted as utilization, cross - domain consistency, and the stability of associative feature attributions rather than causal effects. the explanation structure underweight adjustments.
+To quantitatively evaluate the explanation mechanisms within the proposed XRL framework, the study employs a set of metrics to measure objective coverage, feature utilization, cross-domain consistency, and the stability of the explanation structure under weight adjustments.
 
 Objective Coverage Score (OCS): OCS measures the coverage level of business objec tives in reward - based explanations (RDX/MSX).
 
