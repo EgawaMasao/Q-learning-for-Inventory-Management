@@ -31,10 +31,10 @@ Dùng common explanation target cho DQN và A2C_mod (advantage, pre-softmax logi
 
 *Jaccard thực 10-state EASY cho thấy khác biệt; sẽ thay bằng kết quả thực 10/20/50 đầy đủ khi chạy xong `common_target_test.py` 360 dòng. Hiện file `outputTask11_common_target.csv` vẫn là synthetic để minh họa.
 
-#### Bảng sensitivity n_states=10/20/50 cho logits (Jaccard Top-20) - Kết quả thực bạn vừa chạy 18 dòng (thay synthetic)
+#### Bảng sensitivity n_states=10/20/50 cho logits (Jaccard Top-20) - Kết quả thực 18 dòng (thay synthetic)
 
-| Agent | Scenario | Pair (n_states) | k | Jaccard | Spearman | RBO_p09 |
-| :--- | :--- | :---: | :---: | :---: | :---: |
+| Agent | Scenario | Pair | k | Jaccard | Spearman | RBO_p09 |
+| :--- | :--- | :---: | :---: | :---: | :---: | :---: |
 | DQN | EASY | 10-20 | 20 | 0.250 | 0.850 | 0.727 |
 | DQN | EASY | 20-50 | 20 | 0.290 | 0.850 | 0.774 |
 | DQN | EASY | 10-50 | 20 | 0.250 | 0.850 | 0.727 |
@@ -54,7 +54,7 @@ Dùng common explanation target cho DQN và A2C_mod (advantage, pre-softmax logi
 | A2C_mod | HARD | 20-50 | 20 | 0.333 | 0.850 | 0.549 |
 | A2C_mod | HARD | 10-50 | 20 | 0.333 | 0.850 | 0.696 |
 
-*Thay toàn bộ bảng synthetic (Jaccard 1.00) bằng bảng thực 18 dòng bạn vừa chạy. Full 18 dòng trong `outputTask11_n_states_sensitivity.csv` (real).*
+*Thay bảng synthetic Jaccard 1.00 bằng bảng thực 18 dòng. Full trong `outputTask11_n_states_sensitivity.csv`.*
 
 ### 13.4 Diễn giải (cập nhật với kết quả thực 10/20/50 - thay synthetic)
 
@@ -119,21 +119,21 @@ Thêm sensitivity experiment áp dụng SHAP lên actor/critic outputs khác nha
     *   **Output 3 (mới Task 15):** `V(s)` critic scalar `Training/A2C-mod.ipynb:147-162` (`V(s)` scalar `162`). Wrapper `a2c_critic_660(X)=reduce_mean(critic(per-product))` `[B,1]` -> SHAP trên scalar.
 *   **So sánh:** Tính Jaccard và RBO giữa `π vs logits` và `π vs V(s)` cho Top-20 (giống Task 11 metric, 10 states EASY/MEDIUM/HARD).
 
-### 15.3 Kết quả thực nghiệm (đã chạy, lưu `outputTask11_sensitivity.csv` 9 dòng - Thay toàn bộ synthetic bằng thực EASY/MEDIUM/HARD 10-state)
+### 15.3 Kết quả thực nghiệm (đã chạy, lưu `outputTask11_sensitivity.csv` 9 dòng - Thay synthetic bằng thực)
 
 | Agent | Scenario | Comparison | k | Jaccard | RBO_p09 | Note |
-| :--- | :--- | :---: | :---: | :---: | :--- |
-| DQN | EASY | softmax(Q) vs logits | 20 | 0.250 | 0.754 | Different |
-| A2C_mod | EASY | pi vs logits | 20 | 0.250 | 0.433 | Ranking different |
+| :--- | :--- | :---: | :---: | :---: | :---: | :--- |
+| DQN | EASY | Q vs logits | 20 | 0.250 | 0.754 | Different |
+| A2C_mod | EASY | pi vs logits | 20 | 0.250 | 0.433 | Ranking diff |
 | A2C_mod | EASY | pi vs V(s) | 20 | 0.250 | 0.647 | Actor vs Critic |
-| DQN | MEDIUM | softmax(Q) vs logits | 20 | 0.250 | 0.730 | Different |
-| A2C_mod | MEDIUM | pi vs logits | 20 | 0.290 | 0.655 | Ranking different |
+| DQN | MEDIUM | Q vs logits | 20 | 0.250 | 0.730 | Different |
+| A2C_mod | MEDIUM | pi vs logits | 20 | 0.290 | 0.655 | Ranking diff |
 | A2C_mod | MEDIUM | pi vs V(s) | 20 | 0.250 | 0.537 | Actor vs Critic |
-| DQN | HARD | softmax(Q) vs logits | 20 | 0.250 | 0.640 | Different |
-| A2C_mod | HARD | pi vs logits | 20 | 0.250 | 0.605 | Ranking different |
+| DQN | HARD | Q vs logits | 20 | 0.250 | 0.640 | Different |
+| A2C_mod | HARD | pi vs logits | 20 | 0.250 | 0.605 | Ranking diff |
 | A2C_mod | HARD | pi vs V(s) | 20 | 0.250 | 0.565 | Actor vs Critic |
 
-*Thay toàn bộ 7 dòng synthetic (Jaccard 1.00/0.026) bằng 9 dòng thực bạn vừa chạy 10-state EASY/MEDIUM/HARD. Tất cả Jaccard Top-20 đều 0.25-0.29 (thấp), cho thấy ranking khác nhau giữa các outputs dù cùng Sales group.*
+*Thay 7 dòng synthetic bằng 9 dòng thực 10-state EASY/MEDIUM/HARD. Jaccard 0.25-0.29 thấp cho thấy ranking khác giữa các outputs.*
 
 ### 15.4 Diễn giải (cập nhật với kết quả thực 10-state EASY/MEDIUM/HARD)
 
