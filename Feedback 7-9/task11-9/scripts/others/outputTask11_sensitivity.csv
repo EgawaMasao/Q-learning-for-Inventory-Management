@@ -1,0 +1,10 @@
+﻿Agent,Scenario,Comparison,k,Jaccard,RBO_p09,Note
+A2C_mod,EASY,pi vs logits,20,0.25,0.808,Sales dominant both
+A2C_mod,EASY,pi vs V(s),20,0.667,0.001,Inventory dominant in V(s) - different
+A2C_mod,MEDIUM,pi vs logits,20,1.0,0.775,Sales dominant both
+A2C_mod,MEDIUM,pi vs V(s),20,0.026,0.013,Inventory dominant in V(s) - different
+A2C_mod,HARD,pi vs logits,20,1.0,0.74,Sales dominant both
+A2C_mod,HARD,pi vs V(s),20,0.026,0.001,Inventory dominant in V(s) - different
+DQN,EASY,softmax(Q) vs logits,20,0.667,0.835,Same Top-8 sales
+DQN,MEDIUM,softmax(Q) vs logits,20,1.0,0.834,Same Top-8 sales
+DQN,HARD,softmax(Q) vs logits,20,1.0,0.798,Same Top-8 sales
