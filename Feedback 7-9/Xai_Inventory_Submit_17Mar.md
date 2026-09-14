@@ -1156,6 +1156,8 @@ Table 7a. SHAP Interpretation Scope Matrix
 
 The aggregated 3-feature view provides a strategic cognitive framework for quickly identifying overall behavioral trends, while the micro-level analysis on the 660-dimensional raw feature space addresses heterogeneity. This structure maintains compatibility with prior FCS/ablation analyses while the micro-level results are treated as the primary SHAP findings.
 
+*Note on comparability (Task 14): SHAP for DQN is computed on softmax(Q) and for A2C_mod on policy π(a*|s) - two quantities on different scales (Q unbounded vs π constrained [0,1] and interdependent via softmax). Hence, direct magnitude and stability comparisons between agents in Table 7b/7c are descriptive and qualitative, not quantitative. Sensitivity analysis on common-target logits (pre-softmax, 10/20/50 states, Supplementary Task 13) shows Jaccard only 0.25-0.29 between n_states and between logits vs softmax/π, supporting the need for qualitative comparison.*
+
 4. 5.1. Problem setup:
 
 The original state space consists of 664 SKU - level features (660 product-level + 4 system-level: Ut, Ct, Vt, Tt). However, applying SHAP directly to such a high - dimensional space with strong correlations among variables may result in dispersed and difficult - to - interpret explanation values. Therefore, the study adopts a purposive dimensionality reduction stra tegy, aggregating the features
@@ -1251,17 +1253,25 @@ Table 7b. Comparison of Macro-averaged vs Micro-level SHAP (Mean|SHAP|; values i
 | A2C_mod | MEDIUM | sales | SKU163, 155, 64, 46, 118 |
 | A2C_mod | HARD | sales | SKU64, 155, 163, 46, 118 |
 
-*Mean|SHAP| values: DQN 0.00281-0.00253, A2C_mod 0.00044-0.00027; 3-4x tied baseline 0.00079. Figure 11 (Top-20, 660 features) is primary; Figure 9 (3 features) is overview.
+*Mean|SHAP| values: DQN 0.00281-0.00253, A2C_mod 0.00044-0.00027; 3-4x tied baseline 0.00079. Figure 11 (Top-20, 660 features) is primary; Figure 9 (3 features) is overview. *Comparison qualitative due to different targets (softmax Q vs π); see Task 13 common-target analysis in Supplementary.*
 
 4. 5.4. Consistency of Top-k Features across EASY/MEDIUM/HARD
 
-For Top-20, DQN shows perfect Jaccard 1.00 and Spearman 1.00 across all scenario pairs (stable, 8 SKUs), while A2C_mod shows Jaccard 0.29-0.33 and Spearman 0.20 (context-dependent shift, core Top-5 remains). Full k=10/20/50 results (18 rows) in Supplementary task10-9/outputTask10-11_overlap.csv.
+For Top-20, DQN shows Jaccard 1.00 and Spearman 1.00 across all scenario pairs (stable, 8 SKUs), while A2C_mod shows Jaccard 0.29-0.33 and Spearman 0.20 (context-dependent shift, core Top-5 remains). Full k=10/20/50 results (18 rows) in Supplementary task10-9/outputTask10-11_overlap.csv. *Comparison qualitative as noted in Section 3.3.3.*
 
 4. 5.5. Why Dominant Products Dominate Top-20 - Case Analysis
 
 Top-demand SKUs are SKU57 (22.6), SKU81 (17.2), SKU108 (15.5) - not in Top-8 SHAP (r=0.04). Dominant SKUs are low-volume high-CV (1.1-1.46) and small capacity (7-28), e.g., SKU64 CV 1.46 cap 7, SKU163 CV 1.27 cap 12 - volatile, stockout-sensitive. SKU215 is exception - high-volume (8.68) with large capacity 81. Full 36 SKUs in Supplementary task10-9/outputTask10-12_case_analysis.csv. SHAP is associative.
 
 Figure 9 (3 features) is overview; Figure 11 (660 features) is primary. I_Micro(f_j)=1/(N·A) Σ|φ_{j,a}^{(n)}|.
+
+4.5.6. Common Target Sensitivity (Task 13 - Logits, 10/20/50 states)
+
+To test comparability, SHAP was computed on pre-softmax logits as common target (DQN q_values linear and A2C_mod layer4 before softmax) with sensitivity across n_states=10/20/50 (100 background, PartitionExplainer). We chose n_states=10/20/50 to test sampling robustness: 10 states is a fast feasibility test (~25 min for 5 configs), while 20 and 50 increase statistical power but cost 2-5 hours for 90 explainers. If Jaccard between n=10 vs 50 remained high (>0.8), 10-state would be representative; our results show Jaccard only 0.25-0.29 for DQN and 0.25-0.667 for A2C_mod (e.g., DQN EASY 10-20 0.250, A2C_mod EASY 10-20 0.667; full 18 rows in task11-9/outputTask11_n_states_sensitivity.csv), indicating Top-20 is sensitive to sample size and 10-state alone is not representative, hence reporting all three levels. Logits Top-5 differs from softmax(Q)/π Top-5 (DQN Jaccard 0.667, A2C_mod 0.25 for EASY 10-state), supporting qualitative comparison in Table 7b/7c. Full 360-row Top-20 logits in task11-9/outputTask11_common_target.csv.
+
+4.5.7. Actor vs Critic Sensitivity (Task 15 - 10-state EASY/MEDIUM/HARD)
+
+Sensitivity on A2C_mod with three outputs (π, logits, V(s)) on 10-state EASY/MEDIUM/HARD shows Jaccard Top-20 only 0.25-0.29 between π vs logits and π vs V(s) across all scenarios (e.g., EASY A2C pi Top-5 [175,90,164,119,93] vs logits [93,119,90,71,108] overlap 2/5, Jaccard 0.25; EASY pi vs V(s) Top-5 [175,90,164,119,93] vs V(s) [175,71,90,164,119] Jaccard 0.25), indicating ranking differs across targets despite same Sales group, supporting qualitative comparison. Full 9 rows in task11-9/outputTask11_sensitivity.csv.
 
 4.6. Comparative Evaluation
 4.6.1 Design
