@@ -24,25 +24,36 @@ Thay vì `A ∈ {1,..14}` cho toàn bộ 220 SKU, agent đưa ra strategy cho t�
 
 ```
 Feedback 7-9/task12-9/task 5/
-├── prepare_grouped_task5.ipynb  # Copy prepare_data.py:60-227, thêm chia 3 nhóm Fast/Medium/Slow 73 SKU, regenerate data_group_*
+├── prepare_grouped_task5.ipynb  # Copy prepare_data.py:60-227, thêm chia 3 nhóm Fast/Medium/Slow 73 SKU, regenerate data_grouped/group_*
 ├── Train_DQN_Fast_73.ipynb      # DQN với Fast group 73 SKU, action 14, 600ep
 ├── Train_DQN_Medium_73.ipynb    # DQN với Medium group 73 SKU, action 14
-├── Train_DQN_Slow_73.ipynb      # DQN với Slow group 73 SKU, action 14
+├── Train_DQN_Slow_73.ipynb      # DQN với Slow group 73 SKU, action 14 (74 SKU thực tế)
 ├── Train_A2C_mod_Fast_73.ipynb  # A2C_mod với Fast group 73 SKU, action 14
 ├── Train_A2C_mod_Medium_73.ipynb# A2C_mod với Medium group 73 SKU
 ├── Train_A2C_mod_Slow_73.ipynb  # A2C_mod với Slow group 73 SKU
-├── output/                      # Kết quả 6 runs: checkpoint + logs như Training/outputA2Cmod
-│   ├── checkpoints_dqn_fast_73/
-│   ├── checkpoints_dqn_medium_73/
-│   ├── checkpoints_dqn_slow_73/
-│   ├── checkpoints_a2c_fast_73/
-│   ├── checkpoints_a2c_medium_73/
-│   └── checkpoints_a2c_slow_73/
-├── data_grouped/                # Data riêng cho 3 nhóm (73 SKU)
-│   ├── group_fast/ (73 SKU, train.tfrecords 1000 periods, capacity 73)
+├── outputDQN_Fast_73/           # Kết quả DQN Fast: checkpoints/ + logs/ như outputA2Cmod
+│   ├── checkpoints/
+│   └── logs/
+├── outputDQN_Medium_73/
+│   ├── checkpoints/
+│   └── logs/
+├── outputDQN_Slow_73/
+│   ├── checkpoints/
+│   └── logs/
+├── outputA2C_Fast_73/
+│   ├── checkpoints/
+│   └── logs/
+├── outputA2C_Medium_73/
+│   ├── checkpoints/
+│   └── logs/
+├── outputA2C_Slow_73/
+│   ├── checkpoints/
+│   └── logs/
+├── data_grouped/                # Data riêng cho 3 nhóm (73 SKU, đã tạo)
+│   ├── group_fast/ (73 SKU, train.tfrecords 1000 periods, capacity 73, + train.csv/capacity.csv)
 │   ├── group_medium/ (73 SKU)
-│   └── group_slow/ (73 SKU)
-└── analysis_task5.ipynb         # File phân tích: Kết quả 3 SKU groups ở cả 2 agents (performance + SHAP Top-k per group vs baseline 220)
+│   └── group_slow/ (74 SKU)
+└── analysis_task5.ipynb         # File phân tích: Kết quả 3 SKU groups ở cả 2 agents
 ```
 
 **Lưu ý:** Tách riêng 6 file như bạn yêu cầu (1 file train cho DQN Fast, 1 file cho DQN Medium...), không gộp file gì, giữ tên **Fast / Medium / Slow** như bạn đồng ý.
@@ -118,7 +129,7 @@ Feedback 7-9/task12-9/task 5/
 
 **6 file train `.ipynb` (copy `Training/Train_DQN.ipynb:132` và `A2C-mod.ipynb:122`):**
 
-1. Mỗi file set `FLAGS.num_products=73`, `FLAGS.num_actions=14` cố định, `FLAGS.train_file=data_grouped/group_fast/train.tfrecords` (tương ứng), `FLAGS.output_dir=output/checkpoints_dqn_fast_73` (tương ứng).
+1. Mỗi file set `FLAGS.num_products=73` (Slow 74), `FLAGS.num_actions=14` cố định, `FLAGS.train_file=C:\GitHub\Q-learning-for-Inventory-Management\Feedback 7-9\task12-9\task 5\data_grouped\group_fast\train.tfrecords` (tương ứng), `FLAGS.output_dir=C:\GitHub\Q-learning-for-Inventory-Management\Feedback 7-9\task12-9\task 5\outputDQN_Fast_73\checkpoints` (tương ứng, tuyệt đối như task 4).
 2. Giữ `hidden_size 32, gamma 0.99, waste 0.025, lr 0.001, batch 32, train_episodes 600, num_timesteps 900` như gốc.
 3. Mỗi file train riêng, không loop 3 nhóm trong 1 file.
 
@@ -127,27 +138,25 @@ Feedback 7-9/task12-9/task 5/
 ## Lệnh train (mỗi run 8-12 phút vì 73 SKU < 220, 600ep x 900 steps)
 
 ```bash
-# Chuẩn bị data 3 nhóm (chạy 1 lần, ~30 sec)
-python prepare_grouped_task5.py --group fast --number_of_products 73 --output_dir data_grouped/group_fast
-python prepare_grouped_task5.py --group medium --number_of_products 73 --output_dir data_grouped/group_medium
-python prepare_grouped_task5.py --group slow --number_of_products 74 --output_dir data_grouped/group_slow
+# Chuẩn bị data 3 nhóm (đã chạy xong, 30 sec, data_grouped/group_*/ đã có 4 TFRecords + 4 CSV)
+# Đã sinh: group_fast 73 SKU (train 1000x73), group_medium 73, group_slow 74
 
-# Train DQN 3 nhóm (3 runs)
-python Training/train_task5_grouped.py --algorithm DQN --num_products 73 --train_file data_grouped/group_fast/train.tfrecords --output_dir "Feedback 7-9/task12-9/task 5/output/checkpoints_dqn_fast_73" --train_episodes 600
+# Train DQN 3 nhóm (3 runs) - dùng đường dẫn tuyệt đối như task 4
+python Training/train_task5_grouped.py --algorithm DQN --num_products 73 --train_file "C:\GitHub\Q-learning-for-Inventory-Management\Feedback 7-9\task12-9\task 5\data_grouped\group_fast\train.tfrecords" --output_dir "C:\GitHub\Q-learning-for-Inventory-Management\Feedback 7-9\task12-9\task 5\outputDQN_Fast_73\checkpoints" --train_episodes 600
 
-python Training/train_task5_grouped.py --algorithm DQN --num_products 73 --train_file data_grouped/group_medium/train.tfrecords --output_dir "Feedback 7-9/task12-9/task 5/output/checkpoints_dqn_medium_73" --train_episodes 600
+python Training/train_task5_grouped.py --algorithm DQN --num_products 73 --train_file "C:\GitHub\Q-learning-for-Inventory-Management\Feedback 7-9\task12-9\task 5\data_grouped\group_medium\train.tfrecords" --output_dir "C:\GitHub\Q-learning-for-Inventory-Management\Feedback 7-9\task12-9\task 5\outputDQN_Medium_73\checkpoints" --train_episodes 600
 
-python Training/train_task5_grouped.py --algorithm DQN --num_products 74 --train_file data_grouped/group_slow/train.tfrecords --output_dir "Feedback 7-9/task12-9/task 5/output/checkpoints_dqn_slow_73" --train_episodes 600
+python Training/train_task5_grouped.py --algorithm DQN --num_products 74 --train_file "C:\GitHub\Q-learning-for-Inventory-Management\Feedback 7-9\task12-9\task 5\data_grouped\group_slow\train.tfrecords" --output_dir "C:\GitHub\Q-learning-for-Inventory-Management\Feedback 7-9\task12-9\task 5\outputDQN_Slow_73\checkpoints" --train_episodes 600
 
 # Train A2C_mod 3 nhóm (3 runs)
-python Training/train_task5_grouped.py --algorithm A2C_mod --num_products 73 --train_file data_grouped/group_fast/train.tfrecords --output_dir "Feedback 7-9/task12-9/task 5/output/checkpoints_a2c_fast_73" --train_episodes 600
+python Training/train_task5_grouped.py --algorithm A2C_mod --num_products 73 --train_file "C:\GitHub\Q-learning-for-Inventory-Management\Feedback 7-9\task12-9\task 5\data_grouped\group_fast\train.tfrecords" --output_dir "C:\GitHub\Q-learning-for-Inventory-Management\Feedback 7-9\task12-9\task 5\outputA2C_Fast_73\checkpoints" --train_episodes 600
 
-python Training/train_task5_grouped.py --algorithm A2C_mod --num_products 73 --train_file data_grouped/group_medium/train.tfrecords --output_dir "Feedback 7-9/task12-9/task 5/output/checkpoints_a2c_medium_73" --train_episodes 600
+python Training/train_task5_grouped.py --algorithm A2C_mod --num_products 73 --train_file "C:\GitHub\Q-learning-for-Inventory-Management\Feedback 7-9\task12-9\task 5\data_grouped\group_medium\train.tfrecords" --output_dir "C:\GitHub\Q-learning-for-Inventory-Management\Feedback 7-9\task12-9\task 5\outputA2C_Medium_73\checkpoints" --train_episodes 600
 
-python Training/train_task5_grouped.py --algorithm A2C_mod --num_products 74 --train_file data_grouped/group_slow/train.tfrecords --output_dir "Feedback 7-9/task12-9/task 5/output/checkpoints_a2c_slow_73" --train_episodes 600
+python Training/train_task5_grouped.py --algorithm A2C_mod --num_products 74 --train_file "C:\GitHub\Q-learning-for-Inventory-Management\Feedback 7-9\task12-9\task 5\data_grouped\group_slow\train.tfrecords" --output_dir "C:\GitHub\Q-learning-for-Inventory-Management\Feedback 7-9\task12-9\task 5\outputA2C_Slow_73\checkpoints" --train_episodes 600
 ```
 
-Tổng Task 5: **6 runs x 10 phút ≈60 phút CPU / 30 phút GPU**, output `ckpt-64` + logs JSON/CSV mỗi run.
+Tổng Task 5: **6 runs x 10 phút ≈60 phút CPU / 30 phút GPU**, output `outputDQN_Fast_73/checkpoints/ckpt-64` + `logs/` + CSV mỗi run (đã tạo data_grouped sẵn, chỉ cần train).
 
 ---
 
@@ -155,11 +164,11 @@ Tổng Task 5: **6 runs x 10 phút ≈60 phút CPU / 30 phút GPU**, output `ckp
 
 Sau khi train xong 6 runs, file `analysis_task5.ipynb` sẽ:
 
-1. Load 6 checkpoints + logs + baseline 220 (ckpt-43), trích metrics `reward, stockout, overstock, waste` như `training.py:331-336`.
-2. Chạy evaluation trên `data_grouped/group_*/test.tfrecords` (504 periods) để tính **Kết quả 3 SKU groups ở cả 2 agents** - bảng so sánh performance giữa Fast/Medium/Slow vs baseline 220 cho DQN và A2C_mod.
+1. Load 6 checkpoints + logs (`outputDQN_Fast_73/checkpoints/ckpt-64`...) + baseline 220 (`checkpoints_dqn_comparison512_32/ckpt-43`), trích metrics `reward, stockout, overstock, waste` như `training.py:331-336`.
+2. Chạy evaluation trên `data_grouped/group_*/test.tfrecords` (504 periods, đã có) để tính **Kết quả 3 SKU groups ở cả 2 agents** - bảng so sánh performance giữa Fast/Medium/Slow vs baseline 220 cho DQN và A2C_mod.
 3. Chạy SHAP Top-k per group (như `topk_shap_analysis.ipynb` nhưng với 73*3=219 features) để xem pattern `Sales dominant` có giữ ở từng group không.
 
-**Deliverable Task 5:** `analysis_task5.ipynb` output `task 5/output/comparison_3groups.csv` + figure `performance_vs_sku_group.png`.
+**Deliverable Task 5:** `analysis_task5.ipynb` output `outputDQN_Fast_73/comparison_3groups.csv` (hoặc `task 5/output/comparison_3groups.csv` chung) + figure `performance_vs_sku_group.png`.
 
 ---
 
