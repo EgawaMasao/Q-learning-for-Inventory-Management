@@ -61,6 +61,42 @@ Feedback 7-9/task12-9/task 5/
 
 *Điều chỉnh 73 để mỗi nhóm ~73 SKU (73*3=219, +1 cho Slow thành 74) cho đều, train nhanh hơn 220 (73*3=219 features vs 660). Giữ `1 nhóm mặc định 220 SKU` đã có làm baseline, không cần retrain lại.*
 
+### Định nghĩa rõ ràng MeanDemand và 3 nhóm (Slow/Medium/Fast)
+
+**MeanDemand là gì?**
+*   `MeanDemand(SKU) = mean(sales)` - trung bình nhu cầu bán ra mỗi 6 giờ (1 `time_period` = 6h `prepare_data.py:88`) tính trên **1000 periods train** `data/train.tfrecords:1000x220` (1000*6h ≈ 250 ngày). Ví dụ `SKU57 MeanDemand 22.6` = trung bình bán 22.6 đơn vị/6h, `SKU64 MeanDemand 0.66` = 0.66 đơn vị/6h. Liên quan: `capacity = ceil(sum(quantity)/n_periods *12)` `prepare_data.py:144` = `12 × MeanDaily` ≈ `MeanDemand ×12`, `sales/capacity` là `state` `training.py:194`.
+
+**Định nghĩa 3 nhóm theo MeanDemand:**
+
+| Nhóm | Tên | Định nghĩa theo MeanDemand | Ví dụ SKU | Đặc điểm vận hành | Strategy |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Fast** | High demand, turnover nhanh | Top 30% SKU có `MeanDemand` cao nhất (73 SKU đầu sau khi sắp xếp giảm dần) | SKU57 22.6, SKU81 17.2, SKU108 15.5, SKU215 8.68 | Bán chạy, turnover nhanh, áp lực tồn cao, cần bổ sung liên tục | `a1` aggressive (đặt nhiều, tránh stockout) |
+| **Medium** | Demand trung bình | Middle 40% SKU (73 SKU giữa) | SKU100 6.25, SKU46 2.82, SKU43 2.73, SKU155 1.60 | Bán trung bình, ổn định | `a2` balanced (cân bằng holding vs stockout) |
+| **Slow** | Bán chậm hoặc spoilage cao | Bottom 30% SKU có `MeanDemand` thấp nhất (74 SKU cuối) | SKU64 0.66 CV1.46, SKU163 1.22, SKU0 0.32 CV1.94, SKU118 0.87 | Bán chậm, `CV` cao (1.1-1.46), `Utilization` thấp, dễ tồn đọng và hư hỏng | `a3` conservative (đặt ít, tránh waste) |
+
+*Lưu ý:* 3 nhóm đều có `CV` và `Utilization` khác nhau, nhưng chia theo `MeanDemand` là đủ vì `MeanDemand` là gốc sinh ra `capacity` và là chuẩn ABC trong quản lý tồn kho.
+
+### Tại sao chọn MeanDemand làm tiêu chí phân loại SKU mà không phải tiêu chí khác?
+
+**Audit từ `data/train.tfrecords:1000x220` và `outputTask10-12_case_analysis.csv:36 SKU`:**
+
+| Tiêu chí | Bắt gì | Ưu khi chia Fast/Medium/Slow | Rủi ro công bằng - Reviewer sẽ hỏi gì? |
+| :--- | :--- | :--- | :--- |
+| **MeanDemand (hiện tại)** | Throughput/volume | Chuẩn ABC, là **gốc sinh ra `capacity`** `prepare_data.py:144` và `sales/capacity` `training.py:194`, chia đều kệ logic, reviewer quen thuộc. `Mean` và `Capacity` cho >96% cùng 1 cách chia 73/73/74 | Che volatility: Top SHAP thực tế là low-mean high-CV (`SKU64 CV1.46 cap7`, `r(SHAP,Mean)=0.04`), Mean sẽ xếp SKU64 vào Slow, không phản ánh stockout-sensitive |
+| **CV = Std/Mean** | Biến động tương đối | Bắt đúng SKU SHAP-dominant (high-CV volatile, cần `a3` conservative), trả lời reviewer `volatility` | Đảo ngược Mean (`r=-0.64`): Fast sẽ là low-volume high-CV, không phải high-throughput - dễ nhầm tên Fast/Medium/Slow |
+| **Std / Max / Capacity** | Biến động tuyệt đối / Peak / Kệ | Gần như **y hệt Mean** (`r=0.96-1.00` với Mean), đổi cũng không khác | Dư thừa, không thêm thông tin công bằng |
+| **Utilization = Mean/Capacity** (0.065-0.117) | Áp lực kệ | Cân bằng lớn/nhỏ (SKU6 0.117 top, không phải SKU57), hợp với `x∈[0,1]` | Biến thiên rất hẹp, khó phân biệt 73/73/74 |
+| **waste_rate** | Hư hỏng | Liên quan reviewer `spoilage` | `waste=0.025*x` **đều 2.5%** `training.py:133` - không có variance theo SKU, không chia được |
+
+**Tại sao MeanDemand là lựa chọn chính và công bằng nhất hiện tại?**
+1.  **MeanDemand là gốc sinh ra `capacity`** `prepare_data.py:144` và là **chuẩn ABC** trong quản lý tồn kho - mọi SKU đều được đo bằng throughput, reviewer quen thuộc, không arbitrary.
+2.  **Audit cho thấy `Mean, Std, Max, Capacity` cho >96% cùng 1 cách chia 73/73/74**, nên đổi giữa chúng không làm khác công bằng - đã kiểm tra tương quan `r=0.96-1.00`.
+3.  **Chỉ `CV` cho chia đảo ngược** (Fast sẽ là low-volume high-CV), nên nếu chia theo CV sẽ làm tên Fast/Medium/Slow bị nhầm.
+
+**Để reviewer không hỏi lại "tại sao MeanDemand có công bằng không?", trong `analysis_task5.ipynb` sẽ thêm sensitivity appendix:** Giữ `MeanDemand` làm chính, nhưng chạy thêm 1 lần chia theo `CV` và `Utilization` để chứng minh **dù chia theo Mean hay CV, kết luận "DQN stable vs A2C adaptive" vẫn giữ** - giống đã chứng minh SHAP Top-10/20/50 sensitivity `outputTask10-9.md:100`.
+
+**Đề xuất:** Giữ `MeanDemand` làm chính như hiện tại, thêm appendix sensitivity `CV`/`Utilization` trong `analysis_task5.ipynb` 1 bảng so sánh, và đổi tên `Fast/Medium/Slow` thành `High-Volume / Balanced / Volatile-Low-Volume` nếu dùng `CV` để tránh nhầm lẫn.
+
 ---
 
 ## Thay đổi code chi tiết (không sửa file cũ)
