@@ -1,2 +1,6 @@
 data/ 
 *.zip 
+pyspark-env/
+__pycache__/
+*.pyc
+.venv/
