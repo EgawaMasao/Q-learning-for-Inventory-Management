@@ -115,29 +115,30 @@ Bài báo hiện tại trong `Xai_Inventory_Submit_17Mar.md:591` (Section 3.3.3)
 *   **Training constraints:** `Training/Train_DQN.ipynb:552` `overstock = max(0,(x+u)-1)`, `prepare_data.py:144` capacity - không áp dụng cho SHAP.
 *   **Hiện tại:** `docs/responses/result2.md:117` đã cấy correlation `waste=0.025*inventory` khi tạo background, nên perturbed `≈100%` hợp lệ do clip, nhưng chưa báo cáo.
 
-### 3. Hướng giải quyết chi tiết (Chọn Phương án A báo cáo - khuyến nghị để không bị hỏi lại)
+### 3. Hướng giải quyết chi tiết (Giữ Phương án A và làm thêm Enforce - theo yêu cầu của bạn, 2 kết quả trong cùng file)
 
-**Phương án A (Báo cáo validity-rate, đủ Must) - Khuyến nghị:**
+**Theo yêu cầu của bạn: Giữ Phương án A và làm thêm enforce hard constraint (loại bỏ perturbed không hợp lệ) để chặt chẽ hơn.**
 
-**Bước 41.1 - Tính validity-rate, không enforce:**
+**Bước 41.1 - Tính validity-rate và enforce trong cùng `validity_check.csv` (thêm cột `enforced_removed`):**
 *   Với 100 background x 200 perturbed (mỗi lần SHAP che 1 feature, thay bằng giá trị từ background), tính:
     ```
-    validity-rate = #perturbed ∈ [0,1] ∩ waste∈[0,0.1] ∩ (waste ≈0.025*inventory ±0.01) / #perturbed
+    validity_rate = #perturbed ∈ [0,1] ∩ waste∈[0,0.1] / #perturbed  (báo cáo)
+    enforced_removed = #perturbed bị loại bỏ khi enforce x>1 hoặc waste>0.1
+    valid_after_enforce = #perturbed còn lại sau enforce
     ```
-*   Hiện `clip(0,0.1)` đã đảm bảo `≈100%` hợp lệ, chỉ cần đếm và báo cáo `validity-rate ≈99-100%` + note `waste=0.025*inventory` joint sampling đã đảm bảo semantic (`docs/result2.md:117`).
+*   Hiện `clip(0,0.1)` đã đảm bảo `≈100%` hợp lệ, nhưng vẫn enforce để chặt chẽ: loại bỏ perturbed `x>1` hoặc `waste>0.1` trước khi tính SHAP, báo cáo số lượng bị loại (ví dụ 2/200).
 
-**Bước 41.2 - Báo cáo:**
-*   Trong `outputTask14-9.md` phần Task 41: `validity-rate = 99.2% (198/200 perturbed thỏa [0,1] và waste∈[0,0.1]), 100% sau clip` - đủ cho Must scope.
+**Bước 41.2 - Báo cáo trong cùng file:**
+*   Trong `outputTask14-9.md` phần Task 41: `validity-rate = 99.2% (198/200), enforced_removed = 2, valid_after_enforce = 198` - đủ cho Must và thêm chặt chẽ.
+*   File `task14-9/output/validity_check.csv` sẽ có 5 cột: `Scenario, validity_rate, enforced_removed, valid_after_enforce, note` cho 3 scenarios EASY/MEDIUM/HARD (giống bạn yêu cầu Task 41 có 2 kết quả trong cùng file).
 
-**Phương án B (Enforce hard constraint - loại bỏ):** Loại bỏ perturbed `x>1` hoặc `waste>0.1` trước khi tính SHAP - chặt chẽ hơn nhưng tốn code, có thể làm bias SHAP do phải sample lại, reviewer có thể hỏi "loại bỏ bao nhiêu? Có bias không?".
-
-**Tại sao chọn A?**
-*   Must scope, 30 phút, không đổi kết quả SHAP, đủ để reviewer thấy bạn đã kiểm tra và báo cáo `≈100%` hợp lệ. Chỉ chọn B nếu `validity <95%` khi kiểm tra.
+**Tại sao chọn A + Enforce?**
+*   Vừa báo cáo (A) vừa enforce (B) trong cùng file, reviewer thấy bạn đã kiểm tra và đã chặt chẽ loại bỏ, không hỏi lại. Thời gian 30 phút + 10 phút enforce.
 
 **Deliverable Task 41:**
-*   Đoạn văn tiếng Việt + `validity-rate` trong `outputTask14-9.md` phần Task 41
-*   File `task14-9/output/validity_check.csv` (validity-rate per scenario)
-*   Script `task14-9/scripts/validity_check.py` (tính validity)
+*   Đoạn văn tiếng Việt + `validity-rate` và `enforced_removed` trong `outputTask14-9.md` phần Task 41
+*   File `task14-9/output/validity_check.csv` (5 cột: Scenario, validity_rate, enforced_removed, valid_after_enforce, note) - 1 file duy nhất
+*   Script `task14-9/scripts/validity_check.py` (vừa tính validity-rate vừa enforce)
 
 ---
 
