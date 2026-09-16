@@ -1,0 +1,7 @@
+Agent,Scenario,partition_distinct,kernel_distinct,jaccard20,spearman,partition_top5,kernel_top5
+A2C_mod,EASY,9,361,0.026,0.044,sales_SKU21|sales_SKU112|sales_SKU105|sales_SKU93|sales_SKU74,sales_SKU124|waste_feat_SKU172|sales_SKU100|sales_SKU137|sales_SKU64
+A2C_mod,HARD,9,375,0.0,-0.009,sales_SKU105|sales_SKU112|sales_SKU21|sales_SKU93|sales_SKU74,sales_SKU219|waste_feat_SKU58|inventory_SKU143|sales_SKU133|sales_SKU30
+A2C_mod,MEDIUM,9,355,0.0,0.011,sales_SKU105|sales_SKU21|sales_SKU112|sales_SKU74|sales_SKU93,sales_SKU2|sales_SKU202|sales_SKU64|inventory_SKU92|inventory_SKU202
+DQN,EASY,9,324,0.026,0.006,sales_SKU105|sales_SKU21|sales_SKU112|sales_SKU56|sales_SKU74,sales_SKU149|sales_SKU164|sales_SKU212|sales_SKU174|sales_SKU36
+DQN,HARD,9,352,0.053,0.016,sales_SKU105|sales_SKU112|sales_SKU21|sales_SKU56|sales_SKU93,sales_SKU185|sales_SKU128|sales_SKU51|sales_SKU159|sales_SKU37
+DQN,MEDIUM,9,344,0.0,-0.011,sales_SKU105|sales_SKU112|sales_SKU21|sales_SKU56|sales_SKU93,sales_SKU186|sales_SKU182|inventory_SKU4|sales_SKU9|inventory_SKU110

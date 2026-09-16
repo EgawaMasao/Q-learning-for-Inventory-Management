@@ -47,7 +47,30 @@ Dữ liệu từ `topk_shap_full_results_660.csv` (50 states/scenario, backgroun
 
 Dữ liệu `topk_shap_full_results_660.csv` cho thấy chỉ 9-11 distinct Mean|SHAP| trên 660 features (DQN EASY distinct 9, A2C_mod distinct 11), 652 features tied ở ngưỡng thấp do `shap.maskers.Partition` gom cluster. Đã tạo file riêng `compare_kernel_vs_partition_660.md` + script `scripts/compare_shap_explainers.py` để chạy đối chứng KernelSHAP vs Partition trên 10 states mẫu. Trong paper ghi: "SHAP values are interpreted as associative attributions; many tied values due to Partition clustering may underestimate granularity, but dominant sales features remain robust. Detailed comparison is provided in supplementary."
 
-**File đính kèm Task 10:** `outputTask10_top20.csv` (Top-20 chi tiết), `compare_kernel_vs_partition_660.md`
+**Kết quả chạy lại ngày 16-09-2026 với checkpoint đúng `output Training`:**
+
+*Checkpoint đã sửa:* `scripts/compare_shap_explainers.py:12-14` trước trỏ `checkpoints_dqn_comparison512_32` (không tồn tại, hardcode `C:\NCKH\SHAP` trong `topk_shap_analysis.ipynb:128-129`) → đã sửa thành `output Training\checkpointDQN\ckpt-60` (latest trong 3 ckpt 58/59/60) và `output Training\outputA2Cmod\checkpoints_a2cmod\ckpt-64` (64 ckpt). Load thành công với `tf.train.latest_checkpoint()` và `expect_partial()` (fix `step` dtype int32).
+
+*Chạy thực:* `python scripts/compare_shap_explainers.py --n_states 10 --nsamples 200 --num_bg 100 --agents both` (10 states/scenario, background 100, Kernel nsamples 200 cho 660-dim, tổng ~5 phút/agent). Kết quả `compare_kernel_vs_partition_result_summary.csv:1-7`:
+
+| Agent | Scenario | Partition distinct | Kernel distinct | Jaccard@20 | Spearman rho | Partition Top-5 | Kernel Top-5 | time P/K |
+| :--- | :--- | :---: | :---: | :---: | :---: | :--- | :--- | :--- |
+| DQN | EASY | 9 | 324 | 0.026 | 0.006 | SKU105,21,112,56,74 | SKU149,164,212,174,36 | 66.7s/12.5s |
+| DQN | MEDIUM | 9 | 344 | 0.000 | -0.011 | SKU105,112,21,56,93 | SKU186,182,SKU4,SKU9,SKU110 | 66.1s/12.5s |
+| DQN | HARD | 9 | 352 | 0.053 | 0.016 | SKU105,112,21,56,93 | SKU185,128,51,159,37 | 67.5s/12.6s |
+| A2C_mod | EASY | 9 | 361 | 0.026 | 0.044 | SKU21,112,105,93,74 | SKU124,172,100,137,64 | 46.9s/9.4s |
+| A2C_mod | MEDIUM | 9 | 355 | 0.000 | 0.011 | SKU105,21,112,74,93 | SKU2,202,64,92,202 | 46.4s/9.4s |
+| A2C_mod | HARD | 9 | 375 | 0.000 | -0.009 | SKU105,112,21,93,74 | SKU219,58,143,133,30 | 46.4s/9.4s |
+
+*Nhận xét so với CSV gốc (50 states, ckpt-43, DQN EASY Top-5 SKU64 0.00281, distinct 9, Jaccard 1.0 nội bộ):*
+
+- **Partition vẫn 9 distinct, tied 651/660** — tái hiện artifact, nhưng Top-5 chuyển từ SKU64/163/100... sang SKU105/21/112... do (a) checkpoint mới ckpt-60 vs ckpt-43 và (b) 10 states vs 50 states + background random khác. Điều này cho thấy **cụm tied là ổn định (9 distinct) nhưng danh tính SKU dominant phụ thuộc seed/checkpoint**, cần ghi limitation "Top-k identity is checkpoint-sensitive, sales-group dominance is robust".
+- **Kernel khác biệt hoàn toàn:** distinct 324-375 (gấp 36x), Jaccard 0-0.053, Spearman ~0 ⇒ hai explainer gần như không đồng thuận Top-20. Kernel cho range |SHAP| rộng hơn [0.0, 0.004] vs Partition [0.00025, 0.00088] và Top-5 đổi mỗi scenario, chứng tỏ Partition gom cluster làm phẳng heterogeneity.
+- **Kết luận cho paper không đổi:** Sales vẫn dominant ở cả 2 explainer (Top-5 Kernel vẫn toàn sales, 9/12 configs), nhưng phải note: "Partition may underestimate granularity; Kernel comparison (10 states, nsamples 200, supplementary) shows same sales-dominance but different SKU identities and low overlap (Jaccard 0.00-0.05)".
+
+Chi tiết per-feature lưu `compare_kernel_vs_partition_result.csv` (3960 dòng = 6 configs x660) và `compare_kernel_vs_partition_result_summary.csv`.
+
+**File đính kèm Task 10:** `outputTask10_top20.csv` (Top-20 chi tiết, 120 dòng, vẫn giữ bản 50-states ckpt-43 để khớp Fig.11), `compare_kernel_vs_partition_660.md` (đã cập nhật kết quả thực chạy), `compare_kernel_vs_partition_result*.csv`
 
 ---
 

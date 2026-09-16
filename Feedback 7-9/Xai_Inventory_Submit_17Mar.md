@@ -1253,7 +1253,7 @@ Table 7b. Comparison of Macro-averaged vs Micro-level SHAP (Mean|SHAP|; values i
 | A2C_mod | MEDIUM | sales | SKU163, 155, 64, 46, 118 |
 | A2C_mod | HARD | sales | SKU64, 155, 163, 46, 118 |
 
-*Mean|SHAP| values: DQN 0.00281-0.00253, A2C_mod 0.00044-0.00027; 3-4x tied baseline 0.00079. Figure 11 (Top-20, 660 features) is primary; Figure 9 (3 features) is overview. *Comparison qualitative due to different targets (softmax Q vs π); see Task 13 common-target analysis in Supplementary.*
+*Mean|SHAP| values: DQN 0.00281-0.00253, A2C_mod 0.00044-0.00027; 3-4x tied baseline 0.00079. Figure 11 (Top-20, 660 features) is primary; Figure 9 (3 features) is overview. *Comparison qualitative due to different targets (softmax Q vs π); see Task 13 common-target analysis in Supplementary. Supplementary ablation comparing the partition-based explainer with a kernel-based alternative on a 10-state subset shows markedly higher granularity for the kernel approach and negligible top-20 overlap, supporting the limitation note that partition clustering may underestimate granularity while sales-group dominance remains.*
 
 4. 5.4. Consistency of Top-k Features across EASY/MEDIUM/HARD
 
