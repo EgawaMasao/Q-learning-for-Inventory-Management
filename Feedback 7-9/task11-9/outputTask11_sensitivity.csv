@@ -1,10 +1,10 @@
 ﻿Agent,Scenario,Comparison,k,Jaccard,RBO_p09,Note
-DQN,EASY,softmax(Q) vs logits,20,0.25,0.754,Different
-A2C_mod,EASY,pi vs logits,20,0.25,0.433,Ranking different
+DQN,EASY,softmax(Q) vs logits,20,0.25,0.736,Different
+A2C_mod,EASY,pi vs logits,20,0.25,0.42,Ranking different
 A2C_mod,EASY,pi vs V(s),20,0.25,0.647,Actor vs Critic
-DQN,MEDIUM,softmax(Q) vs logits,20,0.25,0.73,Different
-A2C_mod,MEDIUM,pi vs logits,20,0.29,0.655,Ranking different
-A2C_mod,MEDIUM,pi vs V(s),20,0.25,0.537,Actor vs Critic
-DQN,HARD,softmax(Q) vs logits,20,0.25,0.64,Different
-A2C_mod,HARD,pi vs logits,20,0.25,0.605,Ranking different
-A2C_mod,HARD,pi vs V(s),20,0.25,0.565,Actor vs Critic
+DQN,MEDIUM,softmax(Q) vs logits,20,0.25,0.681,Different
+A2C_mod,MEDIUM,pi vs logits,20,0.333,0.509,Ranking different
+A2C_mod,MEDIUM,pi vs V(s),20,0.25,0.578,Actor vs Critic
+DQN,HARD,softmax(Q) vs logits,20,0.25,0.757,Different
+A2C_mod,HARD,pi vs logits,20,0.25,0.533,Ranking different
+A2C_mod,HARD,pi vs V(s),20,0.25,0.547,Actor vs Critic

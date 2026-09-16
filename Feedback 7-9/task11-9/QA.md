@@ -339,13 +339,39 @@ Output Top-5 + 5 file `.npy` (~25 phút). 2 file template gốc không chạy đ
 
 **Hỏi (User):** Giải thích vào 2 file output và bài báo luôn cho tôi, sau đó ghi nhận lại những câu hỏi cũng như quá trình làm việc qua một file QA.md để giải quyết task 13 14 15.
 
-**Đáp (Build Mode, hiện tại):** Đang thực hiện: đã cập nhật `outputTask11-9.md:13.2` thêm đoạn "Tại sao chọn 10,20,50? 10 states là test nhanh (~25 phút)...", và `Xai_Inventory_Submit_17Mar.md:1268` thêm 2-3 câu tương tự, và đang ghi file QA.md này (đang ghi).
+**Đáp (Build Mode):** Đã cập nhật `outputTask11-9.md:13.2` thêm đoạn "Tại sao chọn 10,20,50? 10 states là test nhanh (~25 phút)..." và `Xai_Inventory_Submit_17Mar.md:1268` thêm 2-3 câu Tại sao chọn 10,20,50 và kết quả Jaccard 0.25-0.33 (đã ghi ở Q37), và đã cập nhật `outputTask11-9.md` 5 bảng với số thực mới ckpt-60/ckpt-64 (13.3 Top-5 0.00178/0.460, 13.3 18 dòng 0.25-0.33, 15.3 9 dòng RBO 0.736/0.509/0.757).
 
 ---
 
-## Tổng kết Task 11-9
+## Q39: Chạy xong 3 CSV thực mới, kết quả khác gì với outputTask11-9.md cũ?
 
-*   **Task 13 (Strong, Implementation):** Đã thử logits common target (không retrain) với 10/20/50 states, Top-20 thực Jaccard 0.25-0.29 (nhạy), đã lưu `outputTask11_common_target.csv` 360 dòng thực (bạn tự chạy) và `outputTask11_n_states_sensitivity.csv` 18 dòng thực.
-*   **Task 14 (Must, Writing):** Đã thêm disclaimer qualitative 3 vị trí trong paper, đủ để qua R1 #5 Must.
-*   **Task 15 (Strong, Experiment):** Đã test 3 outputs A2C_mod (π vs logits và pi vs V(s) đều Jaccard 0.25, 9 dòng thực) - ranking khác nhau giữa các outputs.
-*   **File đã tạo:** `planTask11-9.md`, `outputTask11-9.md`, `outputTask11_common_target.csv`, `outputTask11_n_states_sensitivity.csv`, `outputTask11_sensitivity.csv`, `scripts/common_target_test.py` (10/20/50), `scripts/sensitivity_task15_full.py` (EASY/MEDIUM/HARD 10-state).
+**Hỏi (User):** ok tôi đã chạy xong bây giờ bạn đọc các file kết quả outputTask11_common_target.csv outputTask11_n_states_sensitivity.csv outputTask11_sensitivity.csv sau đó bạn hãy xem xem kết quả có khác nhau với outputTask11-9.md không, nếu có sự thay đổi thì hãy tiến hành cập nhật cho tôi những kết quả mới nhất
+
+**Đáp (Build Mode, đã đọc 3 CSV thực ckpt-60/ckpt-64):**
+*   **outputTask11_common_target.csv 360 dòng:** DQN EASY 10 Top-5 mới `175(0.00178),90(0.00157),164(0.00139),119(0.00133),157(0.00127)` `outputTask11_common_target.csv:2-7` thay cũ `175,90,119,93,108 (0.00308)` `outputTask11-9.md:29`; DQN MEDIUM 50 `175,164,90,119,157` `outputTask11_common_target.csv:202-207` khác cũ; A2C EASY 10 `93(0.460),119(0.441),108(0.441),175(0.424),71(0.362)` `outputTask11_common_target.csv:22-26` thay cũ `90,93,71,119,108`.
+*   **outputTask11_n_states_sensitivity.csv 18 dòng:** Jaccard đồng đều 0.25-0.33 `outputTask11_n_states_sensitivity.csv:2-19` thay cũ có 0.667 (A2C EASY 10-20 0.667 `outputTask11-9.md:47`, HARD 10-20 0.667 `outputTask11-9.md:53`); RBO EASY 0.767 thay 0.727 `outputTask11_n_states_sensitivity.csv:2`.
+*   **outputTask11_sensitivity.csv 9 dòng:** A2C MEDIUM pi vs logits 0.333/RBO 0.509 `outputTask11_sensitivity.csv:6` thay cũ 0.29/0.655 `outputTask11-9.md:130`; DQN HARD RBO 0.757 thay 0.64 `outputTask11_sensitivity.csv:8`.
+*   Đã cập nhật `outputTask11-9.md:25-66` (bảng Top-5, 18 dòng, diễn giải 13.4, đoạn paste 13), `outputTask11-9.md:122-143` (bảng 9 dòng, diễn giải 15.4) và ghi chú reviewer `outputTask11-9.md:163-167` sang 0.25-0.33, RBO 0.633-0.767.
+
+---
+
+## Q40: Cập nhật vào file QA.md và Xai_Inventory_Submit_17Mar.md (QA tiếng Việt, Xai tiếng Anh) và ghi note cuối outputTask11-9.md
+
+**Hỏi (User):** ok vậy bạn hãy tiến hành cập nhật vào file QA.md và Xai_Inventory_Submit_17Mar.md cho tôi đi / QA giữ tiếng Việt, Xai tiếng Anh, kiểm tra lại trong Xai xem task 11-9 đã cập nhật những nội dung gì để giải quyết task 13,14,15 ghi note vào cuối file outputTask11-9.md
+
+**Đáp (Build Mode):**
+*   **QA.md (giữ tiếng Việt):** Đang ghi Q39 như trên (tiếng Việt), Q40 chính là câu hỏi này. Không dịch sang Anh.
+*   **Xai_Inventory_Submit_17Mar.md (ghi tiếng Anh, đã cập nhật số thực mới):**
+    *   `Xai_Inventory_Submit_17Mar.md:1159` Note on comparability Task 14: thêm `ckpt-60/ckpt-64`, `PartitionExplainer`, Jaccard 0.25-0.33 homogeneous và ví dụ `DQN EASY 10 Top-5 175 0.00178 vs A2C 93 0.460, 0/5 overlap`.
+    *   `Xai_Inventory_Submit_17Mar.md:1268-1270` Section 4.5.6: đổi `0.25-0.29 for DQN and 0.25-0.667` -> `0.25-0.33 homogeneous` với ví dụ `DQN EASY 10-20 0.250/RBO 0.767, HARD 10-20 0.333/RBO 0.769; A2C EASY 10-20 0.250/RBO 0.633`, Top-8 `175,90,164,119,157,93,108,71` (0.00178 vs 0.460) và `0/5 overlap`.
+    *   `Xai_Inventory_Submit_17Mar.md:1272-1274` Section 4.5.7: đổi `0.25-0.29` -> `0.25-0.33` và ví dụ `DQN EASY softmax vs logits 0.25/RBO 0.736, A2C MEDIUM 0.333/RBO 0.509`, Top-5 `175,90,164,119,93 vs 93,119,108,175,71` RBO 0.647.
+*   **outputTask11-9.md Phụ lục cuối file `outputTask11-9.md:163-...`:** Đã thêm `## Phụ lục: Note cập nhật vào Xai_Inventory_Submit_17Mar.md cho Task 11-9` liệt kê Task 13/14/15 với Section, Đoạn đã xóa, Đoạn mới thêm vào (tiếng Anh) để bạn trả lời reviewer, theo đúng mẫu `Task 13 / 2.3.1 / Đoạn đã xóa / Đoạn mới thêm vào` bạn yêu cầu.
+
+---
+
+## Tổng kết Task 11-9 (cập nhật số thực mới ckpt-60/64)
+
+*   **Task 13 (Strong, Implementation):** Đã thử logits common target (không retrain, ckpt-60/ckpt-64) với 10/20/50 states, Top-8 Sales dominant (175,90,164,119,157,93,108,71) nhưng Top-20 Jaccard đồng đều 0.25-0.33 (không còn 0.667), đã lưu `outputTask11_common_target.csv` 360 dòng thực (DQN 0.00178, A2C 0.460) và `outputTask11_n_states_sensitivity.csv` 18 dòng thực mới.
+*   **Task 14 (Must, Writing):** Đã thêm disclaimer qualitative 3 vị trí trong paper (`Xai_Inventory_Submit_17Mar.md:1159` Note, `1256` Table 7b, `1260` Table 7c), đủ để qua R1 #5 Must, đã cập nhật số Jaccard 0.25-0.33.
+*   **Task 15 (Strong, Experiment):** Đã test 3 outputs A2C_mod (π vs logits 0.25-0.33/RBO 0.42-0.509, pi vs V(s) 0.25/RBO 0.547-0.647) - ranking khác nhau đồng đều, 9 dòng thực mới.
+*   **File đã tạo (chỉ 2 ipynb):** `planTask11-9.md`, `outputTask11-9.md` (+ Phụ lục Note), `outputTask11_common_target.csv`, `outputTask11_n_states_sensitivity.csv`, `outputTask11_sensitivity.csv`, `scripts/common_target_test.ipynb` (10/20/50, ckpt-60/64), `scripts/sensitivity_task15_full.ipynb` (EASY/MEDIUM/HARD 10-state, ckpt-60/64, 25 phút).

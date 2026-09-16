@@ -71,7 +71,7 @@ def a2c_logits_660(X):
 *   Nếu Top-20 đổi nhiều (ví dụ Waste lên Top) → báo cáo trong paper: common target cho kết quả khác, nên giữ disclaimer Task 14.
 
 **Tại sao chọn hướng này?**
-*   **Không retrain:** Chỉ cần đọc checkpoint đã có `checkpoints_dqn_comparison512_32` và `outputA2Cmod`, lấy weight `layer4`/`q_values` đã lưu, không tốn ngày train lại như Task 13 advantage.
+*   **Không retrain:** Chỉ cần đọc checkpoint đã có `output Training/checkpointDQN` (ckpt-60) và `output Training/outputA2Cmod/checkpoints_a2cmod` (ckpt-64), lấy weight `layer4`/`q_values` đã lưu, không tốn ngày train lại như Task 13 advantage.
 *   **Cùng scale:** Logits cả hai đều unbounded linear score, so magnitude/stability công bằng hơn Q vs π.
 *   **Sensitivity 10/20/50:** Tránh reviewer hỏi "lỡ 50 mẫu khác thì sao?" như bạn lo lắng. Nếu Jaccard giữa n=10 vs n=50 >0.83 như Task 11 đã thấy với k=10/20/50, chứng minh 10-state result đại diện. Thời gian tăng từ 15 phút (10 mẫu) lên ~2 tiếng (10+20+50) với Partition, ~4-5 tiếng với KernelSHAP, vẫn chấp nhận được cho Strong scope.
 
@@ -81,7 +81,7 @@ def a2c_logits_660(X):
 *   Đoạn văn tiếng Việt + bảng so sánh Top-5 logits vs baseline + bảng sensitivity Jaccard giữa n_states=10/20/50 (trong `task11-9/outputTask11-9.md` phần Task 13)
 *   File `task11-9/outputTask11_common_target.csv` (Top-20 logits cho DQN và A2C_mod, 10/20/50 states)
 *   File `task11-9/outputTask11_n_states_sensitivity.csv` (Jaccard/Spearman giữa n=10 vs 20 vs 50)
-*   Script `task11-9/scripts/common_target_test.py` (wrapper logits, chạy 10/20/50 states, ~2-5 tiếng)
+*   Script `task11-9/scripts/common_target_test.ipynb` (wrapper logits, chạy 10/20/50 states, ~2-5 tiếng)
 
 ---
 
@@ -164,13 +164,13 @@ def a2c_logits_660(X):
 **Deliverable Task 15:**
 *   Đoạn văn tiếng Việt + bảng so sánh Top-5 giữa 3 outputs (`π` vs `logits` vs `V(s)`) trong `outputTask11-9.md` phần Task 15
 *   File `task11-9/outputTask11_sensitivity.csv` (Jaccard/Spearman giữa các outputs)
-*   Script `task11-9/scripts/sensitivity_actor_critic.py` (có thể gộp chung với `common_target_test.py`)
+*   Script `task11-9/scripts/sensitivity_task15_full.ipynb` (chạy 10-state EASY/MEDIUM/HARD, ~25 phút, 9 dòng)
 
 ---
 
 ## Kế hoạch thực thi gộp & Tách kết quả
 
-**Thực thi gộp Task 13A + Task 15:** Cùng đọc checkpoint `checkpoints_dqn_comparison512_32` và `outputA2Cmod`, cùng background 100, cùng **sensitivity n_states=10/20/50** (Phương án B), chạy 3 wrappers (`dqn_logits_660`, `a2c_logits_660`, `a2c_critic_660`) với `shap.KernelExplainer` trong 1 script `common_target_test.py` (~2 tiếng với Partition cho 90 explainers: 3 outputs x 30 states (10+20+50), ~4-5 tiếng với KernelSHAP nsamples=2000).
+**Thực thi gộp Task 13A + Task 15:** Cùng đọc checkpoint `output Training/checkpointDQN` (ckpt-60) và `output Training/outputA2Cmod/checkpoints_a2cmod` (ckpt-64), cùng background 100, cùng **sensitivity n_states=10/20/50** (Phương án B), chạy 3 wrappers (`dqn_logits_660`, `a2c_logits_660`, `a2c_critic_660`) với `shap.KernelExplainer` trong `common_target_test.ipynb` và `sensitivity_task15_full.ipynb` (~2 tiếng với Partition cho 90 explainers: 3 outputs x 30 states (10+20+50), ~4-5 tiếng với KernelSHAP nsamples=2000).
 
 **Nhưng kết quả tách rõ 3 phần** trong file output để bạn review:
 
@@ -196,8 +196,8 @@ Task 14 là Writing độc lập, có thể làm song song với 13A+15.
 3. `Feedback 7-9/task11-9/outputTask11_common_target.csv` (Top-20 logits, Task 13, 10/20/50 states)
 4. `Feedback 7-9/task11-9/outputTask11_n_states_sensitivity.csv` (Jaccard/Spearman giữa n=10 vs 20 vs 50, Task 13)
 5. `Feedback 7-9/task11-9/outputTask11_sensitivity.csv` (Jaccard giữa π/logits/V(s), Task 15)
-6. `Feedback 7-9/task11-9/scripts/common_target_test.py` (wrapper logits + critic, chạy 10/20/50 states, ~2-5 tiếng)
-7. `Feedback 7-9/task11-9/scripts/sensitivity_actor_critic.py` (có thể gộp với common_target_test.py)
+6. `Feedback 7-9/task11-9/scripts/common_target_test.ipynb` (wrapper logits, chạy 10/20/50 states, ~2-5 tiếng)
+7. `Feedback 7-9/task11-9/scripts/sensitivity_task15_full.ipynb` (chạy 10-state EASY/MEDIUM/HARD, ~25 phút)
 
 ---
 
