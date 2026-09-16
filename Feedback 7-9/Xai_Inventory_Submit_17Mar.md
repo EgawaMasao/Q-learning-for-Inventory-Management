@@ -612,6 +612,21 @@ key reward components that support the selected action. In 𝜋 (𝑎 ∣ 𝑠).
 
 of 200 background states are generated and then subsampled
 
+3. 2.4. Reward Coefficient Justification
+
+The composite reward integrates four operational objectives. For each product, the reward is defined as a sum of a service term, a holding term, a waste term and a balance term, with a constant base reward that normalizes the overall scale. The weights are set to unity as a neutral baseline, while the waste rate is calibrated to a perishable decay rate observed in the data.
+
+Table 3. Reward components and their justification.
+
+| Component | Weight | Theoretical basis | Managerial interpretation |
+| :--- | :---: | :--- | :--- |
+| Service (stockout) | 1.0 | Newsvendor model [22] | Stockout cost substantially exceeds holding cost; strong service incentive |
+| Holding (overstock) | 1.0 | Economic order quantity [23] | Holding cost of a few percent per period |
+| Waste | 0.025 | Perishable inventory [24] | Spoilage rate of a few percent per period, calibrated from demand statistics |
+| Balance (quantile spread) | 1.0 | Risk-averse control [25] | Inventory balancing across the portfolio |
+
+The dataset is a public retail transaction dataset that does not contain explicit monetary cost annotations. Capacity is therefore defined as a multiple of average demand and the waste rate is set within the range reported for perishable goods. Sensitivity to the weighting coefficients is assessed with a one-at-a-time analysis on held-out data, varying each coefficient around the baseline. The base-stock policy consistently outperforms the deep reinforcement learning agents, while the two learning agents exhibit complementary sensitivities: overstock is the most influential factor for the value-based agent, whereas balance is the most influential for the actor-critic agent. Stockout exhibits negligible sensitivity and waste shows moderate sensitivity. The unitary weight lies in the interior of the tested range and yields neither the minimal nor the maximal performance, supporting its choice as a balanced baseline.
+
 3. 3. Feature - based Explanation with SHAP
 
 to 100 representative samples for SHAP estimation. During
@@ -1273,6 +1288,42 @@ To test comparability, SHAP was computed on pre-softmax logits as common target 
 
 Sensitivity on A2C_mod with three outputs (π ckpt-64, logits, V(s)) on 10-state EASY/MEDIUM/HARD shows Jaccard Top-20 0.25-0.33 between π vs logits and π vs V(s) across all scenarios (e.g., DQN EASY softmax vs logits Jaccard 0.25/RBO 0.736, A2C EASY pi vs logits 0.25/RBO 0.420; A2C MEDIUM pi vs logits 0.333/RBO 0.509; EASY A2C pi Top-5 [175,90,164,119,93] vs logits [93,119,108,175,71] overlap 3/8, Jaccard 0.25; EASY pi vs V(s) Top-5 [175,90,164,119,93] vs V(s) [175,71,90,164,119] Jaccard 0.25/RBO 0.647; full 9 rows in task11-9/outputTask11_sensitivity.csv with homogeneous 0.25-0.33, indicating ranking differs across targets despite same Sales group, supporting qualitative comparison.
 
+4.5.8. Reward Component Range and Distribution
+
+![Sensitivity of average reward to weighting coefficients](Feedback 7-9/task13-9/task1/outputTask20_sensitivity.png)
+*Figure: One-at-a-time sensitivity of average reward to the four weighting coefficients for the two learning agents and the base-stock policy.*
+
+The analysis presented here uses the original transaction records covering 1,000 training periods and 504 testing periods for 220 products. Demand is normalized by product capacity, where capacity is defined as a multiple of average demand observed during training. Reward components are computed per product and per period from the normalized state using the same transition and reward definition employed during training, and descriptive statistics as well as distributional distances between training and testing periods are compared before and after normalization.
+
+Before normalization, demand is right-skewed with a long tail, while after normalization the scale is an order of magnitude smaller and concentrated in a narrow interval. Capacity is heterogeneous but consistently an order of magnitude larger than average demand.
+
+Table 4. Descriptive range of demand and capacity.
+
+| Variable | Before normalization (raw units) | After normalization (demand / capacity) |
+| :--- | :--- | :--- |
+| Demand, training | mean 2.11, SD 4.62, max 162 | mean 0.10, SD 0.14, max 2.25 |
+| Demand, testing | mean 0.73, SD 1.75, max 31 | mean 0.034, SD 0.069, max 1.25 |
+| Capacity | mean 20.3, SD 28.2, range 4–208 | — |
+
+Normalization reduces the mean and dispersion by more than an order of magnitude and brings the maximum from over a hundred units to a few units, which stabilizes the reward scale. The ratio of capacity to mean demand is approximately ten, confirming that capacity is defined as a sizable multiple of average demand.
+
+When evaluated under different policies, a no-replenishment policy leads to frequent stockout, near-zero inventory and negligible waste, yielding a near-zero average reward. In contrast, a base-stock policy calibrated on training demand substantially reduces stockout, increases inventory by an order of magnitude and raises waste and balance terms, yielding a markedly higher average reward. The aggressive value-based agent incurs a noticeable overstock cost, whereas the base-stock and actor-critic policies incur negligible overstock.
+
+Table 5. Distribution of reward components under different policies (mean over products and periods).
+
+| Component | No replenishment (training / testing) | Base-stock policy (training / testing) | Value-based agent (testing) |
+| :--- | :--- | :--- | :--- |
+| Stockout rate | 0.99 / 0.97 | 0.15 / 0.022 | 0.007 |
+| Overstock | 0.0 / 0.0 | 0.0 / 0.0 | 0.46 |
+| Waste (q) | 7.0×10⁻⁵ / 2.2×10⁻⁴ | 0.0038 / 0.0053 | 0.024 |
+| Balance spread | 0.007 / 0.026 | 0.23 / 0.21 | 0.14 |
+| Average inventory | 0.003 / 0.009 | 0.15 / 0.21 | — |
+| Average reward | 8×10⁻⁶ / –0.002 | 0.61 / 0.76 | 0.36 |
+
+The table shows that a replenishment policy is necessary to move from a degenerate regime with almost certain stockout to a regime with controlled stockout and non-negligible inventory. Overstock remains negligible under the base-stock policy but becomes sizable under the aggressive value-based policy, demonstrating that overstock is policy-dependent rather than data-dependent. The increase in waste and balance spread under replenishment is proportional to inventory, consistent with a waste rate of a few percent per period.
+
+Taken together, the results demonstrate three points. First, normalization is effective: the distributional distance between training and testing periods decreases from 1.37 for raw demand to 0.066 for normalized demand, a reduction of about 95%, indicating that capacity-based normalization substantially mitigates covariate shift without refitting on the test data and therefore avoids leakage. Second, the reported ranges justify the coefficient choices: waste lies in [0, 0.025] and balance spread in [0, 0.89], both within the unit interval after normalization, so no additional scaling is required. Third, the contrast between policies validates the reward design: without replenishment no inventory is retained, while with replenishment a stable operating point with high reward is attained, and the remaining differences in overstock and balance explain the complementary sensitivities observed in the weight-sensitivity analysis.
+
 4.6. Comparative Evaluation
 4.6.1 Design
 
@@ -1797,4 +1848,12 @@ pp. 9 – 36. doi: 10.1007/978 - 3 - 658 - 24382 - 1_2. https://www.semanticscho
 
 153 – 178. doi: 1 0.1109/9780470544785.ch6.
 
-[12] “Reinforcement Learning: An Introduction | Guide books | ACM Digital Library.” Accessed: Mar. 05,
+[12] “Reinforcement Learning: An Introduction | Guide books | ACM Digital Library.” Accessed: Mar. 05, 2026. [Online]. Available: https://dl.acm.org/doi/book/10.5555/986238
+
+[22] M. Khouja, “The single-period (news-vendor) problem: literature review and suggestions for future research,” Omega, vol. 27, no. 5, pp. 537–553, 1999.
+
+[23] F. W. Harris, “How many parts to make at once,” Factory, The Magazine of Management, vol. 10, no. 2, pp. 135–136, 1913.
+
+[24] A. Federgruen and P. Zipkin, “An inventory model with limited production capacity and uncertain demands,” Naval Research Logistics, 1980s.
+
+[25] S. Mannor and J. N. Tsitsiklis, “Mean-variance optimization in Markov decision processes,” in Proc. ICML, 2011.
