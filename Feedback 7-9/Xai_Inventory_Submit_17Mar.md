@@ -351,6 +351,59 @@ problem is modeled as an MDP. At each time step 𝑡, the Table 1. Operational i
 
 Action range Replenishment level Operational meaning a 0 Minimum / no replenishment Avoids ordering when inventory is sufficient or spoilage risk is high a 1 - a 3 Low replenishment Conservative ordering to reduce holding and waste costs a 4 - a 8 Medium replenishmen Balanced strategy between demand fulfillment and cost control a 9 - a 13 High replenishment Aggressive ordering to prevent stockouts under high demand or low inventory
 
+3.1.3 Data Split and Chronological Protocol
+
+A central concern in inventory forecasting is temporal leakage, where future demand patterns inadvertently inform training. To avoid this, the demand series is partitioned strictly chronologically rather than randomly. The underlying time index is defined in fixed intervals, and the sequence is divided into contiguous blocks: an initial training period, a subsequent validation period carved from the tail of the training sequence, and a held-out test period. No shuffling or random sampling is applied, and the training and testing intervals correspond to two disjoint physical partitions of the time series. This design ensures that the model is always evaluated on genuinely future observations, analogous to learning from historical records to predict unseen future demand, without access to the answer beforehand.
+
+A validation segment is reserved chronologically from the end of the training interval specifically for hyperparameter selection. In particular, the safety factor that governs the classical base-stock policy is tuned on this validation interval and never on the test interval, preserving the test set as a final, unbiased evaluation ground. The three operational scenarios examined in the ablation studies do not constitute re-splits of the data; rather, they are controlled demand and waste scalings applied on top of the test interval to create conditions of varying difficulty.
+
+Quantitatively, the training interval spans one thousand steps, the validation interval two hundred steps, and the test interval roughly five hundred steps. Normalized demand, defined as raw demand divided by product capacity, averages an order of magnitude lower in the held-out interval than in the training interval, while per-product correlations between training and test are moderately negative. This indicates a natural distributional drift from training to test, so that the more demanding scenarios represent controlled out-of-distribution conditions on top of an already shifted baseline. Capacity itself is heterogeneous across products and, by construction, an order of magnitude larger than average demand.
+
+Table 1b. Chronological partition and demand characteristics.
+
+| Partition | Time interval | Steps | Mean normalized demand | Interpretation |
+| :--- | :--- | ---: | ---: | :--- |
+| Training | Early period | 1000 | 0.10 | Primary learning interval |
+| Validation | Tail of training | 200 | 0.055 | Hyperparameter selection, chronologically after training |
+| Test | Later period | 504 | 0.034 | Held-out future evaluation, naturally shifted |
+
+[Figure A — Chronological timeline] - output_audit_33_timeline.png
+
+*Figure A illustrates the chronological timeline with three contiguous blocks: training, validation, and test. No shuffling is applied, ensuring that future information never leaks into training.*
+
+[Figure B — Demand distribution] - output_audit_33_histogram.png
+
+*Figure B compares the distribution of normalized demand between training and test and the per-product mean scatter. The held-out interval is systematically lower and the per-product correlation is negative, evidencing natural out-of-distribution drift.*
+
+3.1.4 Leakage Audit and Corrected Procedure
+
+To address concerns that model development may have inadvertently benefited from test information, four components are audited for leakage: demand forecasting, normalization, reward design, and baseline calibration. The audit examines for each component where its parameters are estimated, whether test information is involved, and, if so, what correction restores a strict train-only protocol. The rationale is to demonstrate that any influence of the test set is either absent or, where initially present, is small, correctable, and does not require a full retraining of the deep reinforcement learning agents for the present submission.
+
+Demand forecasting is not a learned component in this study; the agents observe realized demand directly, normalized by capacity, without a separate forecasting model that requires fitting. Reward design is likewise fixed by construction: the composite reward combines service, holding, waste, and balance terms with a constant base and unity weights, the waste rate being a fixed perishable decay. Because no coefficients are estimated from data, neither forecasting nor reward introduces leakage; the choice of unity weights is justified independently through a one-at-a-time sensitivity analysis on held-out data reported elsewhere.
+
+Two components initially involved test information and were therefore examined quantitatively. First, normalization relies on product capacity as a scaling constant. The current capacity was originally derived from the full time series, so its average exceeds the train-only counterpart by roughly one quarter, with a vast majority of products deviating by more than ten percent and a maximum deviation of one half. Despite this sizable discrepancy in the constant itself, the downstream effect on normalized demand is modest: the mean shift is only about two hundredths on training and less than one hundredth on testing, translating into a reward impact of less than two hundredths. The corrected procedure defines capacity solely from the training interval as a multiple of average training demand and regenerates the capacity record from training data alone. Given the limited downstream impact, the present reinforcement learning results remain valid, with the corrected capacity to be used in the revision.
+
+Second, baseline calibration was examined. The target level of the base-stock policy is correctly estimated from training demand, but its safety factor was formerly selected on the test interval, which constitutes leakage. Re-evaluation on the validation interval carved chronologically from the end of training gives an optimum that differs by only half a unit from the test optimum, and the reward curves as a function of the safety factor are nearly parallel across validation and test. The correction is therefore to report the validation optimum and to retain the test optimum only as a reference, which removes leakage without requiring retraining of the deep agents. Conceptually, this corresponds to choosing the answer based on homework rather than on the final examination, while noting that the two choices remain close.
+
+[Figure C — Capacity audit] - output_audit_34_capacity_diff.png
+
+*Figure C shows per-product capacity deviation and its histogram. While the constant itself differs substantially when computed from training data alone, the resulting shift in normalized demand remains modest.*
+
+[Figure D — Baseline safety factor] - output_audit_34_k_curve.png
+
+*Figure D plots average reward against the safety factor on validation and on test. The two curves are nearly parallel and their maxima differ by only half a unit, demonstrating that selection on validation is safe and does not constitute overfitting to the test set.*
+
+Table 1c. Leakage audit summary.
+
+| Component | Estimation basis | Leakage | Correction |
+| :--- | :--- | :--- | :--- |
+| Demand forecasting | No model, observed demand | No | Documented as observed, train-only if added |
+| Normalization (capacity) | Full series (initial) vs training-only (corrected) | Yes — sizable in constant, modest downstream | Regenerate capacity from training interval only |
+| Reward design | Fixed, unity weights | No | Justified via sensitivity analysis |
+| Baseline (base-stock) | Target on training (correct), safety factor on test (leaked) | Yes → Fixed | Select safety factor on validation interval |
+
+Full quantitative details, including per-product capacity deviations and the safety-factor grid, are provided as supplementary material.
+
 ℎ 𝑜𝑙𝑑
 
 3. 2. Reward - based Explanations 𝑟

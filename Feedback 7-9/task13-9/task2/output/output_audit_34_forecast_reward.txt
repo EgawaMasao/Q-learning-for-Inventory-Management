@@ -1,0 +1,5 @@
+Task 34b: Forecasting & Reward Audit
+============================================================
+Forecasting: No forecaster, uses observed sales (A2C-mod.ipynb:10, DQN.ipynb:9) => No leakage
+Reward: r = 1 - z - overstock - q - quan, waste=0.025, zero_inventory=1e-5 (A2C-mod.ipynb:3,10) => Hardcoded => No leakage
+Justification: weight=1.0 baseline, OAT sweep 16 configs in Task 20-21, see outputTask20_sweep_results.csv

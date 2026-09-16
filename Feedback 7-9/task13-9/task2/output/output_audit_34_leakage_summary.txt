@@ -1,0 +1,41 @@
+================================================================================
+LEAKAGE AUDIT SUMMARY — Task 13-9-2 (33+34) — Phương án B
+================================================================================
+Train: 1000 records (0-999) | Val: 200 (800-999 chronological) | Test: 504 records (1000-1503)
+Capacity: 220 products | TFRecords: C:\GitHub\Q-learning-for-Inventory-Management\data\capacity.tfrecords
+Parsers: A2C-mod.ipynb:7, DQN.ipynb:4 | Train logic: A2C-mod.ipynb:10, DQN.ipynb:9
+--------------------------------------------------------------------------------
+Task 33: Chronological Split
+--------------------------------------------------------------------------------
+  Method: TFRecordDataset(train_file).window(batch_size, shift=batch_size-1) preserves order (A2C-mod.ipynb:10)
+  No shuffle / No random_split. Train and test are 2 physical files.
+  Train mean sales_norm: 0.1003 | Val: 0.0550 | Test: 0.0341
+  Pearson per-product mean train vs test: -0.4686
+  Conclusion: Chronological = YES, Temporal leakage = NO
+--------------------------------------------------------------------------------
+Task 34: Leakage Audit (4 groups)
+--------------------------------------------------------------------------------
+  1. Forecasting: No forecaster (uses observed sales / capacity, A2C-mod.ipynb:10) => No leakage
+  2. Normalization (capacity):
+     - capacity_full mean: 20.33, capacity_train_only mean: 25.79
+     - diff%: mean 26.29%, max 50.00%, N>5% 212/220, N>10% 212/220
+     - Impact on sales_norm mean: train delta 0.0208, test delta 0.0065
+     => MAJOR leakage (mean>=5%), corrected: regenerate capacity.tfrecords from train only, Maybe Retrain
+  3. Reward coefficients: r=1-z-overstock-q-quan, waste=0.025 (A2C-mod.ipynb:3,10) hardcoded => No leakage
+  4. Baseline (Base-Stock k):
+     - S_i fitted on train_part (0-799) correctly (DQN.ipynb:15)
+     - Grid k [0.5, 1.0, 1.5, 2.0, 2.5] | best_k_val=1.0 (reward_val=+0.6894) vs best_k_test=0.5 (reward_test=+0.7596)
+     - Diff k: 0.5 | Reward gap: 0.0702
+     => Leakage was YES (old code selected on test, DQN.ipynb:17), FIXED: select on val, val≈test so safe => No retrain
+--------------------------------------------------------------------------------
+Output files:
+  - output_audit_33_split_stats.csv
+  - output_audit_34_baseline_k.csv
+  - output_audit_34_capacity_diff.csv
+  - output_audit_34_capacity_diff_stats.csv
+  - output_audit_33_histogram.png
+  - output_audit_33_timeline.png
+  - output_audit_34_capacity_diff.png
+  - output_audit_34_k_curve.png
+  - output_audit_34_leakage_summary.txt (this file)
+================================================================================
