@@ -690,6 +690,66 @@ Table 3. Reward components and their justification.
 
 The dataset is a public retail transaction dataset that does not contain explicit monetary cost annotations. Capacity is therefore defined as a multiple of average demand and the waste rate is set within the range reported for perishable goods. Sensitivity to the weighting coefficients is assessed with a one-at-a-time analysis on held-out data, varying each coefficient around the baseline. The base-stock policy consistently outperforms the deep reinforcement learning agents, while the two learning agents exhibit complementary sensitivities: overstock is the most influential factor for the value-based agent, whereas balance is the most influential for the actor-critic agent. Stockout exhibits negligible sensitivity and waste shows moderate sensitivity. The unitary weight lies in the interior of the tested range and yields neither the minimal nor the maximal performance, supporting its choice as a balanced baseline.
 
+### 3.2.5 A2C_mod Algorithm and Its Relation to Conventional A2C
+
+The study employs a modified Advantage Actor-Critic tailored to multi-product inventory control. Upon its first appearance in the manuscript, the algorithm is denoted A2C_mod and defined for a portfolio of 220 products. Each product is represented by three operational features capturing inventory level, demand and waste, where waste is modelled as a linear function of inventory with a fixed perishable rate. The action space is discretised into fourteen replenishment levels ranging from no replenishment to full capacity, reflecting a graduated scale from conservative to aggressive ordering. The agent comprises an actor that maps the three-dimensional product state to a distribution over the fourteen levels through a four-layer feed-forward network with rectified activations and dropout, and a critic that maps the same input to a scalar value through a shallower two-layer network with normalisation. Both networks are trained over six hundred episodes with a discount factor close to unity and identical learning rates, using a chronological data partition that separates training, validation and testing intervals.
+
+The learning procedure preserves the temporal-difference structure of the critic but revises the actor update to accommodate the ordinal nature of replenishment. Rather than maximising the log-probability of the sampled action weighted by the advantage, the algorithm constructs a soft target obtained by shifting the log-probabilities of all actions proportionally to the advantage divided by a distance-dependent denominator, and then normalises the result through a softmax operation. The actor is subsequently encouraged to mimic this target through a squared error, which can be understood as a distillation of an advantage-adjusted teacher into the current policy. This design is motivated by inventory considerations. Because the fourteen levels are ordered, a modest increase in advantage should benefit not only the sampled level but also its neighbours, while a jump from a very low to a very high level would risk overstock. The distance weighting provides a form of Laplacian smoothing along the action line that distributes the advantage to nearby actions and attenuates distant ones, thereby favouring gradual adjustments. The squared error, which corresponds to a Brier score, is a proper scoring rule that bounds the associated divergence and yields a bounded gradient, in contrast to the potentially unbounded gradient of the log-probability. This choice reduces variance when the reward scale is modest and supports stable learning across the 220 parallel decisions.
+
+Eight differences relative to the conventional synchronous advantage actor-critic are systematised in Table 3b. The table is intentionally concise to meet the spatial constraints of the paper format; the full mapping is reported in the supplementary material. To anticipate potential follow-up questions, each difference is accompanied by its operational rationale together with its principal advantage and limitation.
+
+**Table 3b. Relation of A2C_mod to the conventional advantage actor-critic.**
+
+| Dimension | Conventional A2C | A2C_mod in this study | Implication for inventory |
+| :--- | :--- | :--- | :--- |
+| Policy update | Log-probability weighted by advantage | Distillation towards an advantage-smoothed target | Bounded and smoother, lower variance |
+| Distance handling | Symmetric across actions | Advantage divided by distance to sampled action plus one | Respects ordinal replenishment levels |
+| Loss form | Log loss | Squared error (Brier) | Proper scoring, stable at modest reward scale |
+| Entropy regularisation | Added to the loss with a positive coefficient | Computed but not optimised, only logged | Less exploratory, more conservative |
+| Advantage estimation | Generalised advantage with normalisation | Single-step temporal difference without normalisation | Simpler, fewer hyperparameters |
+| Optimisation | Joint loss with a single optimiser | Separate losses with distinct optimisers | Decouples value and policy noise |
+
+[Figure - task16-9_fig1_modifications.png]
+*Figure 2c. Relation of the modified actor-critic to the conventional formulation. The left panel summarises the eight differences and their inventory relevance, and the right panel illustrates the per-product actor, critic and value networks together with the common quantity used for comparison.*
+
+Beyond the tabular summary, the smoothing and per-product cloning are advantageous for the inventory domain because they promote stable, incremental replenishment and allow a shared representation to scale linearly with the number of products. The separate optimisation of the two components further isolates value estimation from policy noise. The absence of explicit entropy optimisation is a limitation that favours exploitation over exploration and should be read as a conservative bias; it is reported transparently rather than presented as an improvement.
+
+[Figure - task16-9_fig2_pnew_smoothing.png]
+*Figure 2d. Illustration of the distance-weighted smoothing. The left bar chart contrasts the original policy and the smoothed target at an advantage of 0.2, showing that the probability of the optimal level increases while neighbouring levels are also enhanced to a diminishing degree. The right curve depicts the advantage contribution as a function of distance, declining rapidly with separation from the optimum.*
+
+### 3.2.6 Common Quantity for Cross-Agent Comparisons
+
+Because the value-based and actor-critic agents produce outputs of different type and scale, a direct comparison of their raw outputs would conflate algorithmic differences with scale differences. The study therefore introduces a dual common quantity that places both families on an identical footing without retraining. The need for duality arises from the distinct input requirements of the two explanation families. Feature-level attributions require a vector-valued output over the fourteen actions to assess the contribution of each state feature, whereas reward-level decompositions require a scalar that can be split into service, holding, waste and balance components. A single transformation cannot satisfy both requirements without compromising one family, and the dual design is thus presented as an intentional choice rather than an inconsistency.
+
+For feature-level analysis, the common quantity is defined as the portfolio-averaged softmax of the action values for the value-based agent and the portfolio-averaged policy for the actor-critic agent. Averaging over the 220 products is justified by the per-product cloning of both architectures, which renders product decisions exchangeable and allows the shared representation to be aggregated without loss of operational meaning. For the actor-critic agent, the equivalent action value is expressed as the sum of the log-policy and the state value, which preserves the same ordering as the smoothed target. For reward-level analysis, the study employs a one-step lookahead that simulates the inventory transition under the best and second-best actions and computes the resulting reward difference decomposed by objective. This simulation is model-agnostic and does not depend on the learned values, thereby providing a fair basis for comparing the two families.
+
+The validity of the construction rests on three properties. First, order preservation follows from the monotonicity of the softmax and logarithm, so the optimal action before and after transformation coincides. Second, scale compatibility follows from normalisation to the probability simplex, which places both families in the unit interval and renders the squared error a proper scoring rule that upper bounds the corresponding divergence. Third, smoothness follows from the Laplace-like weighting along the ordered action line, which guarantees that an improvement in advantage shifts mass towards the sampled action and its neighbours while limiting abrupt jumps. Empirical verification on the held-out test sequence with the restored checkpoints confirms that the optimal action is preserved in every examined state and that the portfolio average stabilises after a few dozen products, indicating that averaging over the full catalogue is robust.
+
+**Table 3c. Dual common quantity for cross-agent explanation.**
+
+| Family | Transformation | Domain | Preservation |
+| :--- | :--- | :--- | :--- |
+| Feature-level (SHAP) | Portfolio-averaged softmax | Probability simplex | Optimal action |
+| Reward-level (RDX) | One-step reward gap | Reward space | Model-agnostic |
+
+[Figure - task16-9_fig3_transformation_ordering.png]
+*Figure 2e. The common quantity on a representative state per scenario, showing that the normalised value-based output and the actor-critic policy lie in the same domain and share the same optimum.*
+
+[Figure - task16-9_fig4_fcommon_mse_validity.png]
+*Figure 2f. Stability of the common quantity and validity of the loss. The left panel shows that the portfolio average stabilises as the number of averaged products grows, and the right panel illustrates that the squared error is a smooth upper bound on the associated divergence.*
+
+The verification, summarised in Table 3d, was performed on fifty states per operational scenario with the restored checkpoints, using a fixed seed for full reproducibility. The table is deliberately compact; the complete statistics are available in the supplementary output.
+
+**Table 3d. Verification of order preservation on the held-out sequence.**
+
+| Scenario | Preservation of optimum | Rank correlation between families |
+| :--- | :--- | :---: |
+| Easy | 100% | 0.29 |
+| Medium | 100% | 0.30 |
+| Hard | 100% | 0.32 |
+
+The modest positive correlation indicates that the two families do not share an identical ranking of suboptimal actions, which is expected given their distinct learning mechanisms, while the perfect preservation of the optimum demonstrates that the common quantity satisfies the minimal requirement for a fair comparison.
+
 3.3. Feature-based Explanation with SHAP
 
 This study employs SHAP to analyze the influence of state features on the agent's policy and value estimates, thereby linking observable inventory conditions to decision behavior. All models are treated as black-box functions, allowing the same attribution principle to be applied to both the value-based and the actor-critic agents. SHAP values are interpreted as associative feature attributions that quantify the contribution of each input feature to the model's output for a given state, rather than as causal effects, since inventory, demand, waste and capacity related variables may be correlated.

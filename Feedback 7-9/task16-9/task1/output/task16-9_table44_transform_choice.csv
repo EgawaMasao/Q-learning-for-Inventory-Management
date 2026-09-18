@@ -1,0 +1,3 @@
+XAI,Transform,Cùng miền,Bảo toàn argmax,Validity
+SHAP global/local,f_common=mean(softmax(Q)) vs mean(π),Có Δ^{14},Có (softmax monotonic),"Brier MSE proper, ordering"
+RDX/MSX,unified_rdx_1step simulate x',Có reward,Có (simulate),"Model-agnostic, reward thật"

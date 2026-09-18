@@ -1,0 +1,4 @@
+Scenario,agree_q_softmax,agree_qmod_pi,spearman_qsoft_pi
+EASY,1.0,1.0,0.29028571428571426
+MEDIUM,1.0,1.0,0.29529670329670327
+HARD,1.0,1.0,0.3169230769230769

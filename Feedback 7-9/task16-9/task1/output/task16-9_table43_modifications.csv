@@ -1,0 +1,9 @@
+ID,Aspect,Conventional,A2C_mod,Ưu điểm,Nhược điểm
+M1,Policy update,-E[logπ*A],"MSE(π, softmax(logπ+A/(dist+1)))","Bounded, smooth, giảm variance","Bảo thủ, chậm khi A lớn"
+M2,Distance weighting,Không,/(|a*-a|+1) 451,"Mượt ordinal, tránh overstock",Chỉ hợp ordinal
+M3,Loss dạng,log loss,MSE/Brier 452,Proper scoring,Yếu hơn log khi cần push
+M4,Entropy,+c_ent*H vào loss,0.001*H chỉ log 447,-,Xấu: collapse sớm
+M5,Advantage,GAE normalize,Single-step raw δ 439,Đơn giản,Variance cao
+M6,Optimizer,1 Adam L_total,2 Tape riêng 472-476,Tách nhiễu V,Mất c_v
+M7,Kiến trúc,Đối xứng/share,Actor 4L vs Critic 2L+LN,Scale tốt 39KB,Mất cross-SKU
+M8,State handling,Global [660],"Per-product [220,3] 376",Share weight,Chỉ quantile bù
