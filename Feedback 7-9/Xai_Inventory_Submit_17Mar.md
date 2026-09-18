@@ -294,11 +294,7 @@ operational constraints has not been adequately addressed.
 
 𝑠 𝑡 = [𝐼 1, 𝑡, 𝐷 1, 𝑡, 𝑊 1, 𝑡, …, 𝐼 220, 𝑡, 𝐷 220, 𝑡, 𝑊 220, 𝑡, 𝑈 𝑡, 𝐶 𝑡, 𝑉 𝑡, 𝑇 𝑡]
 
-Some early studies have examined policy explanation or
-
-with a total dimensionality of |S| = 664. The action
-
-the importance of state features in relatively simple logistics and supply chain prob lems, for example through space is discretized into 14 ordering strategies 𝐴 = attention mechanisms or feature attribution in vehicle 𝑎 0, 𝑎 1, …, 𝑎 13, corresponding to replenishment levels routing and scheduling tasks [21]. However, these studies ranging from co nservative to aggressive for the entire typically rely on a single explanation mechanism and are product portfolio, subject to capacity and storage evaluated in small scale environments, making it difficult constraints. The two agents, DQN and A2C_mod, are to fully reflect the complex trade - offs present in real world trained in the same environment and configuration to inventory systems. ensure fairness in comparing performance and
+with a total dimensionality of |S| = 664, comprising 660 product-level features and four system-level features. The 660 product-level dimensions arise from three operational descriptors for each of the 220 products, namely inventory, demand and waste, where waste is modelled as a linear function of inventory with controlled variation. The four system-level dimensions capture warehouse utilization, transportation capacity, demand volatility and time until the next ordering period. This decomposition ensures conceptual completeness while maintaining compatibility with the learned models. Conceptually, the state therefore contains 664 dimensions, whereas the current per-product cloned agents are trained on the 660 product-level dimensions, with each product processed independently on its three-dimensional descriptor. The four system-level features are specified as part of the conceptual model and reserved for future joint optimisation, which guarantees a consistent reporting of dimensionality throughout the manuscript and avoids any discrepancy between the conceptual and the implemented state. The action space is discretized into 14 ordering strategies 𝐴 = attention mechanisms or feature attribution in vehicle 𝑎 0, 𝑎 1, …, 𝑎 13, corresponding to replenishment levels routing and scheduling tasks [21]. However, these studies ranging from co nservative to aggressive for the entire typically rely on a single explanation mechanism and are product portfolio, subject to capacity and storage evaluated in small scale environments, making it difficult constraints. The two agents, DQN and A2C_mod, are to fully reflect the complex trade - offs present in real world trained in the same environment and configuration to inventory systems. ensure fairness in comparing performance and
 
 explainability. Figure 1 details the workflow used to
 
@@ -374,6 +370,21 @@ Table 1b. Chronological partition and demand characteristics.
 [Figure B — Demand distribution] - output_audit_33_histogram.png
 
 *Figure B compares the distribution of normalized demand between training and test and the per-product mean scatter. The held-out interval is systematically lower and the per-product correlation is negative, evidencing natural out-of-distribution drift.*
+
+The three operational scenarios examined in the ablation studies are not re-splits of the data but controlled transformations applied on the held-out interval. This design is motivated by the need to assess whether explanations and policies remain meaningful when operating conditions deviate from the training distribution, without reintroducing temporal leakage. Each scenario is therefore obtained by scaling the normalized demand of the test interval and adjusting the waste rate accordingly, which preserves the temporal order while creating conditions of increasing difficulty. The choice of scaling factors reflects a compromise between empirical plausibility and diagnostic power, in that it remains anchored to the observed test distribution yet provides sufficient contrast to test adaptability. Concretely, the easy condition attenuates demand and reduces waste, the medium condition retains the unscaled test distribution, and the hard condition amplifies both demand and waste beyond the training regime.
+
+Table 1b-S. Characterization of the three operational scenarios with respect to the training and test distributions.
+
+| Scenario | Demand scaling | Waste rate | Evaluation nature |
+| :--- | :---: | :---: | :--- |
+| Easy | Attenuated | Reduced | Within test support, lower tail |
+| Medium | Unscaled | Baseline | Within test support, mildly beyond training |
+| Hard | Amplified | Elevated | Controlled out-of-distribution |
+
+[Figure - T37_scenario_positioning.png]
+*Figure B-S. Positioning of the three scenarios on the normalized demand axis relative to the training and test means. The easy and medium scenarios remain within the support of the held-out interval, while the hard scenario moves toward the training mean in demand but exceeds the training regime in waste, illustrating its character as a controlled stress test.*
+
+*Figure B-S illustrates that the held-out interval is already lower on average than the training interval, so that even the medium scenario is mildly beyond the training distribution. The easy scenario remains within the support of the held-out interval at its lower tail, whereas the hard scenario constitutes a controlled stress test because its elevated waste exceeds the perishable rate observed during training, despite its demand approaching the training average. This characterization clarifies that the scenarios evaluate in-distribution behaviour with respect to the test interval and out-of-distribution behaviour with respect to the training interval, in a graduated manner.*
 
 3.1.4 Leakage Audit and Corrected Procedure
 
