@@ -690,115 +690,107 @@ Table 3. Reward components and their justification.
 
 The dataset is a public retail transaction dataset that does not contain explicit monetary cost annotations. Capacity is therefore defined as a multiple of average demand and the waste rate is set within the range reported for perishable goods. Sensitivity to the weighting coefficients is assessed with a one-at-a-time analysis on held-out data, varying each coefficient around the baseline. The base-stock policy consistently outperforms the deep reinforcement learning agents, while the two learning agents exhibit complementary sensitivities: overstock is the most influential factor for the value-based agent, whereas balance is the most influential for the actor-critic agent. Stockout exhibits negligible sensitivity and waste shows moderate sensitivity. The unitary weight lies in the interior of the tested range and yields neither the minimal nor the maximal performance, supporting its choice as a balanced baseline.
 
-3. 3. Feature - based Explanation with SHAP
+3.3. Feature-based Explanation with SHAP
 
-to 100 representative samples for SHAP estimation. During
+This study employs SHAP to analyze the influence of state features on the agent's policy and value estimates, thereby linking observable inventory conditions to decision behavior. All models are treated as black-box functions, allowing the same attribution principle to be applied to both the value-based and the actor-critic agents. SHAP values are interpreted as associative feature attributions that quantify the contribution of each input feature to the model's output for a given state, rather than as causal effects, since inventory, demand, waste and capacity related variables may be correlated.
 
-masking, KernelSHAP marginalizes missing features using behavior is analyzed using XRL methods: RDX and MSX the backg round distribution rather than replacing them with to explain decisions in the reward space, and SHAP to
+#### 3.3.1 SHAP Background Construction
 
-analyze the influence of state features, creating a direct
+The background distribution is designed to reflect operational conditions while ensuring full reproducibility. For the macro-level analysis, each state is represented by three aggregated features capturing inventory level, demand and waste, where waste is modeled as a linear function of inventory with controlled random variation and bounded within an admissible interval. An initial set of 200 synthetic states is generated to balance diversity of the state space with the computational cost of KernelSHAP. From this set, 100 representative states are extracted for explanation. The primary baseline is obtained through controlled random sampling with a fixed seed, ensuring exact reproducibility. A complementary set of 100 centroids obtained via KMeans clustering is constructed as an ablation to maximize spatial coverage. Maintaining both extraction strategies allows testing whether the random baseline is already sufficiently representative.
 
-zero, since zero may correspond to meaningful operational
+Table 2 summarizes the descriptive statistics of the background sets. The two 100-state subsets exhibit closely aligned means and dispersions, and their pairwise distance distributions are nearly identical, providing quantitative evidence for their equivalent diversity.
 
-linkage between behavior and explanation. This procedure
+Table 2a. Descriptive statistics of the synthetic background and its representative subsets.
 
-conditions such as no inventory or no demand. Because
+| Dataset | Size | Mean inventory | Std inventory | Mean demand | Mean waste |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| Full set | 200 | 0.49 | 0.28 | 0.50 | 0.012 |
+| Random sampling | 100 | 0.47 | 0.28 | 0.50 | 0.011 |
+| KMeans centroids | 100 | 0.50 | 0.29 | 0.47 | 0.013 |
 
-enables a direct connection between the agent’s decision -
+[Figure - T39_coverage.png]
+*Figure 2a. Spatial distribution of the background in the inventory-demand plane. The full set of 200 states is shown in light tone, with the 100 random samples and the 100 KMeans centroids distinguished by different markers. Both 100-state sets cover the domain evenly, supporting the use of the random baseline.*
 
-inventory, demand, waste, and capacity - related variables
+[Figure - T39_pairwise_dist.png]
+*Figure 2b. Distribution of pairwise Euclidean distances within each 100-state subset. The two distributions nearly overlap, indicating equivalent diversity between the two extraction strategies.*
 
-making behavior and the corresponding explanations
+#### 3.3.2 Background Sensitivity
 
-may be correlated, SHAP values are i nterpreted as throughout the evaluation process.
+The stability of SHAP is evaluated through a systematic experimental grid covering three dimensions of variation. The first dimension is the origin of the background, contrasting a synthetic background drawn from a uniform distribution with a trajectory background extracted directly from the first steps of the test time series, normalized by product capacity and combined with initial inventory and waste rate to reflect the actual operational trajectory. The second dimension is the background size at three levels, with 100 as the baseline. The third dimension is the sampling strategy, comprising random sampling and KMeans-based centroids. The grid is implemented independently for both agents on the trained models and for both the macro three-dimensional case and the micro 660-dimensional case. For the macro case, KernelSHAP is adopted for its exactness in low dimensions, while for the micro case, Partition Explainer is chosen for its scalability through hierarchical clustering. All evaluations are performed on the same fixed set of test states from the medium scenario to ensure a fair comparison.
 
-associative feature attributions rather than causal effects.
+In the macro case, SHAP exhibits high stability with respect to size and sampling strategy within the same origin, but shows a systematic shift when the origin changes from synthetic to trajectory. Within synthetic backgrounds of any size, the rank correlation remains at the maximum, indicating no size effect. In contrast, any synthetic versus trajectory comparison yields a stable correlation below the maximum across all sizes, corresponding to a single rank swap among the three features. Feature coverage at a fixed threshold further reveals threshold sensitivity, with synthetic backgrounds yielding higher coverage than trajectory backgrounds despite high rank preservation.
 
-4. 1.3. Classical Inventory Baseline
+Table 2b. Sensitivity of macro-level SHAP with respect to background origin and size.
 
-The use of a structured background distribution helps reduce unrealistic out - of - distribution perturbations, but it does not To provide an operational reference for evaluating the
+| Background origin | Size | Rank correlation vs. baseline |
+| :--- | :---: | :---: |
+| Synthetic, random | 50, 100, 200 | 1.00 at all sizes |
+| Synthetic, KMeans | 50, 100, 200 | 1.00 at all sizes |
+| Trajectory, random | 50, 100, 200 | 0.87 at all sizes |
+| Trajectory, KMeans | 50, 100, 200 | 0.87 at all sizes |
 
-DRL agents, this study introduces a classical bas e - stock
+[Figure - T40_macro_sensitivity.png]
+*Figure 3a. Rank correlation of macro-level SHAP versus background size. Synthetic backgrounds remain at the maximum across all sizes, while trajectory backgrounds remain stably below, demonstrating size insensitivity but a systematic origin shift.*
 
-fully remove the influence of feature dependence.
+[Figure - T40_fcs_sensitivity.png]
+*Figure 3b. Feature coverage at the macro level across strategies and sizes. Synthetic backgrounds yield higher coverage than trajectory backgrounds at the same threshold, illustrating sensitivity of this metric to SHAP magnitude.*
 
-policy as a non - learning inventory - control baseline. This
+In the micro case with 660 features, the results present a contrasting pattern. Although the overall magnitude remains highly similar, the ranking of features is unstable with respect to any variation of the background. The average rank correlation remains near zero across all origins, sizes and sampling strategies, despite high cosine similarity and minimal mean absolute differences. The full micro grid with 50 test states requires over four hours of computation, reflecting the substantial cost of high-dimensional explanation.
 
-Therefo re, SHAP is used as a feature - space interpretation
+Table 2c. Sensitivity of micro-level SHAP with respect to background origin and size.
 
-baseline is used to examine whether the learned DRL
+| Background origin | Mean rank correlation | Magnitude similarity |
+| :--- | :---: | :---: |
+| Synthetic, random | approximately 0 | 0.94 - 0.99 |
+| Synthetic, KMeans | approximately 0 | 0.94 - 0.95 |
+| Trajectory, random | approximately 0.05 | 0.94 - 0.95 |
+| Trajectory, KMeans | approximately 0.04 | 0.94 - 0.95 |
 
-tool and is complemented by perturbation - based faithfulness
+[Figure - T40_micro_sensitivity.png]
+*Figure 4. Rank correlation of micro-level SHAP with 660 features versus background size. All curves fluctuate around zero across all sizes and strategies, indicating ranking instability in high dimensions despite preserved magnitude.*
 
-policies are competitive with a standard inventory
+#### 3.3.3 Validity of Perturbed States
 
-evaluation. The main implementation settings of SHAP are replenishment rule. For each product 𝑖, the target summarized in Table 2. inventory level is defined as:
+The validity of perturbed states generated during SHAP computation is verified against the physical constraints of the inventory problem, including bounds on inventory, demand and waste and the functional relationship between waste and inventory within a tolerance. The verification is performed on several thousand perturbed states per scenario for the macro case and on a thousand median-masked states for the micro case, covering three operational scenarios of increasing difficulty.
 
-Table 2. SHAP implementation configuration.
+Trajectory backgrounds achieve the maximum validity in all scenarios, while synthetic backgrounds achieve high but slightly lower validity that decreases under the most demanding conditions, with the lowest rate observed in the hard scenario. The micro-level median masking achieves full validity. The mean validity at the macro level remains above 96%, providing evidence that perturbed states are generally operationally feasible, while the hard synthetic case serves as a cautionary note.
 
-𝑆 𝑖 = 𝑑 ˉ 𝑖 + 𝑘 𝜎 𝑖
+Table 2d. Domain validity of perturbed states.
 
-Component Configuration where 𝑑
+| Scenario | Dimensionality | Background | Total states | Validity rate |
+| :--- | :---: | :---: | :---: | :---: |
+| Easy | 3 | Synthetic | 5000 | 95.5% |
+| Easy | 3 | Trajectory | 5000 | 100% |
+| Medium | 3 | Synthetic | 5000 | 98.8% |
+| Medium | 3 | Trajectory | 5000 | 100% |
+| Hard | 3 | Synthetic | 5000 | 84.5% |
+| Hard | 3 | Trajectory | 5000 | 100% |
+| Medium | 660 | Synthetic, median | 1000 | 100% |
 
-ˉ 𝑖 and 𝜎 𝑖 denote the mean and standard deviation of
+[Figure - T41_validity_rate.png]
+*Figure 5a. Domain validity rate of perturbed states. Trajectory backgrounds achieve the maximum in all three scenarios, while synthetic backgrounds achieve high validity in the easy and medium scenarios but a notably lower rate in the hard scenario, indicating higher feasibility of trajectory-based perturbations.*
 
-historical demand for product 𝑖, respectively. The
+[Figure - T41_waste_violation.png]
+*Figure 5b. Distribution of the waste residual for perturbed states in the medium scenario. The majority of the mass lies within the admissible interval, with only the tails exceeding the tolerance, illustrating the clipping mechanism and the source of violations.*
 
-SHAP variant KernelSHAP using shap.KernelExplainer
+#### 3.3.4 Consistent SHAP Implementation
 
-parameter 𝑘 is a safety factor that controls the trade - off
+Two complementary SHAP explainers are used consistently at different granularities, ensuring both reusability and scalability. The macro system-level analysis employs KernelSHAP on aggregated states, which is exact with a limited number of coalitions and requires only seconds per evaluation. The micro SKU-level analysis employs Partition Explainer on raw high-dimensional states with a partition mask and hierarchical clustering, which scales near-linearly and avoids the exponential explosion, requiring several minutes per evaluation. Both analyses use 100 representative background states drawn from 200 synthetic states with a fixed seed, complemented by trajectory ablations. The two levels are complementary: the macro level indicates which feature group drives the decision and the micro level indicates which specific product within that group contributes most.
 
-Explained output for
+Table 2e. Standardized configuration of the two SHAP methods.
 
-Selected - action Q - value 𝑄 (𝑠, 𝑎 ∗) between stockout risk and inventory cost. At each time
+| Criterion | Macro level | Micro level |
+| :--- | :--- | :--- |
+| Objective | Identify the feature group driving the decision | Identify the specific product driving the decision |
+| Input | Aggregated three-dimensional state | Raw 660-dimensional state |
+| Method | Exact Shapley values with limited coalitions | Hierarchical partitioning with near-linear scalability |
+| Background | 100 representatives from 200 synthetic states | 100 representatives from 660-dimensional sets |
+| Computation time | Seconds per evaluation | Minutes per evaluation |
 
-DQN Explained output for step 𝑡, the repl enishment quantity is computed as:
-
-Selected - action policy output 𝜋 (𝑎 ∗ ∣ 𝑠)
-
-A2C_mod
-
-∗
-
-Background distribution Representative normalized inventory states 𝑢
-
-𝑖 = max (0, 𝑆 𝑖 − 𝑥 𝑖 (𝑡))
-
-200 generated states, subsampled to 100 where 𝑥 𝑖 (𝑡) is the current inventory level of product 𝑖. The
-
-Background size
-
-representative samples resulting replenishment quantity is clipped to the Marginalization using the background
-
-Masking strategy normalized capacity range and mapped to the nearest
-
-distribution
-
-available discrete repleni shment action. In this study, 𝑘 is
-
-Aggregated features Inventory, Demand, Waste
-
-selected from:
-
-Top - k SKU - level/system - level SHAP
-
-Additional analysis
-
-analysis
-
-𝑘 ∈ {0. 5, 1. 0, 1. 5, 2. 0, 2. 5}
-
-Interpreted as associative attribution, not
-
-Correlated features
-
-causal effect
-
-The base - stock policy is evaluated under the same testing cycles, capacity constraints, and evaluation metrics as
+[Figure - T42_top20_micro.png]
+*Figure 6. Twenty most influential micro-level features in the medium scenario for the DQN agent. Bars are color-coded by feature group, demonstrating SKU-level drivers beyond the macro-level group.*
 
 4. Evaluation
-
-DQN and A2C_mod. The comparison reports total
 
 4. 1. Evaluation Schema reward, service level, holding cost, waste cost, ordering
 
