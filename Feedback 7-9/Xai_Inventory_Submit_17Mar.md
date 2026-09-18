@@ -404,6 +404,16 @@ Table 1c. Leakage audit summary.
 
 Full quantitative details, including per-product capacity deviations and the safety-factor grid, are provided as supplementary material.
 
+### 3.1.5 Product-Group Construction for Scalability Test (Task 5)
+
+To test scalability to the product-group level, the 220 SKUs were partitioned into three groups based on mean demand. The Fast group contains 73 high-velocity SKUs with high mean demand and rapid turnover, the Medium group contains 73 SKUs with intermediate demand, and the Slow group contains 74 low-demand SKUs with high coefficient of variation and low volume. Each group was trained independently with 1,000 chronological periods. The Slow group contains 74 SKUs because 220 is not divisible by three, ensuring no SKUs are discarded.
+
+[Figure 1]
+The learning curve shows the episode-averaged reward for A2C across the three groups. The Fast group remains stable around 0.18 with very low variance, indicating limited learning gain. The Slow group converges steadily around 0.15. The Medium group exhibits high variance and a clear degradation from early to late training, suggesting instability under the current hyperparameters.
+
+[Figure 2]
+The learning curve shows the episode-averaged reward for DQN across the three groups. All groups start from low or negative initial rewards and improve strongly over 600 episodes, reaching approximately 0.77 for Fast, 0.65 for Medium and 0.57 for Slow. The consistent upward trend demonstrates effective learning in each group, with Fast converging to the highest final reward and Slow the lowest.
+
 ℎ 𝑜𝑙𝑑
 
 3. 2. Reward - based Explanations 𝑟
@@ -1732,6 +1742,48 @@ the MSX - identified component set 𝑆 is removed, and the remaining value is r
 resulting changes in the model outputs. Three masking reduces Q - values or policy probabilities. Therefore, the strategies are compared: MoRF, Random, and LeRF. MoRF proposed XRL framework is supported by faithfulness masks the most relevant SHAP features first, LeR F masks evidence, particularly under more difficult inventory the least relevant features first, and Random serves as a sc enarios.
 
 baseline. For DQN, the output change is measured by the
+
+### 4.8 Scalability to Product-Group Level (Task 5)
+
+Scalability was evaluated by training A2C-mod and DQN independently on the three groups under identical settings of 600 episodes and 900 steps per episode with 14 discrete replenishment actions. All six models converged. For A2C, the mean reward over the final 100 episodes was 0.1807 for Fast, 0.0477 for Medium and 0.1514 for Slow. For DQN, the corresponding values were 0.7709 for Fast, 0.6508 for Medium and 0.5740 for Slow. DQN consistently outperformed A2C in every group, with differences of -0.59, -0.60 and -0.42, and showed improvements of 723% to 5,449% from the first 50 episodes, compared to only 1.48% for A2C Fast and a 79% decline for A2C Medium, indicating that the Medium group requires separate tuning. Results demonstrate that the framework is not hard-coded to 220 SKUs and scales to product-group granularity.
+
+[Figure 3]
+The combined learning curves compare A2C and DQN per group over 600 episodes. DQN curves are consistently above A2C curves after the early phase. The gap is largest for the Medium group and smallest for the Slow group, while all DQN groups show a steady increase and all A2C groups remain flat or slightly declining. This indicates a systematic advantage of DQN at reduced scale.
+
+[Figure 4]
+The bar chart compares the mean reward over the final 100 episodes for A2C and DQN in each group. In every group the DQN bar is three to four times higher than the corresponding A2C bar. The ranking Fast > Medium > Slow is preserved for both algorithms, but the absolute level is substantially higher for DQN.
+
+[Figure 5]
+The bar chart compares the mean stockout rate over the final 100 episodes. A2C shows markedly higher stockout rates, particularly for the Fast group, while DQN stockout rates are near zero in all groups. This indicates that DQN better prevents stockouts at the product-group level.
+
+[Figure 6]
+The bar chart compares the mean waste rate over the final 100 episodes. DQN waste rates are slightly higher than those of A2C in all groups, reflecting a trade-off between aggressive replenishment to avoid stockouts and increased waste.
+
+**Table 1 - Task 5: A2C on 3 SKU groups (last100)**
+
+| Group | Episodes | Reward_last100 | Stockout | Waste |
+| :--- | :---: | :---: | :---: | :---: |
+| Fast | 460 | 0.1807 | 0.1514 | 0.0103 |
+| Medium | 600 | 0.0477 | 0.0450 | 0.0195 |
+| Slow | 600 | 0.1514 | 0.0583 | 0.0169 |
+
+**Table 2 - Task 5: DQN on 3 SKU groups (last100)**
+
+| Group | Episodes | Reward_last100 | Stockout | Waste | Quantile |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| Fast | 600 | 0.7709 | 0.00008 | 0.0216 | 0.2023 |
+| Medium | 600 | 0.6508 | 0.00042 | 0.0217 | 0.3207 |
+| Slow | 600 | 0.5740 | 0.00238 | 0.0219 | 0.3929 |
+
+**Table 3 - Task 5: A2C vs DQN per group**
+
+| Group | A2C | DQN | Δ (A2C−DQN) | Winner |
+| :--- | :---: | :---: | :---: | :---: |
+| Fast | 0.1807 | 0.7709 | -0.5902 | DQN |
+| Medium | 0.0477 | 0.6508 | -0.6031 | DQN |
+| Slow | 0.1514 | 0.5740 | -0.4226 | DQN |
+
+Detailed results are provided in the supplementary material.
 
 5. Conclusion
 

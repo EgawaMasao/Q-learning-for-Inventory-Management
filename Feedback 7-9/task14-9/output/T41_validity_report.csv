@@ -1,0 +1,8 @@
+task,scenario,dim,bg,total,valid,rate
+T41,EASY,3,syn_random_100,5000,4775,0.955
+T41,EASY,3,traj_random_100,5000,5000,1.0
+T41,MEDIUM,3,syn_random_100,5000,4941,0.9882
+T41,MEDIUM,3,traj_random_100,5000,5000,1.0
+T41,HARD,3,syn_random_100,5000,4224,0.8448
+T41,HARD,3,traj_random_100,5000,5000,1.0
+T41,MEDIUM,660,syn_660_median10,1000,1000,1.0

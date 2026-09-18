@@ -1,0 +1,11 @@
+Aspect,Macro (KernelSHAP 3-dim),Micro (Partition 660-dim)
+Goal,Which group drives decision? (Inventory vs Demand vs Waste),Which SKU drives decision? (SKU 123)
+Input,"(N,3) aggregated [inv,sales,waste]","(N,660) raw [inv_0..219, sales_0..219, waste_0..219]"
+Explainer,shap.KernelExplainer,shap.PartitionExplainer
+Masker,None (coalition sampling),"shap.maskers.Partition(bg, max_samples=100)"
+Why chosen,"Exact Shapley, feasible for 3 dims (2^3=8)","Hierarchical O(N log N), avoids 2^660"
+Background,100 reps from 200 synthetic (seed 42) + traj ablation,100 reps from 100/200 synthetic 660-dim (seed 42)
+Config,"sampled_background (100,3), nsamples=auto(~2054), l1_reg=3","masker Partition(bg660, max_samples=100), hierarchical"
+Output,"(14,N,3) -> mean|SHAP| (3,)","(N,660,14) -> mean|SHAP| (660,)"
+Time,~20s / 50 states,~5-7m / 50 states (Full Q3)
+Ref code,XAI/SHAP-temp.ipynb:372,topk_shap_analysis.ipynb:446
