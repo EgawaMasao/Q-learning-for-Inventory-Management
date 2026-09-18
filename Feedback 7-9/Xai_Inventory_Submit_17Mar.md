@@ -1677,63 +1677,110 @@ Overall, the figure confirms that compatibility between the two explanation laye
 
 The results show that MSX - guided masking becomes more faithful when the threshold is sufficiently strict. In
 
-4. 7. Faithfulness Evaluation of Explanations
+4.7 Faithfulness Evaluation of Explanations
 
-particular, when 𝜆 ≥ 1. 5, the MEDIUM and HARD
+To complement the descriptive metrics in Section 4.6, this study evaluates the faithfulness of the generated explanations through perturbation-based tests. The underlying principle is that if the components or features identified as important are truly influential, their removal should produce larger changes in the model output than the removal of less relevant or randomly selected elements. This evaluation is applied to both reward-level explanations (MSX) and feature-level explanations (SHAP) and is designed to provide causal evidence that the explanations reflect functional dependence rather than merely descriptive association. All tests are conducted on the trained agents without retraining, using the same data partition and evaluation protocol.
 
-To complement the descriptive comparison metrics in
+4.7.1 Perturbation Protocol
 
-scenarios show substantially higher action flip rates under
+The protocol is designed to isolate the causal effect of the importance ranking while preserving the remainder of the state distribution. Each state consists of 660 dimensions formed by three consecutive blocks representing inventory, demand and waste, where waste is modelled as a linear function of inventory with controlled noise and bounded within the admissible interval. Three operational scenarios of increasing difficulty are examined by scaling demand intensity and waste rate, corresponding to easy, medium and hard conditions. Within each scenario, fifty test states are extracted from the normalized test sequence in combination with the initial inventory level, yielding one hundred and fifty states per agent and three hundred observations across the two agents. This size balances statistical power with the cost of repeated evaluation, as each random condition involves thirty repetitions.
 
-Section 4.6, this study further evaluates the faithfulness of
+Feature importance is determined by the mean absolute SHAP value obtained from the preceding micro-level analysis, which ranks all 660 features by their average influence across the test set. Three masking strategies are compared on the identical set of states and with the identical replacement mechanism. The Most Relevant First strategy removes features in descending order of SHAP importance, the Least Relevant First strategy follows the reverse order, and a random strategy removes the same number of features at random and serves as a calibrated baseline. The perturbation level is varied from one to ten features, corresponding to approximately 0.15 to 1.52 percent of the full space, a range chosen to be small enough to preserve the overall data manifold yet large enough to observe a measurable response. The replacement value is fixed at the median of one hundred background states generated from a controlled uniform distribution, a choice motivated by the need to erase information without introducing out-of-distribution values while maintaining operational feasibility. For the random strategy, each level is repeated thirty times and the result is summarized by the mean across repetitions, with the action-switching outcome determined by majority voting. A fixed random seed is used throughout to ensure full reproducibility.
 
-MSX - guided masking than under random maski ng. In the
+For the value-based agent, the output change is quantified as the relative decrease in the Q-value of the originally optimal action, which normalises for differences in absolute scale across states. For the actor-critic agent, the change is measured as the absolute decrease in the policy probability of the optimal action, reflecting a direct loss of confidence. The action switching rate is defined as the proportion of cases in which the optimal action index changes after perturbation, thereby capturing discrete decision shifts in addition to continuous output changes. All measures are averaged across the product dimension within a state to reflect portfolio-level behaviour.
 
-the generated explanations through perturbation - based tests.
+[Figure - task15-9_perturbation_with_CI.png]
+*Figure 20. Perturbation curves as a function of the number of masked features for the two agents across the three scenarios. The Most Relevant First condition consistently yields the largest output change, followed by the random condition, while the Least Relevant First condition produces the smallest change. Shaded bands represent dispersion across states, with precise confidence intervals reported in the accompanying tables.*
 
-HARD scenario, masking MSX - identified reward
+4.7.2 SHAP Faithfulness: Area Under Perturbation Curve and Confidence Intervals
 
-The goal is to examine whether the reward components or
+To summarise the cumulative effect of the perturbation process, the area under the perturbation curve is computed by trapezoidal integration across the ten successive masking levels, and an analogous area is computed for the action switching curve. This provides a compact index of faithfulness in which a larger area indicates a larger average degradation or a higher switching rate over the entire process. Uncertainty for the mean change and for the area is estimated by non-parametric bootstrap with one thousand resamples over the set of states, yielding 95% intervals, while the switching rate is equipped with Wilson intervals appropriate for binomial proportions near the boundary. This combination allows simultaneous assessment of continuous and discrete decision uncertainty.
 
-components changes the selected action in nearly all
+The empirical pattern follows the expected faithfulness ordering in all conditions. The Most Relevant First condition produces a positive and monotonically increasing change with the number of masked features, the random condition remains near zero, and the Least Relevant First condition yields a negative or near-zero change, indicating that removing the least important features does not harm and may slightly improve the evaluated value. The magnitude, however, differs markedly between architectures, with the actor-critic agent exhibiting changes approximately twice as large as those of the value-based agent. The action switching rate remains at zero across all eighteen conditions even at the maximum masking level, with Wilson intervals ranging from zero to approximately seven percent, indicating that the discrete decision is highly robust within the examined perturbation range.
 
-state features identified as important by RDX/MSX and
+Table 8 summarises the cumulative and representative point estimates. To keep the layout compact for the narrow paper format, the full set of 18 conditions is split into two complementary views. The first focuses on the integrated effect and the second on the change at the maximum masking level, while switching and interval details are summarised in the text rather than in the table.
 
-evaluated states, whereas random masking produces a much
+Table 8a. Area under perturbation curve by strategy (95% interval width <0.002).
 
-SHAP are functionally related to the agents’ ou tputs. If
+| Agent | Scenario | Most Relevant First | Random | Least Relevant First |
+| :--- | :--- | :---: | :---: | :---: |
+| Value-based | Easy | 0.014 | -0.001 | -0.010 |
+| Value-based | Medium | 0.011 | -0.001 | -0.010 |
+| Value-based | Hard | 0.010 | -0.001 | -0.011 |
+| Actor-critic | Easy | 0.024 | 0.007 | -0.020 |
+| Actor-critic | Medium | 0.024 | 0.006 | -0.0003 |
+| Actor-critic | Hard | 0.025 | 0.005 | 0.0002 |
 
-lower action flip rate. This indicates that MSX identifies
+Table 8b. Output change at maximum masking (10 features, ~1.5% of space).
 
-masking explanation - identified components or features
+| Agent | Scenario | Most Relevant First | Random | Least Relevant First |
+| :--- | :--- | :---: | :---: | :---: |
+| Value-based | Easy | 0.0023 | -0.00016 | -0.0011 |
+| Value-based | Medium | 0.0020 | -0.00011 | -0.0012 |
+| Value-based | Hard | 0.0017 | -0.00021 | -0.0013 |
+| Actor-critic | Easy | 0.0040 | 0.0013 | -0.0022 |
+| Actor-critic | Medium | 0.0039 | 0.0012 | -0.00003 |
+| Actor-critic | Hard | 0.0036 | 0.0010 | 0.00032 |
 
-reward components that are func tionally important to the
+The switching rate is zero in all conditions with Wilson intervals from zero to approximately seven percent, and 95% bootstrap intervals for the area and for the changes are narrow and do not overlap between Most Relevant First and random in any scenario, reinforcing the discriminability of the strategies.
 
-causes larger changes than masking random or less relevant
+[Figure - task15-9_asr_with_CI.png]
+*Figure 21. Action switching rate as a function of masking level. Across all six panels, the three strategies remain at zero at every level, demonstrating that the discrete decision of both agents is robust to removal of up to ten features within the examined range.*
 
-agent’s decision.
+4.7.3 Statistical Comparisons: Ordered Masking and Minimal Sufficient Guidance
 
-ones, the explanation can be considered more faithful to the model behavior. In contrast, the EASY scenario shows almost no action
+The superiority of the ordered conditions is tested at the level of individual states to distinguish systematic effects from differences in means alone. For each agent and scenario, the paired vector of differences between two strategies across the fifty states is examined with a non-parametric paired test that does not require normality, complemented by a paired parametric test as a reference. Effect size is quantified on the difference vector and correction for multiple comparisons is performed across the full family of tests. The procedure is applied both to the change at the maximum masking level and to the integrated area, ensuring that the conclusion does not depend on a single point on the curve.
 
-changes under either MSX - guided or random masking. This
+All comparisons of Most Relevant First against the random baseline and against the Least Relevant First condition reach significance after correction, with large to very large effect sizes. The integrated comparison yields the same conclusion, indicating that the advantage holds over the entire perturbation process and not merely at an isolated level. The only comparison with a moderate effect corresponds to the random versus Least Relevant First contrast for the actor-critic agent in the hard scenario, where the Least Relevant First change is near zero rather than clearly negative as in the other conditions.
 
-4. 7.1 Faithfulness Evaluation for RDX/MSX
+Beyond the ordered masking, a complementary test examines whether masking guided by a minimal sufficient set produces a larger change than masking a randomly selected set of the same size, thereby connecting feature-level and reward-level faithfulness. With a set size of five, the guided condition consistently outperforms the random condition across both agents and all scenarios with highly significant corrected values and large effects. With a size of two, the advantage remains significant but with a smaller effect, reflecting that removing too few features is insufficient to generate a substantial operational difference. Table 9 summarises the minimal-set comparison; the full family of ordered comparisons is reported in the supplementary material.
 
-is expected because the reward components are less
+Table 9. Minimal sufficient guidance versus random masking of identical size (selected conditions; full set in supplement).
 
-For RDX/MSX, the evaluation is conducted by masking conflicting in simple environments, and many action s have the reward components selected by MSX and observing similar reward values. Overall, the RDX/MSX faithfulness whether the agent’s selected action or value estimate results suggest that the explanation is more informative in changes. Given the decomposed value function: scenarios with stronger reward conflicts, especially in
+| Condition | Guided | Random | Difference | Corrected p | Effect size |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| Value-based, Easy, k=5 | 0.0014 | -0.00010 | 0.0016 | <0.001 | 3.8 |
+| Value-based, Medium, k=5 | 0.0010 | -0.00013 | 0.0011 | <0.001 | 3.1 |
+| Actor-critic, Easy, k=5 | 0.0027 | 0.00076 | 0.0019 | <0.001 | 2.8 |
+| Actor-critic, Hard, k=2 | 0.0024 | 0.00022 | 0.0022 | <0.001 | 3.9 |
 
-MEDIUM and HARD settings.
+4.7.4 Threshold for Meaningful Change
 
-𝑄 𝑡𝑜𝑡𝑎𝑙 = 𝑄 𝑠𝑒𝑟𝑣𝑖𝑐𝑒 + 𝑄 ℎ 𝑜𝑙𝑑𝑖𝑛𝑔 + 𝑄 𝑤𝑎𝑠𝑡𝑒 + 𝑄 𝑜𝑟 𝑑𝑒𝑟
+The definition of a meaningful change is placed in relation to the granularity of the action space and to the natural noise of the system. The action space is discretised into fourteen replenishment levels, with the smallest increment between consecutive levels equivalent to one half of one percent of storage capacity. On this basis, a relative change of one percent in the Q-value and an absolute change of one percent in policy probability are adopted as thresholds that are sufficiently large to exceed noise due to waste and sampling, while remaining small enough to retain operational relevance, as this level corresponds to approximately two minimal action steps. In addition to this continuous threshold, a change in the optimal action index is regarded as a discrete threshold of direct decision relevance.
 
-∗ 4.7.2 Faithfulness Evaluation for SHAP
+Applying the one-percent relative threshold reveals that no state exceeds the level in any of the eighteen conditions, including the Most Relevant First condition that produces the largest change. The average change at the maximum masking level ranges between approximately 0.16 and 0.40 percent, well below the adopted level. The discrete action-switching threshold yields the same result. This finding does not indicate a lack of faithfulness in the ranking, as the ordering between strategies remains highly significant, but suggests that the threshold is relatively high compared with the observed scale of change within the examined range and that a lower level or an extension to larger masking levels would be required to observe threshold exceedance. The threshold is therefore reported as a sensitivity parameter rather than a single fixed value.
 
-the MSX - identified component set 𝑆 is removed, and the remaining value is recomputed. The action flip rate of MSX For SHAP, f aithfulness is evaluated by perturbing the top - masking (𝐴𝐹 𝑅 𝑀𝑆𝑋) is then compared with a random masking ranked features identified by SHAP and measuring the
+Table 10. Proportion exceeding the one-percent threshold at maximum masking (Most Relevant First only).
 
-resulting changes in the model outputs. Three masking reduces Q - values or policy probabilities. Therefore, the strategies are compared: MoRF, Random, and LeRF. MoRF proposed XRL framework is supported by faithfulness masks the most relevant SHAP features first, LeR F masks evidence, particularly under more difficult inventory the least relevant features first, and Random serves as a sc enarios.
+| Agent | Scenario | Mean | SD | Proportion |
+| :--- | :--- | :---: | :---: | :---: |
+| Value-based | Easy | 0.0023 | 0.00044 | 0.00 |
+| Value-based | Hard | 0.0017 | 0.00081 | 0.00 |
+| Actor-critic | Easy | 0.0040 | 0.00009 | 0.00 |
+| Actor-critic | Hard | 0.0036 | 0.00059 | 0.00 |
 
-baseline. For DQN, the output change is measured by the
+[Figure - task15-9_threshold_hist.png]
+*Figure 22. Distribution of the output change at maximum masking for the Most Relevant First condition across the six panels. The dashed line indicates the one-percent threshold. The entire mass of each distribution lies to the left of the line, illustrating why the exceedance proportion is zero and suggesting calibration of the threshold to the empirical scale.*
+
+4.7.5 Consistency Across States
+
+Consistency is assessed through the distribution of the change across the fifty states within each condition, rather than relying on the mean alone. Descriptive measures including the mean, standard deviation, coefficient of variation and interquartile range are computed at the maximum masking level, and the distributions are visualised to allow assessment of heterogeneity. Systematic differences across scenarios are tested with a non-parametric test for independent groups, clarifying whether faithfulness depends on operational difficulty.
+
+The actor-critic agent exhibits low dispersion with coefficients of variation between approximately 0.02 and 0.17, indicating a relatively uniform response across states. The value-based agent shows increasing heterogeneity with difficulty, with the coefficient rising from approximately 0.19 in the easy scenario to 0.48 in the hard scenario, reflecting growing non-uniformity as operational pressure intensifies. The test across scenarios indicates significant differences for both agents, demonstrating that faithfulness is not entirely invariant to operating conditions but exhibits a modest decline in magnitude and an increase in dispersion when moving from easy to hard. The ordering between the three strategies, however, is preserved in every scenario, indicating that the faithfulness of the ranking is stable even though the absolute level fluctuates.
+
+Table 11. Consistency at maximum masking (Most Relevant First only).
+
+| Agent | Scenario | CV | IQR | Median |
+| :--- | :--- | :---: | :---: | :---: |
+| Value-based | Easy | 0.19 | 0.00075 | 0.0023 |
+| Value-based | Hard | 0.48 | 0.00130 | 0.0017 |
+| Actor-critic | Easy | 0.02 | 0.00008 | 0.0040 |
+| Actor-critic | Hard | 0.17 | 0.00057 | 0.0036 |
+
+[Figure - task15-9_per_state_violin.png]
+*Figure 23. Per-state distribution of the output change at maximum masking for the three strategies across the six panels. Each violin represents the full distribution of fifty observations together with its median and mean. The violins for the actor-critic Most Relevant First condition are narrow and elevated, indicating high consistency, while those for the value-based agent widen progressively from easy to hard, reflecting the increase in dispersion quantified in the accompanying table.*
+
+Together, the perturbation, statistical, threshold and consistency analyses provide convergent evidence that the feature ranking is functionally faithful in terms of ordering, that the advantage over random and reverse baselines is statistically robust and practically sizable when integrated over the curve, that the minimal sufficient guidance adds complementary evidence across explanation spaces, and that the ranking is stable while its absolute magnitude and dispersion depend modestly on operational difficulty. These results directly address the five faithfulness requirements and establish that the proposed explanations are not merely descriptive but are grounded in measurable model behaviour, particularly under the more demanding inventory conditions.
 
 ### 4.8 Scalability to Product-Group Level (Task 5)
 
@@ -1777,45 +1824,56 @@ The bar chart compares the mean waste rate over the final 100 episodes. DQN wast
 
 Detailed results are provided in the supplementary material.
 
+### 4.9 Sensitivity to Action Space Resolution
+
+The preceding analyses assume a fixed discretization of the replenishment decision into fourteen levels. To assess whether the conclusions depend on this specific granularity, a systematic sensitivity study was conducted across three resolutions representing coarse, baseline and fine discretizations. The coarse condition employs seven levels ranging from no replenishment to full replenishment with sparse intermediate steps, the baseline retains the fourteen levels used throughout the study, and the fine condition employs twenty-eight levels with dense interpolation between conservative and aggressive actions. The same inventory dynamics, reward structure and state representation were preserved across all conditions, and the two agent families were trained independently under each resolution. For the actor-critic family the hidden dimension was retained at its individually tuned optimum, while for the value-based family the corresponding optimum was retained, since equalizing capacity would have degraded performance and obscured the effect of resolution itself. All evaluations were performed deterministically on the held-out test sequence with a fixed seed, using a greedy policy without exploration, so that observed differences can be attributed to resolution rather than stochastic variation.
+
+Operational performance was measured through a deterministic rollout over the full test horizon, recording average reward together with its constituent cost terms. The evaluation reproduces the exact environment transition used during training, thereby preserving consistency between learning and testing. From an explainability perspective, the same three complementary lenses employed earlier were applied in a standardized manner. At the feature level, Shapley-based attributions were computed with a reduced background and a fixed number of coalitions to keep computation tractable while retaining the kernel-based formulation, and the resulting feature coverage was summarized. At the objective level, the difference between the best and second-best actions was decomposed into service, holding, waste and balance components through a one-step lookahead, from which objective coverage, the size of the minimal sufficient set and its stability under threshold variation were derived. These measures jointly capture whether explanations remain sparse and stable when granularity changes.
+
+The performance results reveal a non-monotonic relationship between resolution and effectiveness, and the pattern differs markedly between the two families. The value-based agent maintains high reward across all resolutions and benefits slightly from finer granularity, whereas the actor-critic agent attains its best performance at the baseline resolution and degrades substantially under both the coarser and finer discretizations due to a sharp increase in overstock. The finding indicates that a moderate resolution provides the most favorable trade-off for the policy-based method, while the value-based method is more tolerant to extremes when the levels are appropriately spaced. The accompanying cost terms confirm that the degradation of the actor-critic agent at the extremes is operationally meaningful and not an artifact of reward scaling.
+
+**Table 4a. Operational performance on the held-out test set across resolutions.**
+
+| Agent | Resolution | Reward | Overstock | Waste |
+| :--- | :---: | :---: | :---: | :---: |
+| Actor-critic | 7 | -0.13 | 0.96 | 0.024 |
+| Actor-critic | 14 | 0.38 | 0.00 | 0.013 |
+| Actor-critic | 28 | -0.12 | 0.84 | 0.024 |
+| Value-based | 7 | 0.80 | 0.00 | 0.024 |
+| Value-based | 14 | 0.60 | 0.00 | 0.019 |
+| Value-based | 28 | 0.82 | 0.01 | 0.024 |
+
+*The table reports the mean over the full test horizon under a deterministic greedy policy. Higher reward and lower costs are preferable. The value-based agent is reported with its tuned capacity and the actor-critic agent with its own, as equalizing capacity would have disadvantaged the former.*
+
+[Figure - task4_reward_vs_actions.png]
+*Figure 12a. Average reward on the test set as a function of resolution. The value-based agent remains in the high-reward regime across all three resolutions with a modest advantage for the fine discretization, while the actor-critic agent exhibits a pronounced peak at the baseline resolution and declines at both extremes.*
+
+Explanation robustness, in contrast, does not follow the performance trend and shows no monotonic dependence on granularity. Feature-level sparsity remains high in all conditions, with only a small fraction of features exceeding the significance threshold, and the average magnitude of attributions differs by less than an order of magnitude between families. Objective coverage and the size of the minimal sufficient set vary less systematically, although the fine resolution for the actor-critic agent requires on average more objectives to reach the same explanatory threshold. Stability under threshold perturbation is highest for the coarse resolution of the actor-critic agent and remains within a moderate band for the value-based agent across all resolutions. Taken together, the results indicate that while performance is sensitive to resolution in a family-dependent manner, the sparsity and relative stability of explanations are largely preserved, with the notable exception of increased explanatory complexity under very fine discretization for the policy-based method.
+
+**Table 4b. Robustness of explanations across resolutions.**
+
+| Agent | Resolution | Feature coverage | Objective coverage | Minimal set size | Stability |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| Actor-critic | 7 | 0.00 | 0.63 | 1.00 | 90.7 |
+| Actor-critic | 14 | 0.00 | 0.28 | 1.01 | 50.0 |
+| Actor-critic | 28 | 0.00 | 0.59 | 2.68 | 59.8 |
+| Value-based | 7 | 0.02 | 0.42 | 1.18 | 58.8 |
+| Value-based | 14 | 0.00 | 0.29 | 1.51 | 52.0 |
+| Value-based | 28 | 0.02 | 0.39 | 1.70 | 60.1 |
+
+*Feature coverage is the fraction of features whose absolute attribution exceeds the significance threshold; objective coverage is the analogous fraction for reward components; minimal set size is the average cardinality of the smallest sufficient explanation; stability is the Jaccard-based preservation under threshold variation. Values are averaged over the test horizon under the same deterministic evaluation.*
+
+[Figure - task4_fcs_vs_actions.png]
+*Figure 12b. Feature coverage as a function of resolution. Both families remain in the sparse regime, indicating that only a small subset of features is deemed significant irrespective of granularity.*
+
+[Figure - task4_stability_vs_actions.png]
+*Figure 12c. Stability of the minimal sufficient set as a function of resolution. The value-based agent shows a relatively flat profile, while the actor-critic agent varies more markedly, with the coarse resolution being the most stable.*
+
+Overall, the sensitivity study demonstrates that operational effectiveness and explanatory characteristics respond differently to resolution. The fourteen-level discretization represents a balanced choice for the actor-critic family, whereas the value-based family tolerates both coarser and finer discretizations when level spacing is appropriate. The preservation of sparsity and moderate stability across resolutions supports the generalizability of the earlier explanatory conclusions, while the increase in minimal set size under very fine granularity for the policy-based agent highlights a practical limit where finer control comes at the cost of more complex justifications.
+
 5. Conclusion
 
-relative decrease in the selected - action Q - value:
-
-∗ ∗ 𝑄 (𝑠, 𝑎) − 𝑄 This study proposes a unified Explainable 𝑚𝑎𝑠𝑘𝑒𝑑 (𝑠, 𝑎)
-
-Δ 𝑄 (𝑘) =
-
-∗ Reinforcement Learning (XRL) framework for large - scale
-
-∣ 𝑄 (𝑠, 𝑎) ∣ + 𝜖
-
-inventory management, aiming to systematically analyze the
-
-For A2C_mod, the output change is measured by the
-
-decision - making mechanisms of two representative DRL
-
-decrease in the selected - action probability:
-
-architectures, DQN and A2C_ mod. By integrating Reward Difference Explanation (RDX), Minimal Sufficient
-
-∗ ∗
-
-Δ 𝜋 (𝑘) = 𝜋 (𝑎 ∣ 𝑠) − 𝜋 𝑚𝑎𝑠𝑘𝑒𝑑 (𝑎 ∣ 𝑠) Explanation (MSX), and SHAP, the framework enables The action switching rate (𝐴𝑆𝑅) is also used to measure multi - level interpretation, including trade - offs in the reward how often the final selected action changes after fea ture space, compact justification sets derived from MSX, and the
-
-contri bution levels of state features. Experimental results
-
-masking. Figure 20 presents the perturbation curves for
-
-reveal clear structural differences between the two
-
-SHAP faithfulness verification under MoRF, Random, and
-
-architectures. A2C_mod demonstrates the ability to
-
-LeRF masking strategies.
-
-reallocate the importance of objectives as environmental complexity increases, indicating flexible policy adaptation.
+This study proposes a unified Explainable Reinforcement Learning (XRL) framework for large-scale inventory management, aiming to systematically analyze the decision-making mechanisms of two representative DRL architectures, DQN and A2C_mod. By integrating Reward Difference Explanation (RDX), Minimal Sufficient Explanation (MSX), and SHAP, the framework enables multi-level interpretation, including trade-offs in the reward space, compact justification sets derived from MSX, and the contribution levels of state features. Experimental results reveal clear structural differences between the two architectures. A2C_mod demonstrates the ability to reallocate the importance of objectives as environmental complexity increases, indicating flexible policy adaptation.
 
 In contrast, DQN exhibits more stable but less adaptive decision patterns, with a tendency to rely on a narrower set of dominant objectives. SHAP analysis at both global and local levels further confirms that A2C_mod distributes attentio n more broadly across state features, whereas DQN primarily focuses on inventory and demand signals. These findings suggest that explanation stability and decision adaptability are architecture - dependent properties rather than merely reflections of perform ance differences
 

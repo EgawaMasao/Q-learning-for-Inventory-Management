@@ -139,11 +139,11 @@ def load_dqn(num_actions, ckpt_dir, hidden=128):
 *   **Deterministic:** Single seed 42, `argmax` rollout, `baseline_median` cố định — đáp ứng yêu cầu không random mỗi lần chạy khác.
 *   **Tái dụng code đã kiểm chứng:** 100% logic từ 3 thư mục gốc, không viết lại reward/state.
 
-**Deliverable Task 4:**
-*   `task 4/task4_performance_robustness_comparison.csv` (6 dòng, cột `Algorithm,Actions,Hidden,Ckpt,reward,stockout,waste,overstock,quantile,FCS,meanAbsSHAP,OCS,MSX_mean_size,Stability`)
-*   `task 4/task4_performance_robustness_comparison.md` (bảng Markdown sẵn paste báo cáo, footnote hidden + ckpt)
-*   `task 4/task4_reward_vs_actions.png`, `task4_fcs_vs_actions.png`, `task4_stability_vs_actions.png` (300dpi)
-*   Notebook `task 4/Task4_Comparison_Performance_XAI.ipynb` (15 cells, bạn tự chạy ~30-60 phút cho rollout + ~1-2h nếu chạy full SHAP 50 states)
+**Deliverable Task 4 (lưu vào `task 4/output/` theo yêu cầu):**
+*   `task 4/output/task4_performance_robustness_comparison.csv` (6 dòng, cột `Algorithm,Actions,Hidden,Ckpt,reward,stockout,waste,overstock,quantile,FCS,meanAbsSHAP,OCS,MSX_mean_size,Stability`)
+*   `task 4/output/task4_performance_robustness_comparison.md` (bảng Markdown sẵn paste báo cáo, footnote hidden + ckpt)
+*   `task 4/output/task4_reward_vs_actions.png`, `task4_fcs_vs_actions.png`, `task4_stability_vs_actions.png` (300dpi)
+*   Notebook `task 4/Task4_Comparison_Performance_XAI.ipynb` + `Task4_Comparison_Performance_XAI Fast.ipynb` (15 cells, bản Fast `BG 20 + nsamples 500` ~10-15 phút)
 
 ---
 
@@ -167,9 +167,9 @@ Notebook chạy tuần tự: `Env(42) → Config → Model defs → Load 6 ckpt 
 
 1. `Feedback 7-9/task12-9/task 4/plan_task4.md` (file này — đã cập nhật giữ hidden 128/32, single-seed, không retrain)
 2. `Feedback 7-9/task12-9/task 4/Task4_Comparison_Performance_XAI.ipynb` (15 cells, load 6 ckpt, rollout + SHAP/RDX/faithfulness, xuất bảng)
-3. `Feedback 7-9/task12-9/task 4/task4_performance_robustness_comparison.csv` (khi bạn chạy notebook)
-4. `Feedback 7-9/task12-9/task 4/task4_performance_robustness_comparison.md` (bảng Markdown)
-5. `Feedback 7-9/task12-9/task 4/task4_reward_vs_actions.png` (và 2 PNG còn lại)
+3. `Feedback 7-9/task12-9/task 4/output/task4_performance_robustness_comparison.csv` (khi bạn chạy notebook)
+4. `Feedback 7-9/task12-9/task 4/output/task4_performance_robustness_comparison.md` (bảng Markdown)
+5. `Feedback 7-9/task12-9/task 4/output/task4_reward_vs_actions.png` (và 2 PNG còn lại)
 
 ---
 
