@@ -10,7 +10,7 @@ Dac Hoang Nguyen, Egawa Masao, Viet Pham Quoc Le, Nhu Tai Do
 
 Abstract:
 
-Inventory management requires balancing demand fulfillment, cost reduction, and waste minimization. While Deep Reinforcement Learning (DRL) optimizes these systems, its black - box nature limits interpretability and operational trust. This study proposes an Explainable Reinforcement Learning (XRL) framework integrating Reward Difference Explanation (RDX), Minimal Sufficient Explanation (MSX), and SHapley Additive exPlanations (SHAP) to analyze multi - product replen ishment system. Utilizing an inventory simulation with DQN and A2C_mod agents, we introduce a reward decomposition mechanism aligned with core business objectives. A classical base - stock policy serves as an operational baseline. Furthermore, SHAP is extended via top - k feature - level analysis, and perturbation - based faithfulness tests are introduced to validate explanations by masking key components. Evaluated on the Instacart dataset (220 products), results reveal distinct operational trade - offs. While the base - stock policy provides a strong reference, DRL agents prioritize service levels and stockout reduction. RDX and MSX effectively clarify reward - space trade - offs, whereas SHAP provides complementary feature - space evidence. Overall, this multi - level XRL framework enhances the transparency of portfolio - level DRL replenishment analysis.
+Inventory management requires balancing demand fulfillment, cost reduction, and waste minimization. While Deep Reinforcement Learning (DRL) optimizes these systems, its black - box nature limits interpretability; without expert validation, operational trust remains to be established. This study proposes an Explainable Reinforcement Learning (XRL) framework integrating Reward Difference Explanation (RDX), Minimal Sufficient Explanation (MSX), and SHapley Additive exPlanations (SHAP) to analyze a multi - product replenishment system. Utilizing an inventory simulation with DQN and A2C_mod agents, we introduce a reward decomposition mechanism aligned with core business objectives. A classical base - stock policy serves as an operational baseline. Furthermore, SHAP is extended via top - k feature - level analysis, and perturbation - based faithfulness tests are introduced to validate explanations by masking key components. Evaluated on the Instacart dataset (220 products), results reveal distinct operational trade - offs. While the base - stock policy provides a strong reference, DRL agents prioritize service levels and stockout reduction. RDX and MSX effectively clarify reward - space trade - offs, whereas SHAP provides complementary feature - space evidence. Overall, this multi - level XRL framework enhances transparency of portfolio - level DRL replenishment analysis; its usefulness for decision support requires future expert validation (see Limitations).
 
 Keywords: Explainable Reinforcement Learning, Inventory Management, Deep Q - Network, Advantage Actor - Critic, Reward Decomposition, SHAP.
 
@@ -1942,75 +1942,63 @@ Explanation robustness, in contrast, does not follow the performance trend and s
 
 Overall, the sensitivity study demonstrates that operational effectiveness and explanatory characteristics respond differently to resolution. The fourteen-level discretization represents a balanced choice for the actor-critic family, whereas the value-based family tolerates both coarser and finer discretizations when level spacing is appropriate. The preservation of sparsity and moderate stability across resolutions supports the generalizability of the earlier explanatory conclusions, while the increase in minimal set size under very fine granularity for the policy-based agent highlights a practical limit where finer control comes at the cost of more complex justifications.
 
+### 4.10 Managerial Case Studies and Interpretation
+
+Perturbation-based tests establish faithfulness of explanations to model behavior, yet faithfulness does not entail usefulness or understandability for practitioners. Domain-expert evaluation remains the ideal criterion for assessing clarity, usefulness, and consistency, but such evaluation requires dedicated access to inventory professionals and structured elicitation protocols that were not feasible within the present study scope. As an alternative that preserves practical relevance without requiring external validation, this section translates the preceding quantitative findings into managerial case studies. The approach follows the common practice in explainable decision-support literature of complementing statistical faithfulness with illustrative, operationally grounded narratives. Three cases are selected to cover complementary explanatory lenses: reward-space trade-offs, minimal justification sets, and feature-space attribution.
+
+Table 12 summarizes the three cases and the corresponding managerial questions. To maintain readability within the narrow column format, quantitative details are consolidated into compact tables and interpreted in the accompanying text rather than enumerated inline.
+
+**Table 12. Overview of illustrative managerial cases.**
+
+| Case | Lens | Operational context | Managerial question |
+| :--- | :--- | :--- | :--- |
+| 1 | Reward trade-off | Stable versus pressured regimes | When should cost saving outweigh service maximization? |
+| 2 | Minimal justification | Low versus high inventory pressure | What single reason suffices to justify the order decision? |
+| 3 | Feature attribution | Portfolio of 220 products | Which products merit focused monitoring? |
+
+[Figure - task47_case_overview.png]
+*Figure 13. Conceptual overview of the three managerial cases. The left panel contrasts reward contributions in stable and pressured regimes, the central panel illustrates how the minimal sufficient set shifts with inventory pressure, and the right panel maps high-attribution products within the portfolio.*
+
+#### Case 1: Balancing service fulfillment against holding costs
+
+The first case examines how reward-space explanations clarify the operational trade-off between maintaining service levels and controlling holding costs. Under stable conditions with ample capacity and low perishability, both architectures converge on aggressive replenishment and the service component dominates the reward difference. Under pressured conditions with high inventory, elevated demand, and increased perishability, the two architectures diverge: the actor-critic agent attenuates ordering intensity and reduces holding-cost exposure, whereas the value-based agent continues to prioritize service. For management, the explanation does not prescribe a universally correct choice but makes the underlying compromise explicit. A decision-maker preferring cost containment can favor the more conservative policy, while one prioritizing stockout avoidance can favor the service-oriented policy, with the quantitative trade-off rendered transparent.
+
+#### Case 2: Concise justification for order decisions
+
+The second case addresses the need for concise, auditable justifications. Minimal sufficient sets identify the smallest subset of reward components that still rationalizes the chosen action. The actor-critic agent requires only the service component under low and moderate pressure but shifts to the holding component under high pressure, indicating context-dependent adaptation. The value-based agent exhibits a stable pattern centered on the holding component across all regimes, reflecting a less flexible but highly consistent logic. From a managerial perspective, this translates into a one-sentence rationale that varies with operating conditions for the adaptive agent and remains invariant for the stable agent. Such brevity supports operational communication without requiring technical exposition.
+
+#### Case 3: Identifying products that drive decisions
+
+The third case moves from system-level to product-level attribution. Aggregated views suggest uniform importance across the portfolio, whereas the disaggregated analysis reveals strong concentration on a small subset of products. Table 13 characterizes the most influential products alongside a representative high-demand product for contrast. The associated figure visualizes their demand variability and capacity constraints.
+
+**Table 13. Characteristics of products with highest attribution versus a high-demand reference.**
+
+| Product | Mean demand | Variability (CV) | Capacity |
+| :---: | :---: | :---: | :---: |
+| SKU 64 | 0.66 | 1.46 | 7 |
+| SKU 163 | 1.22 | 1.27 | 12 |
+| SKU 46 | 2.82 | 1.13 | 28 |
+| SKU 155 | 1.60 | 1.15 | 15 |
+| SKU 57 (ref.) | 22.6 | 0.45 | 208 |
+
+[Figure - task47_sku_profile.png]
+*Figure 14. Profile of high-attribution products. The figure contrasts mean demand, variability, and capacity for the top-attribution products against the highest-demand reference, highlighting the divergence between sales volume and explanatory influence.*
+
+The products with the largest attribution are not the highest-volume items but rather low-volume, high-variability products with small capacities. The correlation between average demand and attribution magnitude is negligible, and stability analysis shows that the value-based agent consistently focuses on the same small set, while the actor-critic agent exhibits moderate reallocation across operating regimes. Managerially, this suggests that monitoring effort is more effectively allocated to volatile, capacity-constrained items that are prone to unexpected stockouts, rather than exclusively to best-selling items. The concentration of attribution on a small subset enables targeted attention without requiring continuous oversight of the full portfolio.
+
+Taken together, the three cases demonstrate that explanations can be rendered in operational language and linked to concrete actions, including policy selection, concise justification, and focused monitoring. In the absence of direct expert validation, these narratives serve as an interim bridge between statistical faithfulness and practical usefulness. Claims regarding trust are therefore moderated to transparency, with usefulness deferred to future structured expert assessment.
+
 5. Conclusion
 
 This study proposes a unified Explainable Reinforcement Learning (XRL) framework for large-scale inventory management, aiming to systematically analyze the decision-making mechanisms of two representative DRL architectures, DQN and A2C_mod. By integrating Reward Difference Explanation (RDX), Minimal Sufficient Explanation (MSX), and SHAP, the framework enables multi-level interpretation, including trade-offs in the reward space, compact justification sets derived from MSX, and the contribution levels of state features. Experimental results reveal clear structural differences between the two architectures. A2C_mod demonstrates the ability to reallocate the importance of objectives as environmental complexity increases, indicating flexible policy adaptation.
 
 In contrast, DQN exhibits more stable but less adaptive decision patterns, with a tendency to rely on a narrower set of dominant objectives. SHAP analysis at both global and local levels further confirms that A2C_mod distributes attentio n more broadly across state features, whereas DQN primarily focuses on inventory and demand signals. These findings suggest that explanation stability and decision adaptability are architecture - dependent properties rather than merely reflections of perform ance differences
 
-Although the proposed framework provides structured
-
-Fig 20. Perturbation curves for SHAP faithfulness insights into reasoning in both reward space and feature
-
-space, several limitations point to directions for future
-
-verification under MoRF, Random, and LeRF masking.
-
-research. First, explanation robustness should be evaluated
-
-The results generally follow the expected faithfulness across multiple random seeds using dedicated stability pattern: metrics to distinguish intrinsic architectural characteristics
-
-from variability caused by stochastic training processes.
-
-𝐷𝑟𝑜 𝑝 𝑀𝑜𝑅𝐹 > 𝐷𝑟𝑜 𝑝 𝑅𝑎𝑛𝑑𝑜𝑚 > 𝐷𝑟𝑜 𝑝 𝐿𝑒𝑅𝐹 Second, future studies should extend SHAP analysis beyond For DQN, masking the most relevant SHAP features aggregated features to more f ine - grained product - level and produces larger output changes than masking random or least system - level representations to mitigate information loss due
-
-to dimensionality reduction. Third, systematic validation by
-
-relevant features. This effect beco mes clearer in the
-
-domain experts is needed to assess the alignment between the
-
-MEDIUM and HARD scenarios, where the selected action is
-
-identified trade - offs and feature allocati ons and real - world
-
-more likely to change after MoRF masking. This suggests
-
-managerial reasoning. In addition to methodological
-
-that the top - ranked SHAP features are functionally related to
-
-extensions, applying the framework to other DRL algorithms
-
-DQN’s Q - value estimation and action selection. For such as PPO or SAC would enable assessment of the A2C_mod, the selected action remains more stable, with generalizability of the explanation mechanisms across limited action switching across scenarios. However, the policy - gradient and ac tor - critic variants. Furthermore,
-
-incorporating richer operational constraints such as budget
-
-selected - action probability still decreases more strongly
-
-limits, delivery lead times, and supply chain risks would
-
-under MoRF than under Random or LeRF masking. This
-
-enhance the practical applicability of the model.
-
-indicates that SHAP - identified features affect t he confidence of the policy, even when the final selected action does not
+Although the proposed framework provides structured insights into reasoning in both reward space and feature space, several limitations point to directions for future research. First, explanation robustness should be evaluated across multiple random seeds using dedicated stability metrics to distinguish intrinsic architectural characteristics from variability caused by stochastic training processes. Second, future studies should extend SHAP analysis beyond aggregated features to more fine-grained product-level representations to mitigate information loss due to dimensionality reduction. Third, systematic validation by domain experts is needed to assess the alignment between the identified trade-offs and feature attributions and real-world managerial reasoning. Perturbation-based faithfulness establishes that explanations are faithful to model behavior, but not that they are useful or understandable to managers; claims about trust are therefore moderated to transparency. The managerial case studies presented in Section 4.10 serve as an interim, illustrative translation in the absence of such expert evaluation, and future work will conduct structured expert assessment of clarity, usefulness, and consistency and translate the present cases into an interactive decision-support interface. In addition to methodological extensions, applying the framework to other DRL algorithms such as PPO or SAC would enable assessment of the generalizability of the explanation mechanisms across policy-gradient and actor-critic variants. Furthermore, incorporating richer operational constraints such as budget limits, delivery lead times, and supply chain risks would enhance the practical applicability of the model.
 
 CRediT author statement
 
-change. Overall, the perturbation - based results provide
-
-Dac Hoang Nguyen: Conceptualization of the review
-
-empirical evidence that the proposed explanations are not
-
-article, Literature search, Writing the manuscript as the
-
-merely descriptive. RDX/MSX identifies reward
-
-main author and corresponding author; Egawa Masao,
-
-components whose remov al can change the selected action, Viet Pham Quoc Le: Reviewing, Data synthesis, Critical while SHAP identifies state features whose perturbation feedback; Nhu Tai Do: Editing, Refining the discussion
+Dac Hoang Nguyen: Conceptualization of the review article, Literature search, Writing the manuscript as the main author and corresponding author; Egawa Masao, Viet Pham Quoc Le: Reviewing, Data synthesis, Critical feedback; Nhu Tai Do: Editing, Refining the discussion
 
 and c onclusions.
 
