@@ -1,0 +1,6 @@
+seed,checkpoint_dir,checkpoint,step,episode,prefix
+42,C:\GitHub\Q-learning-for-Inventory-Management\Feedback 23-11\checkpoints_a2c_42,ckpt-53,17490,530,C:\GitHub\Q-learning-for-Inventory-Management\Feedback 23-11\checkpoints_a2c_42\ckpt-53
+123,C:\GitHub\Q-learning-for-Inventory-Management\Feedback 23-11\A2C_mod_123\checkpoints,ckpt-60,19800,600,C:\GitHub\Q-learning-for-Inventory-Management\Feedback 23-11\A2C_mod_123\checkpoints\ckpt-60
+256,C:\GitHub\Q-learning-for-Inventory-Management\Feedback 23-11\A2C_mod_256\checkpoints,ckpt-60,19800,600,C:\GitHub\Q-learning-for-Inventory-Management\Feedback 23-11\A2C_mod_256\checkpoints\ckpt-60
+512,C:\GitHub\Q-learning-for-Inventory-Management\Feedback 23-11\checkpoints_a2c_512,ckpt-60,19800,600,C:\GitHub\Q-learning-for-Inventory-Management\Feedback 23-11\checkpoints_a2c_512\ckpt-60
+1024,C:\GitHub\Q-learning-for-Inventory-Management\Feedback 23-11\checkpoints_a2c_1024,ckpt-60,19800,600,C:\GitHub\Q-learning-for-Inventory-Management\Feedback 23-11\checkpoints_a2c_1024\ckpt-60
