@@ -1,5 +1,6 @@
-Task 1
-Vấn đề: Chưa chứng minh feature importance ổn định qua các lần huấn luyện độc lập (independent training runs).
-Việc cần làm: Chạy SHAP (macro + top-k micro) trên checkpoint của cả 5 seed (42,123,256,512,1024); báo cáo Jaccard/Spearman top-k giữa các seed, mean ± SD |SHAP| theo feature. Nếu seed-256 của A2C_mod bị collapse thì báo cáo riêng.
-Loại việc: Thực nghiệm
+Task 2
+Vị trí trong bài báo: §3.2 'A2C_mod Algorithm…', Table 2
+Vấn đề: A2C_mod khác A2C chuẩn; cần mô tả đầy đủ quy trình học, động cơ lý thuyết, và so sánh với A2C chuẩn.
+Việc cần làm: Thêm Algorithm box (pseudo-code) + phương trình actor target p_new; giải thích động cơ. Huấn luyện A2C chuẩn (5 seed) và thêm 1 cột vào Table 7. Lưu ý mâu thuẫn: Table 2 ghi actor 3 lớp ×32, văn bản ghi actor 4 lớp + critic 2 lớp → sửa cho khớp (xem C-02).
+Loại việc: Thực nghiệm + Viết
 Ưu tiên Cao
