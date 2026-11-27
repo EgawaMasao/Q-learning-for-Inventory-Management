@@ -1,0 +1,6 @@
+check,agent,bg,valid,total,valid_rate
+T41_anchor_continuity,Shared,syn_random_100,4284,5000,0.8568
+HARD_rollout_states,DQN,syn_random_100,2593,5000,0.5186
+HARD_rollout_states,DQN,traj_rollout_100,4962,5000,0.9924
+HARD_rollout_states,A2C_mod,syn_random_100,3820,5000,0.764
+HARD_rollout_states,A2C_mod,traj_rollout_100,5000,5000,1.0

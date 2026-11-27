@@ -1,0 +1,5 @@
+agent,scenario,bg,inv_shap,demand_shap,waste_shap,rank_order,fcs_001,elapsed_s
+DQN,HARD,syn_random_100,0.011245690083033626,0.003141068733678687,0.0014745436198920726,Inventory > Demand > Waste,0.3333333333333333,23.81
+DQN,HARD,traj_rollout_100,0.0029831937148479667,0.00044182091503670054,7.677668800932307e-05,Inventory > Demand > Waste,0.0,44.8
+A2C_mod,HARD,syn_random_100,0.009965054986260675,0.08123103805012007,0.00023291769086797025,Demand > Inventory > Waste,0.3333333333333333,1.91
+A2C_mod,HARD,traj_rollout_100,0.0,0.0,0.0,Inventory > Demand > Waste,0.0,1.57

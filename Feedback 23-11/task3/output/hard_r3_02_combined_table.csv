@@ -1,0 +1,5 @@
+scenario,level,agent,comparison,spearman,cosine,mad,jaccard_top20,notes
+HARD,"Macro (3-dim, KernelSHAP)",DQN,Synthetic vs. Trajectory (100% valid),1.0,0.9872,0.00412,,Syn: Inventory > Demand > Waste | Traj: Inventory > Demand > Waste
+HARD,"Macro (3-dim, KernelSHAP)",A2C_mod,Synthetic vs. Trajectory (100% valid),,0.0,0.030476,,Syn: Demand > Inventory > Waste | Traj: Inventory > Demand > Waste
+HARD,"Micro (660-dim, Partition)",DQN,Synthetic vs. Trajectory (100% valid),-0.0527,0.9705,1.7e-05,0.0526,Syn(I/D/W)=33.48/33.03/33.48% | Traj(I/D/W)=34.18/32.41/33.4%
+HARD,"Micro (660-dim, Partition)",A2C_mod,Synthetic vs. Trajectory (100% valid),0.0241,0.8945,9e-05,0.0,Syn(I/D/W)=32.4/35.21/32.4% | Traj(I/D/W)=34.42/32.77/32.82%

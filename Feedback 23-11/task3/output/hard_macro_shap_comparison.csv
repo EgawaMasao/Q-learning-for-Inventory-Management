@@ -1,0 +1,3 @@
+agent,scenario,level,syn_rank,traj_rank,spearman_syn_vs_traj,cosine_syn_vs_traj,mad_syn_vs_traj
+DQN,HARD,Macro (3-dim),Inventory > Demand > Waste,Inventory > Demand > Waste,1.0,0.9872071774975615,0.004119837039570132
+A2C_mod,HARD,Macro (3-dim),Demand > Inventory > Waste,Inventory > Demand > Waste,,0.0,0.030476336909082902

@@ -1,0 +1,210 @@
+{
+  "config": {
+    "scenario": "HARD",
+    "sales_scale": 1.5,
+    "waste_rate": 0.05,
+    "n_test": 50,
+    "bg_size": 100,
+    "seed": 42,
+    "a2c_ckpt": "c:\\GitHub\\Q-learning-for-Inventory-Management\\output Training\\outputA2Cmod\\checkpoints_a2cmod\\ckpt-64",
+    "dqn_ckpt": "c:\\GitHub\\Q-learning-for-Inventory-Management\\output Training\\checkpoints_dqn_comparison3primary\\ckpt-50"
+  },
+  "validity": [
+    {
+      "check": "T41_anchor_continuity",
+      "agent": "Shared",
+      "bg": "syn_random_100",
+      "valid": 4284,
+      "total": 5000,
+      "valid_rate": 0.8568
+    },
+    {
+      "check": "HARD_rollout_states",
+      "agent": "DQN",
+      "bg": "syn_random_100",
+      "valid": 2593,
+      "total": 5000,
+      "valid_rate": 0.5186
+    },
+    {
+      "check": "HARD_rollout_states",
+      "agent": "DQN",
+      "bg": "traj_rollout_100",
+      "valid": 4962,
+      "total": 5000,
+      "valid_rate": 0.9924
+    },
+    {
+      "check": "HARD_rollout_states",
+      "agent": "A2C_mod",
+      "bg": "syn_random_100",
+      "valid": 3820,
+      "total": 5000,
+      "valid_rate": 0.764
+    },
+    {
+      "check": "HARD_rollout_states",
+      "agent": "A2C_mod",
+      "bg": "traj_rollout_100",
+      "valid": 5000,
+      "total": 5000,
+      "valid_rate": 1.0
+    }
+  ],
+  "macro_details": [
+    {
+      "agent": "DQN",
+      "scenario": "HARD",
+      "bg": "syn_random_100",
+      "inv_shap": 0.011245690083033626,
+      "demand_shap": 0.003141068733678687,
+      "waste_shap": 0.0014745436198920726,
+      "rank_order": "Inventory > Demand > Waste",
+      "fcs_001": 0.3333333333333333,
+      "elapsed_s": 23.81
+    },
+    {
+      "agent": "DQN",
+      "scenario": "HARD",
+      "bg": "traj_rollout_100",
+      "inv_shap": 0.0029831937148479667,
+      "demand_shap": 0.00044182091503670054,
+      "waste_shap": 7.677668800932307e-05,
+      "rank_order": "Inventory > Demand > Waste",
+      "fcs_001": 0.0,
+      "elapsed_s": 44.8
+    },
+    {
+      "agent": "A2C_mod",
+      "scenario": "HARD",
+      "bg": "syn_random_100",
+      "inv_shap": 0.009965054986260675,
+      "demand_shap": 0.08123103805012007,
+      "waste_shap": 0.00023291769086797025,
+      "rank_order": "Demand > Inventory > Waste",
+      "fcs_001": 0.3333333333333333,
+      "elapsed_s": 1.91
+    },
+    {
+      "agent": "A2C_mod",
+      "scenario": "HARD",
+      "bg": "traj_rollout_100",
+      "inv_shap": 0.0,
+      "demand_shap": 0.0,
+      "waste_shap": 0.0,
+      "rank_order": "Inventory > Demand > Waste",
+      "fcs_001": 0.0,
+      "elapsed_s": 1.57
+    }
+  ],
+  "macro_comparison": [
+    {
+      "agent": "DQN",
+      "scenario": "HARD",
+      "level": "Macro (3-dim)",
+      "syn_rank": "Inventory > Demand > Waste",
+      "traj_rank": "Inventory > Demand > Waste",
+      "spearman_syn_vs_traj": 1.0,
+      "cosine_syn_vs_traj": 0.9872071774975615,
+      "mad_syn_vs_traj": 0.004119837039570132
+    },
+    {
+      "agent": "A2C_mod",
+      "scenario": "HARD",
+      "level": "Macro (3-dim)",
+      "syn_rank": "Demand > Inventory > Waste",
+      "traj_rank": "Inventory > Demand > Waste",
+      "spearman_syn_vs_traj": NaN,
+      "cosine_syn_vs_traj": 0.0,
+      "mad_syn_vs_traj": 0.030476336909082902
+    }
+  ],
+  "micro_comparison": [
+    {
+      "agent": "DQN",
+      "scenario": "HARD",
+      "level": "Micro (660-dim)",
+      "spearman_all660": -0.05274122061078118,
+      "spearman_union_top20": -0.5178389073130525,
+      "cosine_syn_vs_traj": 0.9705337196435068,
+      "mad_syn_vs_traj": 1.731483812941472e-05,
+      "jaccard_top10": 0.0,
+      "jaccard_top20": 0.05263157894736842,
+      "jaccard_top50": 0.030927835051546393,
+      "syn_inv_pct": 33.48,
+      "syn_dem_pct": 33.03,
+      "syn_wst_pct": 33.48,
+      "traj_inv_pct": 34.18,
+      "traj_dem_pct": 32.41,
+      "traj_wst_pct": 33.4,
+      "elapsed_syn_s": 2009.8,
+      "elapsed_traj_s": 2215.4
+    },
+    {
+      "agent": "A2C_mod",
+      "scenario": "HARD",
+      "level": "Micro (660-dim)",
+      "spearman_all660": 0.02413404411880458,
+      "spearman_union_top20": -0.7593700154953285,
+      "cosine_syn_vs_traj": 0.8945058410302114,
+      "mad_syn_vs_traj": 9.04309493806034e-05,
+      "jaccard_top10": 0.0,
+      "jaccard_top20": 0.0,
+      "jaccard_top50": 0.041666666666666664,
+      "syn_inv_pct": 32.4,
+      "syn_dem_pct": 35.21,
+      "syn_wst_pct": 32.4,
+      "traj_inv_pct": 34.42,
+      "traj_dem_pct": 32.77,
+      "traj_wst_pct": 32.82,
+      "elapsed_syn_s": 208.9,
+      "elapsed_traj_s": 127.8
+    }
+  ],
+  "r3_02_table": [
+    {
+      "scenario": "HARD",
+      "level": "Macro (3-dim, KernelSHAP)",
+      "agent": "DQN",
+      "comparison": "Synthetic vs. Trajectory (100% valid)",
+      "spearman": 1.0,
+      "cosine": 0.9872,
+      "mad": 0.00412,
+      "jaccard_top20": NaN,
+      "notes": "Syn: Inventory > Demand > Waste | Traj: Inventory > Demand > Waste"
+    },
+    {
+      "scenario": "HARD",
+      "level": "Macro (3-dim, KernelSHAP)",
+      "agent": "A2C_mod",
+      "comparison": "Synthetic vs. Trajectory (100% valid)",
+      "spearman": NaN,
+      "cosine": 0.0,
+      "mad": 0.030476,
+      "jaccard_top20": NaN,
+      "notes": "Syn: Demand > Inventory > Waste | Traj: Inventory > Demand > Waste"
+    },
+    {
+      "scenario": "HARD",
+      "level": "Micro (660-dim, Partition)",
+      "agent": "DQN",
+      "comparison": "Synthetic vs. Trajectory (100% valid)",
+      "spearman": -0.0527,
+      "cosine": 0.9705,
+      "mad": 1.7e-05,
+      "jaccard_top20": 0.0526,
+      "notes": "Syn(I/D/W)=33.48/33.03/33.48% | Traj(I/D/W)=34.18/32.41/33.4%"
+    },
+    {
+      "scenario": "HARD",
+      "level": "Micro (660-dim, Partition)",
+      "agent": "A2C_mod",
+      "comparison": "Synthetic vs. Trajectory (100% valid)",
+      "spearman": 0.0241,
+      "cosine": 0.8945,
+      "mad": 9e-05,
+      "jaccard_top20": 0.0,
+      "notes": "Syn(I/D/W)=32.4/35.21/32.4% | Traj(I/D/W)=34.42/32.77/32.82%"
+    }
+  ]
+}
