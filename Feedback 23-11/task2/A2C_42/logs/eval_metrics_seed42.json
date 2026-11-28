@@ -1,0 +1,38 @@
+{
+  "algorithm": "A2C",
+  "seed": 42,
+  "metrics": {
+    "ALL": {
+      "total_reward": 0.8067612877736489,
+      "service_level": 0.9999819624991644,
+      "holding_cost": 0.003229706950273722,
+      "waste_cost": 0.023783022624677016,
+      "ordering_cost": 0.16620796422163645,
+      "stockout_rate": 1.8037517466360614e-05
+    },
+    "EASY": {
+      "total_reward": 0.919347926028191,
+      "service_level": 1.0,
+      "holding_cost": 0.0007425254580210902,
+      "waste_cost": 0.009668215270346356,
+      "ordering_cost": 0.07024133305937524,
+      "stockout_rate": 0.0
+    },
+    "MEDIUM": {
+      "total_reward": 0.8580971332414756,
+      "service_level": 1.0,
+      "holding_cost": 0.004435506420613531,
+      "waste_cost": 0.04859320595786567,
+      "ordering_cost": 0.08887414586922479,
+      "stockout_rate": 0.0
+    },
+    "HARD": {
+      "total_reward": 0.6970335069955105,
+      "service_level": 0.9999909812495822,
+      "holding_cost": 0.00038710181154202574,
+      "waste_cost": 0.14024340200223148,
+      "ordering_cost": 0.16232696956112272,
+      "stockout_rate": 9.018758733180307e-06
+    }
+  }
+}

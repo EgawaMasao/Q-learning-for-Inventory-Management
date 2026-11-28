@@ -1,0 +1,1549 @@
+{
+  "std_a2c_ckpts": {
+    "42": "ckpt-60",
+    "123": "ckpt-60",
+    "256": "ckpt-60",
+    "512": "ckpt-60",
+    "1024": "ckpt-60"
+  },
+  "a2c_mod_ckpts": {
+    "42": "ckpt-53",
+    "123": "ckpt-60",
+    "256": "ckpt-60",
+    "512": "ckpt-60",
+    "1024": "ckpt-60"
+  },
+  "dqn_ckpts": {
+    "42": "ckpt-50 (hidden=128)",
+    "123": "ckpt-50 (hidden=128)",
+    "256": "ckpt-50 (hidden=128)",
+    "512": "ckpt-43 (hidden=32)",
+    "1024": "ckpt-50 (hidden=128)"
+  },
+  "per_seed_total_reward": [
+    {
+      "model": "Base-Stock",
+      "seed": 0,
+      "scenario": "ALL",
+      "total_reward": 0.7607459677826791,
+      "holding_cost": 0.0,
+      "ordering_cost": 0.21165978796188795,
+      "stockout_rate": 0.02233044712412511
+    },
+    {
+      "model": "DQN",
+      "seed": 42,
+      "scenario": "ALL",
+      "total_reward": 0.8162588680843039,
+      "holding_cost": 0.002397808544397805,
+      "ordering_cost": 0.1575597311769213,
+      "stockout_rate": 1.8037517466360614e-05
+    },
+    {
+      "model": "A2C_mod",
+      "seed": 42,
+      "scenario": "ALL",
+      "total_reward": 0.7911649258245551,
+      "holding_cost": 0.0027740520278697776,
+      "ordering_cost": 0.185382769694404,
+      "stockout_rate": 5.4112552399081846e-05
+    },
+    {
+      "model": "Standard A2C",
+      "seed": 42,
+      "scenario": "ALL",
+      "total_reward": 0.8067612877736489,
+      "holding_cost": 0.003229706950273722,
+      "ordering_cost": 0.16620796422163645,
+      "stockout_rate": 1.8037517466360614e-05
+    },
+    {
+      "model": "DQN",
+      "seed": 123,
+      "scenario": "ALL",
+      "total_reward": 0.8171553078240582,
+      "holding_cost": 0.0021779148923004622,
+      "ordering_cost": 0.15683405077646648,
+      "stockout_rate": 1.8037517466360614e-05
+    },
+    {
+      "model": "A2C_mod",
+      "seed": 123,
+      "scenario": "ALL",
+      "total_reward": -0.8825709129118228,
+      "holding_cost": 0.8261168929083007,
+      "ordering_cost": 0.9842866095049041,
+      "stockout_rate": 0.05142496368341473
+    },
+    {
+      "model": "Standard A2C",
+      "seed": 123,
+      "scenario": "ALL",
+      "total_reward": 0.804466889624203,
+      "holding_cost": 0.0078014198289666735,
+      "ordering_cost": 0.1638917378962986,
+      "stockout_rate": 1.8037517466360614e-05
+    },
+    {
+      "model": "DQN",
+      "seed": 256,
+      "scenario": "ALL",
+      "total_reward": 0.8063404002773856,
+      "holding_cost": 0.008179733448842954,
+      "ordering_cost": 0.16169208098971655,
+      "stockout_rate": 2.7056276199540923e-05
+    },
+    {
+      "model": "A2C_mod",
+      "seed": 256,
+      "scenario": "ALL",
+      "total_reward": -0.16220578056440682,
+      "holding_cost": 0.9524733292914572,
+      "ordering_cost": 0.18158875275698919,
+      "stockout_rate": 0.004319985511727513
+    },
+    {
+      "model": "Standard A2C",
+      "seed": 256,
+      "scenario": "ALL",
+      "total_reward": 0.8145268392261296,
+      "holding_cost": 0.0026120034622109083,
+      "ordering_cost": 0.15899121205485056,
+      "stockout_rate": 1.8037517466360614e-05
+    },
+    {
+      "model": "DQN",
+      "seed": 512,
+      "scenario": "ALL",
+      "total_reward": 0.8011502986330361,
+      "holding_cost": 0.004266604252662214,
+      "ordering_cost": 0.17088819851004888,
+      "stockout_rate": 1.8037517466360614e-05
+    },
+    {
+      "model": "A2C_mod",
+      "seed": 512,
+      "scenario": "ALL",
+      "total_reward": 0.6411433679214309,
+      "holding_cost": 0.045593450445541375,
+      "ordering_cost": 0.29020155989934526,
+      "stockout_rate": 2.7056276199540923e-05
+    },
+    {
+      "model": "Standard A2C",
+      "seed": 512,
+      "scenario": "ALL",
+      "total_reward": 0.7933849334155046,
+      "holding_cost": 0.026207770237566104,
+      "ordering_cost": 0.1564458329526205,
+      "stockout_rate": 1.8037517466360614e-05
+    },
+    {
+      "model": "DQN",
+      "seed": 1024,
+      "scenario": "ALL",
+      "total_reward": 0.8126506072927325,
+      "holding_cost": 0.00937445259409114,
+      "ordering_cost": 0.15406277089837997,
+      "stockout_rate": 1.8037517466360614e-05
+    },
+    {
+      "model": "A2C_mod",
+      "seed": 1024,
+      "scenario": "ALL",
+      "total_reward": 0.47116533116486464,
+      "holding_cost": 0.19952071517325257,
+      "ordering_cost": 0.29252833500504494,
+      "stockout_rate": 0.014709595851378427
+    },
+    {
+      "model": "Standard A2C",
+      "seed": 1024,
+      "scenario": "ALL",
+      "total_reward": 0.8061281208037621,
+      "holding_cost": 0.011989196718093894,
+      "ordering_cost": 0.15795717908749504,
+      "stockout_rate": 1.8037517466360614e-05
+    },
+    {
+      "model": "Base-Stock",
+      "seed": 0,
+      "scenario": "EASY",
+      "total_reward": 0.8924165696851791,
+      "holding_cost": 0.0,
+      "ordering_cost": 0.10527078993618488,
+      "stockout_rate": 9.018758733180307e-06
+    },
+    {
+      "model": "DQN",
+      "seed": 42,
+      "scenario": "EASY",
+      "total_reward": 0.9505536111574324,
+      "holding_cost": 0.005570269710179197,
+      "ordering_cost": 0.03398911672688666,
+      "stockout_rate": 0.0
+    },
+    {
+      "model": "A2C_mod",
+      "seed": 42,
+      "scenario": "EASY",
+      "total_reward": 0.8101421651386079,
+      "holding_cost": 9.844046777137313e-06,
+      "ordering_cost": 0.1814190959410062,
+      "stockout_rate": 0.0
+    },
+    {
+      "model": "Standard A2C",
+      "seed": 42,
+      "scenario": "EASY",
+      "total_reward": 0.919347926028191,
+      "holding_cost": 0.0007425254580210902,
+      "ordering_cost": 0.07024133305937524,
+      "stockout_rate": 0.0
+    },
+    {
+      "model": "DQN",
+      "seed": 123,
+      "scenario": "EASY",
+      "total_reward": 0.9402754184982133,
+      "holding_cost": 0.01394395352551891,
+      "ordering_cost": 0.03589191388279673,
+      "stockout_rate": 0.0
+    },
+    {
+      "model": "A2C_mod",
+      "seed": 123,
+      "scenario": "EASY",
+      "total_reward": -0.5014929040622692,
+      "holding_cost": 0.8100921436109476,
+      "ordering_cost": 0.6699129743353714,
+      "stockout_rate": 0.013248556858993002
+    },
+    {
+      "model": "Standard A2C",
+      "seed": 123,
+      "scenario": "EASY",
+      "total_reward": 0.9289806211988131,
+      "holding_cost": 0.004762772138559422,
+      "ordering_cost": 0.05646051413246563,
+      "stockout_rate": 0.0
+    },
+    {
+      "model": "DQN",
+      "seed": 256,
+      "scenario": "EASY",
+      "total_reward": 0.9392668000525899,
+      "holding_cost": 0.011389897380482465,
+      "ordering_cost": 0.03946518016949532,
+      "stockout_rate": 0.0
+    },
+    {
+      "model": "A2C_mod",
+      "seed": 256,
+      "scenario": "EASY",
+      "total_reward": -0.03535644912774423,
+      "holding_cost": 0.9891685282013246,
+      "ordering_cost": 0.03629404158582763,
+      "stockout_rate": 0.0
+    },
+    {
+      "model": "Standard A2C",
+      "seed": 256,
+      "scenario": "EASY",
+      "total_reward": 0.9528268498797265,
+      "holding_cost": 0.004707073413714719,
+      "ordering_cost": 0.032583816361332694,
+      "stockout_rate": 0.0
+    },
+    {
+      "model": "DQN",
+      "seed": 512,
+      "scenario": "EASY",
+      "total_reward": 0.9172766208648682,
+      "holding_cost": 0.0026219524720328905,
+      "ordering_cost": 0.07039419768585099,
+      "stockout_rate": 0.0
+    },
+    {
+      "model": "A2C_mod",
+      "seed": 512,
+      "scenario": "EASY",
+      "total_reward": 0.8842319250106812,
+      "holding_cost": 0.07188014310333297,
+      "ordering_cost": 0.03402877835527299,
+      "stockout_rate": 0.0
+    },
+    {
+      "model": "Standard A2C",
+      "seed": 512,
+      "scenario": "EASY",
+      "total_reward": 0.9269119093105906,
+      "holding_cost": 0.03334076274075501,
+      "ordering_cost": 0.029844709154632356,
+      "stockout_rate": 0.0
+    },
+    {
+      "model": "DQN",
+      "seed": 1024,
+      "scenario": "EASY",
+      "total_reward": 0.9445422495168353,
+      "holding_cost": 0.012203505784753592,
+      "ordering_cost": 0.03335957282355854,
+      "stockout_rate": 0.0
+    },
+    {
+      "model": "A2C_mod",
+      "seed": 1024,
+      "scenario": "EASY",
+      "total_reward": 0.9040082650857845,
+      "holding_cost": 0.021032658301659728,
+      "ordering_cost": 0.06504714045496214,
+      "stockout_rate": 8.116882859862276e-05
+    },
+    {
+      "model": "Standard A2C",
+      "seed": 1024,
+      "scenario": "EASY",
+      "total_reward": 0.9423099363607074,
+      "holding_cost": 0.012717912685946516,
+      "ordering_cost": 0.03508183815413051,
+      "stockout_rate": 0.0
+    },
+    {
+      "model": "Base-Stock",
+      "seed": 0,
+      "scenario": "MEDIUM",
+      "total_reward": 0.8441918821088852,
+      "holding_cost": 0.0,
+      "ordering_cost": 0.1430140838086132,
+      "stockout_rate": 0.0016414140968302648
+    },
+    {
+      "model": "DQN",
+      "seed": 42,
+      "scenario": "MEDIUM",
+      "total_reward": 0.8491385421227842,
+      "holding_cost": 0.000923682325337145,
+      "ordering_cost": 0.10222631574623169,
+      "stockout_rate": 0.0
+    },
+    {
+      "model": "A2C_mod",
+      "seed": 42,
+      "scenario": "MEDIUM",
+      "total_reward": 0.7810299688033642,
+      "holding_cost": 0.000501983522442505,
+      "ordering_cost": 0.17684440338422383,
+      "stockout_rate": 0.0
+    },
+    {
+      "model": "Standard A2C",
+      "seed": 42,
+      "scenario": "MEDIUM",
+      "total_reward": 0.8580971332414756,
+      "holding_cost": 0.004435506420613531,
+      "ordering_cost": 0.08887414586922479,
+      "stockout_rate": 0.0
+    },
+    {
+      "model": "DQN",
+      "seed": 123,
+      "scenario": "MEDIUM",
+      "total_reward": 0.8690218061563515,
+      "holding_cost": 0.00014172500828887484,
+      "ordering_cost": 0.08335703540415991,
+      "stockout_rate": 0.0
+    },
+    {
+      "model": "A2C_mod",
+      "seed": 123,
+      "scenario": "MEDIUM",
+      "total_reward": -0.8532263706031714,
+      "holding_cost": 0.7743857436709933,
+      "ordering_cost": 0.9802882995397325,
+      "stockout_rate": 0.059496752979669956
+    },
+    {
+      "model": "Standard A2C",
+      "seed": 123,
+      "scenario": "MEDIUM",
+      "total_reward": 0.8518377549591518,
+      "holding_cost": 0.008165721847150947,
+      "ordering_cost": 0.09141655408200763,
+      "stockout_rate": 0.0
+    },
+    {
+      "model": "DQN",
+      "seed": 256,
+      "scenario": "MEDIUM",
+      "total_reward": 0.8408531632333521,
+      "holding_cost": 0.006730919988181014,
+      "ordering_cost": 0.10435254706276788,
+      "stockout_rate": 0.0
+    },
+    {
+      "model": "A2C_mod",
+      "seed": 256,
+      "scenario": "MEDIUM",
+      "total_reward": -0.10960561567030493,
+      "holding_cost": 0.9797189699870253,
+      "ordering_cost": 0.08085710815494022,
+      "stockout_rate": 3.607503493272123e-05
+    },
+    {
+      "model": "Standard A2C",
+      "seed": 256,
+      "scenario": "MEDIUM",
+      "total_reward": 0.8579709673566478,
+      "holding_cost": 0.0008791839876674579,
+      "ordering_cost": 0.09303034215219437,
+      "stockout_rate": 0.0
+    },
+    {
+      "model": "DQN",
+      "seed": 512,
+      "scenario": "MEDIUM",
+      "total_reward": 0.8264779340298403,
+      "holding_cost": 0.0017683740004449935,
+      "ordering_cost": 0.12419526562804267,
+      "stockout_rate": 0.0
+    },
+    {
+      "model": "A2C_mod",
+      "seed": 512,
+      "scenario": "MEDIUM",
+      "total_reward": 0.7973538805686292,
+      "holding_cost": 0.06172886676982411,
+      "ordering_cost": 0.09234306789816372,
+      "stockout_rate": 0.0
+    },
+    {
+      "model": "Standard A2C",
+      "seed": 512,
+      "scenario": "MEDIUM",
+      "total_reward": 0.8432822921091602,
+      "holding_cost": 0.027898367774295843,
+      "ordering_cost": 0.07993358420947241,
+      "stockout_rate": 0.0
+    },
+    {
+      "model": "DQN",
+      "seed": 1024,
+      "scenario": "MEDIUM",
+      "total_reward": 0.8590271555715137,
+      "holding_cost": 0.0011318906291593962,
+      "ordering_cost": 0.09159971087697953,
+      "stockout_rate": 0.0
+    },
+    {
+      "model": "A2C_mod",
+      "seed": 1024,
+      "scenario": "MEDIUM",
+      "total_reward": 0.6498813568288737,
+      "holding_cost": 0.09703389255423284,
+      "ordering_cost": 0.1992162839760856,
+      "stockout_rate": 0.007395382326591524
+    },
+    {
+      "model": "Standard A2C",
+      "seed": 1024,
+      "scenario": "MEDIUM",
+      "total_reward": 0.8527332968300297,
+      "holding_cost": 0.009569267718313587,
+      "ordering_cost": 0.08907635084220342,
+      "stockout_rate": 0.0
+    },
+    {
+      "model": "Base-Stock",
+      "seed": 0,
+      "scenario": "HARD",
+      "total_reward": 0.7680136947818692,
+      "holding_cost": 0.0,
+      "ordering_cost": 0.18987175322596042,
+      "stockout_rate": 0.009568903243191363
+    },
+    {
+      "model": "DQN",
+      "seed": 42,
+      "scenario": "HARD",
+      "total_reward": 0.6808093134757309,
+      "holding_cost": 0.0002870816834649939,
+      "ordering_cost": 0.18849906774740371,
+      "stockout_rate": 9.018758733180307e-06
+    },
+    {
+      "model": "A2C_mod",
+      "seed": 42,
+      "scenario": "HARD",
+      "total_reward": 0.6949859277182628,
+      "holding_cost": 0.0007952152614846469,
+      "ordering_cost": 0.182270666081754,
+      "stockout_rate": 9.018758733180307e-06
+    },
+    {
+      "model": "Standard A2C",
+      "seed": 42,
+      "scenario": "HARD",
+      "total_reward": 0.6970335069955105,
+      "holding_cost": 0.00038710181154202574,
+      "ordering_cost": 0.16232696956112272,
+      "stockout_rate": 9.018758733180307e-06
+    },
+    {
+      "model": "DQN",
+      "seed": 123,
+      "scenario": "HARD",
+      "total_reward": 0.7360108265919345,
+      "holding_cost": 4.492544855334956e-05,
+      "ordering_cost": 0.13617763029677526,
+      "stockout_rate": 9.018758733180307e-06
+    },
+    {
+      "model": "A2C_mod",
+      "seed": 123,
+      "scenario": "HARD",
+      "total_reward": -0.9769638660585597,
+      "holding_cost": 0.8113043039209313,
+      "ordering_cost": 0.9853756523558072,
+      "stockout_rate": 0.05796356405878055
+    },
+    {
+      "model": "Standard A2C",
+      "seed": 123,
+      "scenario": "HARD",
+      "total_reward": 0.7190078834870032,
+      "holding_cost": 0.014309034560851398,
+      "ordering_cost": 0.12149518432598265,
+      "stockout_rate": 9.018758733180307e-06
+    },
+    {
+      "model": "DQN",
+      "seed": 256,
+      "scenario": "HARD",
+      "total_reward": 0.6707538684889202,
+      "holding_cost": 0.00042439850114302344,
+      "ordering_cost": 0.19495011641392632,
+      "stockout_rate": 9.018758733180307e-06
+    },
+    {
+      "model": "A2C_mod",
+      "seed": 256,
+      "scenario": "HARD",
+      "total_reward": -0.24443568954510347,
+      "holding_cost": 0.9642705210144558,
+      "ordering_cost": 0.13378131744407473,
+      "stockout_rate": 0.0016955266760233494
+    },
+    {
+      "model": "Standard A2C",
+      "seed": 256,
+      "scenario": "HARD",
+      "total_reward": 0.7138418944197751,
+      "holding_cost": 0.002356873114900778,
+      "ordering_cost": 0.14238187375049743,
+      "stockout_rate": 9.018758733180307e-06
+    },
+    {
+      "model": "DQN",
+      "seed": 512,
+      "scenario": "HARD",
+      "total_reward": 0.6603570891366828,
+      "holding_cost": 0.00044942064716220584,
+      "ordering_cost": 0.20533126864641432,
+      "stockout_rate": 9.018758733180307e-06
+    },
+    {
+      "model": "A2C_mod",
+      "seed": 512,
+      "scenario": "HARD",
+      "total_reward": 0.6093669419014265,
+      "holding_cost": 0.05189198292773365,
+      "ordering_cost": 0.19676795164271008,
+      "stockout_rate": 9.018758733180307e-06
+    },
+    {
+      "model": "Standard A2C",
+      "seed": 512,
+      "scenario": "HARD",
+      "total_reward": 0.6841790680256155,
+      "holding_cost": 0.020610382489394397,
+      "ordering_cost": 0.15223216714840088,
+      "stockout_rate": 9.018758733180307e-06
+    },
+    {
+      "model": "DQN",
+      "seed": 1024,
+      "scenario": "HARD",
+      "total_reward": 0.7257624490866585,
+      "holding_cost": 9.226522713056006e-05,
+      "ordering_cost": 0.14172197227913236,
+      "stockout_rate": 9.018758733180307e-06
+    },
+    {
+      "model": "A2C_mod",
+      "seed": 1024,
+      "scenario": "HARD",
+      "total_reward": 0.42481073581739254,
+      "holding_cost": 0.11654468134818469,
+      "ordering_cost": 0.31322188758187824,
+      "stockout_rate": 0.013924963799090908
+    },
+    {
+      "model": "Standard A2C",
+      "seed": 1024,
+      "scenario": "HARD",
+      "total_reward": 0.6885108503232164,
+      "holding_cost": 0.007068783560830597,
+      "ordering_cost": 0.1630147130243362,
+      "stockout_rate": 9.018758733180307e-06
+    },
+    {
+      "model": "A2C_mod",
+      "seed": 42,
+      "scenario": "Mean(E/M/H)",
+      "total_reward": 0.7620526872200782,
+      "holding_cost": 0.0004356809435680964,
+      "ordering_cost": 0.18017805513566135,
+      "stockout_rate": 3.0062529110601024e-06
+    },
+    {
+      "model": "A2C_mod",
+      "seed": 123,
+      "scenario": "Mean(E/M/H)",
+      "total_reward": -0.7772277135746668,
+      "holding_cost": 0.7985940637342908,
+      "ordering_cost": 0.8785256420769704,
+      "stockout_rate": 0.04356962463248117
+    },
+    {
+      "model": "A2C_mod",
+      "seed": 256,
+      "scenario": "Mean(E/M/H)",
+      "total_reward": -0.12979925144771753,
+      "holding_cost": 0.9777193397342686,
+      "ordering_cost": 0.08364415572828086,
+      "stockout_rate": 0.0005772005703186902
+    },
+    {
+      "model": "A2C_mod",
+      "seed": 512,
+      "scenario": "Mean(E/M/H)",
+      "total_reward": 0.7636509158269122,
+      "holding_cost": 0.06183366426696357,
+      "ordering_cost": 0.10771326596538226,
+      "stockout_rate": 3.0062529110601024e-06
+    },
+    {
+      "model": "A2C_mod",
+      "seed": 1024,
+      "scenario": "Mean(E/M/H)",
+      "total_reward": 0.6595667859106836,
+      "holding_cost": 0.07820374406802576,
+      "ordering_cost": 0.19249510400430866,
+      "stockout_rate": 0.007133838318093684
+    },
+    {
+      "model": "Base-Stock",
+      "seed": 0,
+      "scenario": "Mean(E/M/H)",
+      "total_reward": 0.8348740488586445,
+      "holding_cost": 0.0,
+      "ordering_cost": 0.14605220899025284,
+      "stockout_rate": 0.003739778699584936
+    },
+    {
+      "model": "DQN",
+      "seed": 42,
+      "scenario": "Mean(E/M/H)",
+      "total_reward": 0.8268338222519825,
+      "holding_cost": 0.0022603445729937784,
+      "ordering_cost": 0.10823816674017402,
+      "stockout_rate": 3.0062529110601024e-06
+    },
+    {
+      "model": "DQN",
+      "seed": 123,
+      "scenario": "Mean(E/M/H)",
+      "total_reward": 0.8484360170821663,
+      "holding_cost": 0.0047102013274537115,
+      "ordering_cost": 0.08514219319457732,
+      "stockout_rate": 3.0062529110601024e-06
+    },
+    {
+      "model": "DQN",
+      "seed": 256,
+      "scenario": "Mean(E/M/H)",
+      "total_reward": 0.8169579439249541,
+      "holding_cost": 0.006181738623268834,
+      "ordering_cost": 0.11292261454872983,
+      "stockout_rate": 3.0062529110601024e-06
+    },
+    {
+      "model": "DQN",
+      "seed": 512,
+      "scenario": "Mean(E/M/H)",
+      "total_reward": 0.8013705480104637,
+      "holding_cost": 0.0016132490398800298,
+      "ordering_cost": 0.133306910653436,
+      "stockout_rate": 3.0062529110601024e-06
+    },
+    {
+      "model": "DQN",
+      "seed": 1024,
+      "scenario": "Mean(E/M/H)",
+      "total_reward": 0.8431106180583359,
+      "holding_cost": 0.0044758872136811826,
+      "ordering_cost": 0.08889375199322347,
+      "stockout_rate": 3.0062529110601024e-06
+    },
+    {
+      "model": "Standard A2C",
+      "seed": 42,
+      "scenario": "Mean(E/M/H)",
+      "total_reward": 0.8248261887550591,
+      "holding_cost": 0.0018550445633922156,
+      "ordering_cost": 0.10714748282990759,
+      "stockout_rate": 3.0062529110601024e-06
+    },
+    {
+      "model": "Standard A2C",
+      "seed": 123,
+      "scenario": "Mean(E/M/H)",
+      "total_reward": 0.833275419881656,
+      "holding_cost": 0.009079176182187256,
+      "ordering_cost": 0.08979075084681865,
+      "stockout_rate": 3.0062529110601024e-06
+    },
+    {
+      "model": "Standard A2C",
+      "seed": 256,
+      "scenario": "Mean(E/M/H)",
+      "total_reward": 0.8415465705520498,
+      "holding_cost": 0.0026477101720943177,
+      "ordering_cost": 0.08933201075467483,
+      "stockout_rate": 3.0062529110601024e-06
+    },
+    {
+      "model": "Standard A2C",
+      "seed": 512,
+      "scenario": "Mean(E/M/H)",
+      "total_reward": 0.8181244231484553,
+      "holding_cost": 0.02728317100148175,
+      "ordering_cost": 0.08733682017083522,
+      "stockout_rate": 3.0062529110601024e-06
+    },
+    {
+      "model": "Standard A2C",
+      "seed": 1024,
+      "scenario": "Mean(E/M/H)",
+      "total_reward": 0.8278513611713177,
+      "holding_cost": 0.0097853213216969,
+      "ordering_cost": 0.09572430067355671,
+      "stockout_rate": 3.0062529110601024e-06
+    }
+  ],
+  "summary_mean_emh": [
+    {
+      "scenario": "Mean(E/M/H)",
+      "model": "Base-Stock",
+      "n_seeds": 1,
+      "total_reward_mean": 0.8348740488586445,
+      "total_reward_sd": 0.0,
+      "service_level_mean": 0.9962602230922255,
+      "service_level_sd": 0.0,
+      "holding_cost_mean": 0.0,
+      "holding_cost_sd": 0.0,
+      "waste_cost_mean": 0.015333961943200193,
+      "waste_cost_sd": 0.0,
+      "ordering_cost_mean": 0.14605220899025284,
+      "ordering_cost_sd": 0.0,
+      "stockout_rate_mean": 0.003739778699584936,
+      "stockout_rate_sd": 0.0
+    },
+    {
+      "scenario": "Mean(E/M/H)",
+      "model": "DQN",
+      "n_seeds": 5,
+      "total_reward_mean": 0.8273417898655804,
+      "total_reward_sd": 0.019210739545562034,
+      "service_level_mean": 0.9999969937498608,
+      "service_level_sd": 0.0,
+      "holding_cost_mean": 0.0038482841554555074,
+      "holding_cost_sd": 0.001877413822845259,
+      "waste_cost_mean": 0.06310619352626856,
+      "waste_cost_sd": 0.0009169697011380573,
+      "ordering_cost_mean": 0.10570072742602812,
+      "ordering_cost_sd": 0.01953089448294591,
+      "stockout_rate_mean": 3.0062529110601024e-06,
+      "stockout_rate_sd": 0.0
+    },
+    {
+      "scenario": "Mean(E/M/H)",
+      "model": "A2C_mod",
+      "n_seeds": 5,
+      "total_reward_mean": 0.25564868478705793,
+      "total_reward_sd": 0.6879434712745851,
+      "service_level_mean": 0.9897426657812307,
+      "service_level_sd": 0.01886446601770185,
+      "holding_cost_mean": 0.3833572985494233,
+      "holding_cost_sd": 0.4660506709595335,
+      "waste_cost_mean": 0.062225439101143455,
+      "waste_cost_sd": 0.005222401415929259,
+      "ordering_cost_mean": 0.2885112445821207,
+      "ordering_cost_sd": 0.33306553469462163,
+      "stockout_rate_mean": 0.010257335205343134,
+      "stockout_rate_sd": 0.01886446653608076
+    },
+    {
+      "scenario": "Mean(E/M/H)",
+      "model": "Standard A2C",
+      "n_seeds": 5,
+      "total_reward_mean": 0.8291247927017077,
+      "total_reward_sd": 0.008840758239696296,
+      "service_level_mean": 0.9999969937498608,
+      "service_level_sd": 0.0,
+      "holding_cost_mean": 0.010130084648170487,
+      "holding_cost_sd": 0.010245899887323622,
+      "waste_cost_mean": 0.06687584179767689,
+      "waste_cost_sd": 0.0006738749389333513,
+      "ordering_cost_mean": 0.0938662730551586,
+      "ordering_cost_sd": 0.008056766885055038,
+      "stockout_rate_mean": 3.0062529110601024e-06,
+      "stockout_rate_sd": 0.0
+    }
+  ],
+  "summary_all": [
+    {
+      "scenario": "ALL",
+      "model": "Base-Stock",
+      "n_seeds": 1,
+      "total_reward_mean": 0.7607459677826791,
+      "total_reward_sd": 0.0,
+      "service_level_mean": 0.9776695546886277,
+      "service_level_sd": 0.0,
+      "holding_cost_mean": 0.0,
+      "holding_cost_sd": 0.0,
+      "waste_cost_mean": 0.005263795503803219,
+      "waste_cost_sd": 0.0,
+      "ordering_cost_mean": 0.21165978796188795,
+      "ordering_cost_sd": 0.0,
+      "stockout_rate_mean": 0.02233044712412511,
+      "stockout_rate_sd": 0.0
+    },
+    {
+      "scenario": "ALL",
+      "model": "DQN",
+      "n_seeds": 5,
+      "total_reward_mean": 0.8107110964223032,
+      "total_reward_sd": 0.006829699345124442,
+      "service_level_mean": 0.9999801587490807,
+      "service_level_sd": 4.033307801265894e-06,
+      "holding_cost_mean": 0.005279302746458915,
+      "holding_cost_sd": 0.00332151788462992,
+      "waste_cost_mean": 0.023782405332248242,
+      "waste_cost_sd": 7.971679923445726e-05,
+      "ordering_cost_mean": 0.16020736647030662,
+      "ordering_cost_sd": 0.006565627091621941,
+      "stockout_rate_mean": 1.9841269212996678e-05,
+      "stockout_rate_sd": 4.033311520012211e-06
+    },
+    {
+      "scenario": "ALL",
+      "model": "A2C_mod",
+      "n_seeds": 5,
+      "total_reward_mean": 0.17173938628692423,
+      "total_reward_sd": 0.6922379603380213,
+      "service_level_mean": 0.9858928586755479,
+      "service_level_sd": 0.0217054585074935,
+      "holding_cost_mean": 0.4052956879692843,
+      "holding_cost_sd": 0.45006848484396506,
+      "waste_cost_mean": 0.02206018609881756,
+      "waste_cost_sd": 0.001401635894355299,
+      "ordering_cost_mean": 0.3867976053721375,
+      "ordering_cost_sd": 0.33833755726301096,
+      "stockout_rate_mean": 0.014107142775023859,
+      "stockout_rate_sd": 0.021705458118920332
+    },
+    {
+      "scenario": "ALL",
+      "model": "Standard A2C",
+      "n_seeds": 5,
+      "total_reward_mean": 0.8050536141686496,
+      "total_reward_sd": 0.007588067323924612,
+      "service_level_mean": 0.9999819624991645,
+      "service_level_sd": 1.2412670766236366e-16,
+      "holding_cost_mean": 0.01036801943942226,
+      "holding_cost_sd": 0.009633595430939352,
+      "waste_cost_mean": 0.023861558973744867,
+      "waste_cost_sd": 6.450862628273837e-05,
+      "ordering_cost_mean": 0.16069878524258024,
+      "ordering_cost_sd": 0.004155292208554355,
+      "stockout_rate_mean": 1.8037517466360614e-05,
+      "stockout_rate_sd": 0.0
+    }
+  ],
+  "table7_deltas": [
+    {
+      "scenario": "Mean(E/M/H)",
+      "metric": "total_reward",
+      "Base-Stock": 0.8348740488586445,
+      "DQN_mean": 0.8273417898655804,
+      "DQN_sd": 0.019210739545562034,
+      "DQN_delta": -0.007532258993064089,
+      "A2C_mod_mean": 0.25564868478705793,
+      "A2C_mod_sd": 0.6879434712745851,
+      "A2C_mod_delta": -0.5792253640715865,
+      "Standard A2C_mean": 0.8291247927017077,
+      "Standard A2C_sd": 0.008840758239696296,
+      "Standard A2C_delta": -0.005749256156936777
+    },
+    {
+      "scenario": "Mean(E/M/H)",
+      "metric": "service_level",
+      "Base-Stock": 0.9962602230922255,
+      "DQN_mean": 0.9999969937498608,
+      "DQN_sd": 0.0,
+      "DQN_delta": 0.0037367706576353354,
+      "A2C_mod_mean": 0.9897426657812307,
+      "A2C_mod_sd": 0.01886446601770185,
+      "A2C_mod_delta": -0.006517557310994793,
+      "Standard A2C_mean": 0.9999969937498608,
+      "Standard A2C_sd": 0.0,
+      "Standard A2C_delta": 0.0037367706576353354
+    },
+    {
+      "scenario": "Mean(E/M/H)",
+      "metric": "holding_cost",
+      "Base-Stock": 0.0,
+      "DQN_mean": 0.0038482841554555074,
+      "DQN_sd": 0.001877413822845259,
+      "DQN_delta": 0.0038482841554555074,
+      "A2C_mod_mean": 0.3833572985494233,
+      "A2C_mod_sd": 0.4660506709595335,
+      "A2C_mod_delta": 0.3833572985494233,
+      "Standard A2C_mean": 0.010130084648170487,
+      "Standard A2C_sd": 0.010245899887323622,
+      "Standard A2C_delta": 0.010130084648170487
+    },
+    {
+      "scenario": "Mean(E/M/H)",
+      "metric": "waste_cost",
+      "Base-Stock": 0.015333961943200193,
+      "DQN_mean": 0.06310619352626856,
+      "DQN_sd": 0.0009169697011380573,
+      "DQN_delta": 0.04777223158306837,
+      "A2C_mod_mean": 0.062225439101143455,
+      "A2C_mod_sd": 0.005222401415929259,
+      "A2C_mod_delta": 0.046891477157943263,
+      "Standard A2C_mean": 0.06687584179767689,
+      "Standard A2C_sd": 0.0006738749389333513,
+      "Standard A2C_delta": 0.051541879854476697
+    },
+    {
+      "scenario": "Mean(E/M/H)",
+      "metric": "ordering_cost",
+      "Base-Stock": 0.14605220899025284,
+      "DQN_mean": 0.10570072742602812,
+      "DQN_sd": 0.01953089448294591,
+      "DQN_delta": -0.04035148156422472,
+      "A2C_mod_mean": 0.2885112445821207,
+      "A2C_mod_sd": 0.33306553469462163,
+      "A2C_mod_delta": 0.14245903559186784,
+      "Standard A2C_mean": 0.0938662730551586,
+      "Standard A2C_sd": 0.008056766885055038,
+      "Standard A2C_delta": -0.05218593593509424
+    },
+    {
+      "scenario": "Mean(E/M/H)",
+      "metric": "stockout_rate",
+      "Base-Stock": 0.003739778699584936,
+      "DQN_mean": 3.0062529110601024e-06,
+      "DQN_sd": 0.0,
+      "DQN_delta": -0.003736772446673876,
+      "A2C_mod_mean": 0.010257335205343134,
+      "A2C_mod_sd": 0.01886446653608076,
+      "A2C_mod_delta": 0.006517556505758198,
+      "Standard A2C_mean": 3.0062529110601024e-06,
+      "Standard A2C_sd": 0.0,
+      "Standard A2C_delta": -0.003736772446673876
+    },
+    {
+      "scenario": "ALL",
+      "metric": "total_reward",
+      "Base-Stock": 0.7607459677826791,
+      "DQN_mean": 0.8107110964223032,
+      "DQN_sd": 0.006829699345124442,
+      "DQN_delta": 0.0499651286396241,
+      "A2C_mod_mean": 0.17173938628692423,
+      "A2C_mod_sd": 0.6922379603380213,
+      "A2C_mod_delta": -0.5890065814957549,
+      "Standard A2C_mean": 0.8050536141686496,
+      "Standard A2C_sd": 0.007588067323924612,
+      "Standard A2C_delta": 0.04430764638597051
+    },
+    {
+      "scenario": "ALL",
+      "metric": "service_level",
+      "Base-Stock": 0.9776695546886277,
+      "DQN_mean": 0.9999801587490807,
+      "DQN_sd": 4.033307801265894e-06,
+      "DQN_delta": 0.022310604060453043,
+      "A2C_mod_mean": 0.9858928586755479,
+      "A2C_mod_sd": 0.0217054585074935,
+      "A2C_mod_delta": 0.008223303986920172,
+      "Standard A2C_mean": 0.9999819624991645,
+      "Standard A2C_sd": 1.2412670766236366e-16,
+      "Standard A2C_delta": 0.022312407810536783
+    },
+    {
+      "scenario": "ALL",
+      "metric": "holding_cost",
+      "Base-Stock": 0.0,
+      "DQN_mean": 0.005279302746458915,
+      "DQN_sd": 0.00332151788462992,
+      "DQN_delta": 0.005279302746458915,
+      "A2C_mod_mean": 0.4052956879692843,
+      "A2C_mod_sd": 0.45006848484396506,
+      "A2C_mod_delta": 0.4052956879692843,
+      "Standard A2C_mean": 0.01036801943942226,
+      "Standard A2C_sd": 0.009633595430939352,
+      "Standard A2C_delta": 0.01036801943942226
+    },
+    {
+      "scenario": "ALL",
+      "metric": "waste_cost",
+      "Base-Stock": 0.005263795503803219,
+      "DQN_mean": 0.023782405332248242,
+      "DQN_sd": 7.971679923445726e-05,
+      "DQN_delta": 0.018518609828445023,
+      "A2C_mod_mean": 0.02206018609881756,
+      "A2C_mod_sd": 0.001401635894355299,
+      "A2C_mod_delta": 0.01679639059501434,
+      "Standard A2C_mean": 0.023861558973744867,
+      "Standard A2C_sd": 6.450862628273837e-05,
+      "Standard A2C_delta": 0.018597763469941648
+    },
+    {
+      "scenario": "ALL",
+      "metric": "ordering_cost",
+      "Base-Stock": 0.21165978796188795,
+      "DQN_mean": 0.16020736647030662,
+      "DQN_sd": 0.006565627091621941,
+      "DQN_delta": -0.05145242149158133,
+      "A2C_mod_mean": 0.3867976053721375,
+      "A2C_mod_sd": 0.33833755726301096,
+      "A2C_mod_delta": 0.17513781741024953,
+      "Standard A2C_mean": 0.16069878524258024,
+      "Standard A2C_sd": 0.004155292208554355,
+      "Standard A2C_delta": -0.0509610027193077
+    },
+    {
+      "scenario": "ALL",
+      "metric": "stockout_rate",
+      "Base-Stock": 0.02233044712412511,
+      "DQN_mean": 1.9841269212996678e-05,
+      "DQN_sd": 4.033311520012211e-06,
+      "DQN_delta": -0.022310605854912114,
+      "A2C_mod_mean": 0.014107142775023859,
+      "A2C_mod_sd": 0.021705458118920332,
+      "A2C_mod_delta": -0.00822330434910125,
+      "Standard A2C_mean": 1.8037517466360614e-05,
+      "Standard A2C_sd": 0.0,
+      "Standard A2C_delta": -0.02231240960665875
+    }
+  ],
+  "paired_tests_mean_emh": [
+    {
+      "scenario": "Mean(E/M/H)",
+      "metric": "total_reward",
+      "std_a2c_mean": 0.8291247927017077,
+      "std_a2c_sd": 0.008840758239696296,
+      "a2c_mod_mean": 0.25564868478705793,
+      "a2c_mod_sd": 0.6879434712745851,
+      "delta_std_minus_mod": 0.5734761079146498,
+      "delta_sd": 0.6942777525619499,
+      "ci95_lo": 0.0805557185947364,
+      "ci95_hi": 1.1731257447807433,
+      "ttest_p": 0.13846993788024395,
+      "wilcoxon_p": 0.0625,
+      "hedges_g": 0.6955822032150455
+    },
+    {
+      "scenario": "Mean(E/M/H)",
+      "metric": "service_level",
+      "std_a2c_mean": 0.9999969937498608,
+      "std_a2c_sd": 0.0,
+      "a2c_mod_mean": 0.9897426657812307,
+      "a2c_mod_sd": 0.01886446601770185,
+      "delta_std_minus_mod": 0.010254327968630262,
+      "delta_sd": 0.01886446601770185,
+      "ci95_lo": 0.00011483876320421693,
+      "ci95_hi": 0.027566135923067826,
+      "ttest_p": 0.29101478439177614,
+      "wilcoxon_p": 0.25,
+      "hedges_g": 0.457750754483467
+    },
+    {
+      "scenario": "Mean(E/M/H)",
+      "metric": "holding_cost",
+      "std_a2c_mean": 0.010130084648170487,
+      "std_a2c_sd": 0.010245899887323622,
+      "a2c_mod_mean": 0.3833572985494233,
+      "a2c_mod_sd": 0.4660506709595335,
+      "delta_std_minus_mod": -0.3732272139012529,
+      "delta_sd": 0.46996875061275506,
+      "ci95_lo": -0.7498560539008217,
+      "ci95_hi": -0.026936136407528854,
+      "ttest_p": 0.1504222478241934,
+      "wilcoxon_p": 0.125,
+      "hedges_g": -0.6687606373194303
+    },
+    {
+      "scenario": "Mean(E/M/H)",
+      "metric": "waste_cost",
+      "std_a2c_mean": 0.06687584179767689,
+      "std_a2c_sd": 0.0006738749389333513,
+      "a2c_mod_mean": 0.062225439101143455,
+      "a2c_mod_sd": 0.005222401415929259,
+      "delta_std_minus_mod": 0.0046504026965334235,
+      "delta_sd": 0.005393989493759385,
+      "ci95_lo": 0.0004333235328356777,
+      "ci95_hi": 0.00886748186023117,
+      "ttest_p": 0.12613193144104942,
+      "wilcoxon_p": 0.1875,
+      "hedges_g": 0.7260170957109306
+    },
+    {
+      "scenario": "Mean(E/M/H)",
+      "metric": "ordering_cost",
+      "std_a2c_mean": 0.0938662730551586,
+      "std_a2c_sd": 0.008056766885055038,
+      "a2c_mod_mean": 0.2885112445821207,
+      "a2c_mod_sd": 0.33306553469462163,
+      "delta_std_minus_mod": -0.19464497152696209,
+      "delta_sd": 0.3345949073307842,
+      "ci95_lo": -0.4919223383581512,
+      "ci95_hi": -0.020016736809223425,
+      "ttest_p": 0.26320464637691676,
+      "wilcoxon_p": 0.125,
+      "hedges_g": -0.4898806030183495
+    },
+    {
+      "scenario": "Mean(E/M/H)",
+      "metric": "stockout_rate",
+      "std_a2c_mean": 3.0062529110601024e-06,
+      "std_a2c_sd": 0.0,
+      "a2c_mod_mean": 0.010257335205343134,
+      "a2c_mod_sd": 0.01886446653608076,
+      "delta_std_minus_mod": -0.010254328952432074,
+      "delta_sd": 0.01886446653608076,
+      "ci95_lo": -0.02756613744077859,
+      "ci95_hi": -0.00011483886348152603,
+      "ttest_p": 0.2910147559492575,
+      "wilcoxon_p": 0.25,
+      "hedges_g": -0.45775078582155687
+    }
+  ],
+  "policy_diagnostics": [
+    {
+      "model": "A2C_mod",
+      "seed": 42,
+      "scenario": "ALL",
+      "mean_entropy": 0.0030101775688553827,
+      "mean_max_prob": 0.9987819841693318,
+      "dom_action_idx": 0,
+      "dom_action_pct": 81.23827561327562,
+      "act13_pct": 0.0
+    },
+    {
+      "model": "Standard A2C",
+      "seed": 42,
+      "scenario": "ALL",
+      "mean_entropy": 0.040605329717176834,
+      "mean_max_prob": 0.9838693937848485,
+      "dom_action_idx": 0,
+      "dom_action_pct": 71.32215007215007,
+      "act13_pct": 0.022546897546897548
+    },
+    {
+      "model": "A2C_mod",
+      "seed": 123,
+      "scenario": "ALL",
+      "mean_entropy": 0.0003249306446097806,
+      "mean_max_prob": 0.9998787027739343,
+      "dom_action_idx": 13,
+      "dom_action_pct": 85.56998556998558,
+      "act13_pct": 85.56998556998558
+    },
+    {
+      "model": "Standard A2C",
+      "seed": 123,
+      "scenario": "ALL",
+      "mean_entropy": 0.024321988590102105,
+      "mean_max_prob": 0.9883068452278773,
+      "dom_action_idx": 2,
+      "dom_action_pct": 78.12950937950937,
+      "act13_pct": 0.0
+    },
+    {
+      "model": "A2C_mod",
+      "seed": 256,
+      "scenario": "ALL",
+      "mean_entropy": 7.431211067291382e-05,
+      "mean_max_prob": 0.9999644554087094,
+      "dom_action_idx": 13,
+      "dom_action_pct": 98.68145743145743,
+      "act13_pct": 98.68145743145743
+    },
+    {
+      "model": "Standard A2C",
+      "seed": 256,
+      "scenario": "ALL",
+      "mean_entropy": 0.11624457242913426,
+      "mean_max_prob": 0.9487171074937261,
+      "dom_action_idx": 0,
+      "dom_action_pct": 65.37337662337663,
+      "act13_pct": 0.020743145743145744
+    },
+    {
+      "model": "A2C_mod",
+      "seed": 512,
+      "scenario": "ALL",
+      "mean_entropy": 2.5446462762400316e-05,
+      "mean_max_prob": 0.999989403263917,
+      "dom_action_idx": 9,
+      "dom_action_pct": 99.84126984126985,
+      "act13_pct": 0.0
+    },
+    {
+      "model": "Standard A2C",
+      "seed": 512,
+      "scenario": "ALL",
+      "mean_entropy": 0.027787289531367707,
+      "mean_max_prob": 0.9886844446734776,
+      "dom_action_idx": 8,
+      "dom_action_pct": 78.8059163059163,
+      "act13_pct": 0.0
+    },
+    {
+      "model": "A2C_mod",
+      "seed": 1024,
+      "scenario": "ALL",
+      "mean_entropy": 0.006783740500265377,
+      "mean_max_prob": 0.9971342135279898,
+      "dom_action_idx": 5,
+      "dom_action_pct": 77.98701298701299,
+      "act13_pct": 22.01298701298701
+    },
+    {
+      "model": "Standard A2C",
+      "seed": 1024,
+      "scenario": "ALL",
+      "mean_entropy": 0.01926820343800182,
+      "mean_max_prob": 0.9926055992643038,
+      "dom_action_idx": 5,
+      "dom_action_pct": 75.54202741702741,
+      "act13_pct": 0.017135642135642136
+    },
+    {
+      "model": "A2C_mod",
+      "seed": 42,
+      "scenario": "EASY",
+      "mean_entropy": 0.005311176864981664,
+      "mean_max_prob": 0.9978153969323824,
+      "dom_action_idx": 0,
+      "dom_action_pct": 95.89285714285715,
+      "act13_pct": 0.0
+    },
+    {
+      "model": "Standard A2C",
+      "seed": 42,
+      "scenario": "EASY",
+      "mean_entropy": 0.040240888888352595,
+      "mean_max_prob": 0.9860973375893775,
+      "dom_action_idx": 0,
+      "dom_action_pct": 90.45183982683983,
+      "act13_pct": 0.08748196248196248
+    },
+    {
+      "model": "A2C_mod",
+      "seed": 123,
+      "scenario": "EASY",
+      "mean_entropy": 0.001968473476598121,
+      "mean_max_prob": 0.9991703146979922,
+      "dom_action_idx": 13,
+      "dom_action_pct": 81.65854978354979,
+      "act13_pct": 81.65854978354979
+    },
+    {
+      "model": "Standard A2C",
+      "seed": 123,
+      "scenario": "EASY",
+      "mean_entropy": 0.005519475078408829,
+      "mean_max_prob": 0.9976382600882697,
+      "dom_action_idx": 2,
+      "dom_action_pct": 98.08531746031746,
+      "act13_pct": 0.0
+    },
+    {
+      "model": "A2C_mod",
+      "seed": 256,
+      "scenario": "EASY",
+      "mean_entropy": 0.0002163011256723419,
+      "mean_max_prob": 0.9999103567429951,
+      "dom_action_idx": 13,
+      "dom_action_pct": 99.75739538239539,
+      "act13_pct": 99.75739538239539
+    },
+    {
+      "model": "Standard A2C",
+      "seed": 256,
+      "scenario": "EASY",
+      "mean_entropy": 0.22899283064411036,
+      "mean_max_prob": 0.9064542048034214,
+      "dom_action_idx": 0,
+      "dom_action_pct": 72.27362914862915,
+      "act13_pct": 0.08477633477633478
+    },
+    {
+      "model": "A2C_mod",
+      "seed": 512,
+      "scenario": "EASY",
+      "mean_entropy": 2.019412239037809e-05,
+      "mean_max_prob": 0.9999915301090195,
+      "dom_action_idx": 9,
+      "dom_action_pct": 99.90891053391053,
+      "act13_pct": 0.0
+    },
+    {
+      "model": "Standard A2C",
+      "seed": 512,
+      "scenario": "EASY",
+      "mean_entropy": 0.0031899754441082713,
+      "mean_max_prob": 0.9987051081326273,
+      "dom_action_idx": 8,
+      "dom_action_pct": 98.71031746031747,
+      "act13_pct": 0.0
+    },
+    {
+      "model": "A2C_mod",
+      "seed": 1024,
+      "scenario": "EASY",
+      "mean_entropy": 0.001922005850253283,
+      "mean_max_prob": 0.9992645484587502,
+      "dom_action_idx": 5,
+      "dom_action_pct": 98.77525252525253,
+      "act13_pct": 1.224747474747475
+    },
+    {
+      "model": "Standard A2C",
+      "seed": 1024,
+      "scenario": "EASY",
+      "mean_entropy": 0.013870921568235078,
+      "mean_max_prob": 0.99225460454112,
+      "dom_action_idx": 5,
+      "dom_action_pct": 96.33026695526695,
+      "act13_pct": 0.05321067821067821
+    },
+    {
+      "model": "A2C_mod",
+      "seed": 42,
+      "scenario": "MEDIUM",
+      "mean_entropy": 0.005146509549256785,
+      "mean_max_prob": 0.9979029341586052,
+      "dom_action_idx": 0,
+      "dom_action_pct": 90.69624819624819,
+      "act13_pct": 0.0
+    },
+    {
+      "model": "Standard A2C",
+      "seed": 42,
+      "scenario": "MEDIUM",
+      "mean_entropy": 0.06587612888007055,
+      "mean_max_prob": 0.9744061935279105,
+      "dom_action_idx": 0,
+      "dom_action_pct": 74.81331168831169,
+      "act13_pct": 0.03427128427128427
+    },
+    {
+      "model": "A2C_mod",
+      "seed": 123,
+      "scenario": "MEDIUM",
+      "mean_entropy": 0.0006929788745158814,
+      "mean_max_prob": 0.9997032970663101,
+      "dom_action_idx": 13,
+      "dom_action_pct": 78.8437950937951,
+      "act13_pct": 78.8437950937951
+    },
+    {
+      "model": "Standard A2C",
+      "seed": 123,
+      "scenario": "MEDIUM",
+      "mean_entropy": 0.02026854571748529,
+      "mean_max_prob": 0.9909801129547376,
+      "dom_action_idx": 2,
+      "dom_action_pct": 86.79924242424242,
+      "act13_pct": 0.0
+    },
+    {
+      "model": "A2C_mod",
+      "seed": 256,
+      "scenario": "MEDIUM",
+      "mean_entropy": 0.00011258407501273701,
+      "mean_max_prob": 0.999948180975422,
+      "dom_action_idx": 13,
+      "dom_action_pct": 99.80699855699856,
+      "act13_pct": 99.80699855699856
+    },
+    {
+      "model": "Standard A2C",
+      "seed": 256,
+      "scenario": "MEDIUM",
+      "mean_entropy": 0.1650381205836311,
+      "mean_max_prob": 0.9297131347277808,
+      "dom_action_idx": 0,
+      "dom_action_pct": 71.0588023088023,
+      "act13_pct": 0.035173160173160176
+    },
+    {
+      "model": "A2C_mod",
+      "seed": 512,
+      "scenario": "MEDIUM",
+      "mean_entropy": 1.8304578689922993e-05,
+      "mean_max_prob": 0.9999925599448265,
+      "dom_action_idx": 9,
+      "dom_action_pct": 99.96212121212122,
+      "act13_pct": 0.0
+    },
+    {
+      "model": "Standard A2C",
+      "seed": 512,
+      "scenario": "MEDIUM",
+      "mean_entropy": 0.019680885208453975,
+      "mean_max_prob": 0.9917321123537564,
+      "dom_action_idx": 8,
+      "dom_action_pct": 90.20111832611832,
+      "act13_pct": 0.0
+    },
+    {
+      "model": "A2C_mod",
+      "seed": 1024,
+      "scenario": "MEDIUM",
+      "mean_entropy": 0.007102140481534079,
+      "mean_max_prob": 0.99697131036766,
+      "dom_action_idx": 5,
+      "dom_action_pct": 90.04779942279943,
+      "act13_pct": 9.952200577200578
+    },
+    {
+      "model": "Standard A2C",
+      "seed": 1024,
+      "scenario": "MEDIUM",
+      "mean_entropy": 0.022846820352386013,
+      "mean_max_prob": 0.9906515747545257,
+      "dom_action_idx": 5,
+      "dom_action_pct": 87.69660894660895,
+      "act13_pct": 0.023448773448773448
+    },
+    {
+      "model": "A2C_mod",
+      "seed": 42,
+      "scenario": "HARD",
+      "mean_entropy": 0.004847278770757469,
+      "mean_max_prob": 0.9982714319512958,
+      "dom_action_idx": 0,
+      "dom_action_pct": 85.60335497835497,
+      "act13_pct": 0.0
+    },
+    {
+      "model": "Standard A2C",
+      "seed": 42,
+      "scenario": "HARD",
+      "mean_entropy": 0.13397849442082502,
+      "mean_max_prob": 0.9470776757077565,
+      "dom_action_idx": 0,
+      "dom_action_pct": 71.89574314574314,
+      "act13_pct": 0.023448773448773448
+    },
+    {
+      "model": "A2C_mod",
+      "seed": 123,
+      "scenario": "HARD",
+      "mean_entropy": 0.0003032389570261362,
+      "mean_max_prob": 0.9998751108845075,
+      "dom_action_idx": 13,
+      "dom_action_pct": 83.4505772005772,
+      "act13_pct": 83.4505772005772
+    },
+    {
+      "model": "Standard A2C",
+      "seed": 123,
+      "scenario": "HARD",
+      "mean_entropy": 0.03894914165142961,
+      "mean_max_prob": 0.9841800473985218,
+      "dom_action_idx": 2,
+      "dom_action_pct": 77.15367965367965,
+      "act13_pct": 0.0
+    },
+    {
+      "model": "A2C_mod",
+      "seed": 256,
+      "scenario": "HARD",
+      "mean_entropy": 4.7562423015858923e-05,
+      "mean_max_prob": 0.9999848315640102,
+      "dom_action_idx": 13,
+      "dom_action_pct": 99.2252886002886,
+      "act13_pct": 99.2252886002886
+    },
+    {
+      "model": "Standard A2C",
+      "seed": 256,
+      "scenario": "HARD",
+      "mean_entropy": 0.20664876855407205,
+      "mean_max_prob": 0.9113337674311229,
+      "dom_action_idx": 0,
+      "dom_action_pct": 69.14953102453102,
+      "act13_pct": 0.024350649350649352
+    },
+    {
+      "model": "A2C_mod",
+      "seed": 512,
+      "scenario": "HARD",
+      "mean_entropy": 1.0477867749177733e-05,
+      "mean_max_prob": 0.9999944377276633,
+      "dom_action_idx": 9,
+      "dom_action_pct": 99.94047619047619,
+      "act13_pct": 0.0
+    },
+    {
+      "model": "Standard A2C",
+      "seed": 512,
+      "scenario": "HARD",
+      "mean_entropy": 0.0365219485000819,
+      "mean_max_prob": 0.9828504383090942,
+      "dom_action_idx": 8,
+      "dom_action_pct": 87.19336219336219,
+      "act13_pct": 0.0
+    },
+    {
+      "model": "A2C_mod",
+      "seed": 1024,
+      "scenario": "HARD",
+      "mean_entropy": 0.005456296481478796,
+      "mean_max_prob": 0.9976024246878095,
+      "dom_action_idx": 5,
+      "dom_action_pct": 87.09235209235209,
+      "act13_pct": 12.907647907647906
+    },
+    {
+      "model": "Standard A2C",
+      "seed": 1024,
+      "scenario": "HARD",
+      "mean_entropy": 0.03270178534758527,
+      "mean_max_prob": 0.9868910973743786,
+      "dom_action_idx": 5,
+      "dom_action_pct": 84.38943001443,
+      "act13_pct": 0.01984126984126984
+    }
+  ]
+}
